@@ -1,0 +1,6 @@
+# Дозволяємо пошуковим системам індексувати весь сайт.
+# Після запуску замініть SITE-DOMAIN на адресу сайту.
+User-agent: *
+Allow: /
+
+Sitemap: https://SITE-DOMAIN/sitemap.xml

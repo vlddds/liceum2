@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Карта сайту для Google. Після запуску замініть SITE-DOMAIN на адресу сайту.
+     Нову сторінку додавайте окремим блоком <url>. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://SITE-DOMAIN/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://SITE-DOMAIN/news.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://SITE-DOMAIN/about.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://SITE-DOMAIN/teachers.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://SITE-DOMAIN/education.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://SITE-DOMAIN/schedule.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://SITE-DOMAIN/calendar.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://SITE-DOMAIN/public.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://SITE-DOMAIN/upbringing.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://SITE-DOMAIN/services.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://SITE-DOMAIN/faq.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://SITE-DOMAIN/albums.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://SITE-DOMAIN/archive.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+</urlset>
