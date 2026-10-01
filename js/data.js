@@ -253,6 +253,7 @@ window.SITE_DATA = (function () {
   /* ФОТО ШКОЛИ для каруселі на головній. src: шлях до файлу, caption: підпис.
      Поки src порожній, показується заглушка. Рекомендовано горизонтальні фото ~1600×1000. */
   var photos = [
+    { src: "img/gallery/01-building.png", caption: "Будівля ліцею" },
     { src: "img/gallery/02-lesson.jpg", caption: "Урок у початковій школі" },
     { src: "img/gallery/03-holiday.jpg", caption: "Свято в початковій школі" },
     { src: "img/gallery/04-laughter-day.jpg", caption: "День сміху" },
@@ -260,6 +261,9 @@ window.SITE_DATA = (function () {
     { src: "img/gallery/06-schoolyard.jpg", caption: "На шкільному подвір'ї" },
     { src: "img/gallery/07-primary.jpg", caption: "Учні початкової школи" },
     { src: "img/gallery/08-flag.jpg", caption: "З державним прапором України" },
+    { src: "img/gallery/10-first.jpg", caption: "Урок у початковій школі" },
+    { src: "img/gallery/11-big.jpg", caption: "Шаную воїнів, біжу за героїв України" },
+    { src: "img/gallery/12-meet.jpg", caption: "Зустріч що об`єднує серця" },
     { src: "img/gallery/09-library.jpg", caption: "Шкільна бібліотека" }
   ];
 
