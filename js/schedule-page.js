@@ -95,9 +95,11 @@
       var lessons = S.classes[cls].days[day] || [];
       var most = Math.max.apply(null, S.classes[cls].days.map(function (d) { return d.length; }));
       body.innerHTML = '<ol class="rule-list sch-list">' + b.slice(0, most || b.length).map(function (x, i) {
-        var raw = lessons[i], l = Array.isArray(raw) ? raw[0] : raw, room = Array.isArray(raw) && raw[1] ? raw[1] : "";
+        var raw = lessons[i], l = Array.isArray(raw) ? raw[0] : raw, room = Array.isArray(raw) && raw[1] ? raw[1] : "",
+            teacher = Array.isArray(raw) && raw[2] ? raw[2] : "";
         return "<li" + (l ? "" : ' class="free"') + '><p><b>' + esc(l || "—") + "</b><small>" +
-          (room ? '<span class="sch-room">каб. ' + esc(room) + "</span> · " : "") + x[0] + "–" + x[1] + "</small></p></li>";
+          (room ? '<span class="sch-room">каб. ' + esc(room) + "</span> · " : "") + x[0] + "–" + x[1] +
+          (teacher ? " · " + esc(teacher) : "") + "</small></p></li>";
       }).join("") + "</ol>";
     }
     if (animate && !reduce) restart(body, "swap");
