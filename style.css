@@ -1037,6 +1037,7 @@ html.dark .b-ph{box-shadow:inset 0 0 0 1px var(--line)}
 .sch-list>li p{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
 .sch-list>li small{color:var(--muted);font-variant-numeric:tabular-nums}
 .sch-list>li.free{opacity:.55}
+.sch-room{font-weight:600;color:var(--navy-2)}
 #sch-body.swap .sch-list>li{animation:rise .3s var(--ease) both}
 .sch-side{position:sticky;top:88px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:1.1rem 1.2rem}
 .sch-side h2{font-size:1.2rem;margin-bottom:.7rem}

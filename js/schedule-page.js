@@ -58,7 +58,7 @@
       for (var i = 0; i < b.length; i++) {
         var s = mins(b[i][0]), e = mins(b[i][1]);
         if (m >= s && m < e) {
-          var lesson = cls && S.classes[cls].days[wd] ? S.classes[cls].days[wd][i] : "";
+          var raw = cls && S.classes[cls].days[wd] ? S.classes[cls].days[wd][i] : "", lesson = Array.isArray(raw) ? raw[0] : raw;
           html = '<span class="sch-num">' + (i + 1) + "</span><div><b>Зараз " + (i + 1) + "-й урок" + (lesson ? ": " + esc(lesson) : "") + "</b><small>" +
             b[i][0] + "–" + b[i][1] + " · до кінця " + (e - m) + " " + plural(e - m, "хвилина", "хвилини", "хвилин") + "</small></div>" +
             '<span class="sch-bar"><i style="width:' + Math.round((m - s) / (e - s) * 100) + '%"></i></span>';
@@ -89,9 +89,11 @@
     else if (!S.classes[cls].days.length) body.innerHTML = '<p class="empty-note">Розклад ' + esc(cls) + " класу ще не додано на сайт. Подивіться файл розкладу праворуч.</p>";
     else {
       var lessons = S.classes[cls].days[day] || [];
-      body.innerHTML = '<ol class="rule-list sch-list">' + b.map(function (x, i) {
-        var l = lessons[i];
-        return "<li" + (l ? "" : ' class="free"') + '><p><b>' + esc(l || "—") + "</b><small>" + x[0] + "–" + x[1] + "</small></p></li>";
+      var most = Math.max.apply(null, S.classes[cls].days.map(function (d) { return d.length; }));
+      body.innerHTML = '<ol class="rule-list sch-list">' + b.slice(0, most || b.length).map(function (x, i) {
+        var raw = lessons[i], l = Array.isArray(raw) ? raw[0] : raw, room = Array.isArray(raw) && raw[1] ? raw[1] : "";
+        return "<li" + (l ? "" : ' class="free"') + '><p><b>' + esc(l || "—") + "</b><small>" +
+          (room ? '<span class="sch-room">каб. ' + esc(room) + "</span> · " : "") + x[0] + "–" + x[1] + "</small></p></li>";
       }).join("") + "</ol>";
     }
     if (animate && !reduce) restart(body, "swap");
