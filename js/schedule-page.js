@@ -82,11 +82,15 @@
     var b = bellsFor(cls);
     $("#sch-bells").innerHTML = b.map(function (x, i) { return "<li><span>" + (i + 1) + " урок</span><b>" + x[0] + "–" + x[1] + "</b></li>"; }).join("");
   }
+  /* Клас заповнено, якщо є хоч один предмет (порожні заготовки не рахуються) */
+  function filled(c) {
+    return S.classes[c].days.some(function (d) { return d.some(function (l) { return Array.isArray(l) ? l[0] : l; }); });
+  }
   function render(animate) {
     $$("#sch-days .chip").forEach(function (c, i) { c.setAttribute("aria-pressed", i === day ? "true" : "false"); });
     var body = $("#sch-body"), b = bellsFor(cls);
     if (!cls) body.innerHTML = '<p class="empty-note">Оберіть клас у списку вище.</p>';
-    else if (!S.classes[cls].days.length) body.innerHTML = '<p class="empty-note">Розклад ' + esc(cls) + " класу ще не додано на сайт. Подивіться файл розкладу праворуч.</p>";
+    else if (!filled(cls)) body.innerHTML = '<p class="empty-note">Розклад ' + esc(cls) + " класу ще не додано на сайт. Подивіться файл розкладу праворуч.</p>";
     else {
       var lessons = S.classes[cls].days[day] || [];
       var most = Math.max.apply(null, S.classes[cls].days.map(function (d) { return d.length; }));
