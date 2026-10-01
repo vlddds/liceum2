@@ -45,6 +45,7 @@ html.contrast .tile,html.contrast details.grp,html.contrast .feature,html.contra
 html.contrast .ico{background:var(--surface);border:2px solid #000}
 
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{scroll-behavior:smooth;scroll-padding-top:84px}
 body{margin:0;font-family:var(--sans);font-size:1rem;line-height:1.55;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
 a{color:inherit}

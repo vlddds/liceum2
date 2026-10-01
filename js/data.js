@@ -253,14 +253,15 @@ window.SITE_DATA = (function () {
   /* ФОТО ШКОЛИ для каруселі на головній. src: шлях до файлу, caption: підпис.
      Поки src порожній, показується заглушка. Рекомендовано горизонтальні фото ~1600×1000. */
   var photos = [
-    { src: "", caption: "Головний корпус ліцею" },
-    { src: "", caption: "Свято Першого дзвоника" },
-    { src: "", caption: "Шкільна бібліотека" },
-    { src: "", caption: "Спортивна зала" },
-    { src: "", caption: "Кабінет інформатики" },
-    { src: "", caption: "Випускний вечір" },
-    { src: "", caption: "Шкільне подвір'я" },
-    { src: "", caption: "Уроки в початковій школі" }
+    { src: "img/gallery/01-building.jpg", caption: "Будівля ліцею" },
+    { src: "img/gallery/02-lesson.jpg", caption: "Урок у початковій школі" },
+    { src: "img/gallery/03-holiday.jpg", caption: "Свято в початковій школі" },
+    { src: "img/gallery/04-laughter-day.jpg", caption: "День сміху" },
+    { src: "img/gallery/05-vyshyvanka.jpg", caption: "Учні та вчителі у вишиванках" },
+    { src: "img/gallery/06-schoolyard.jpg", caption: "На шкільному подвір'ї" },
+    { src: "img/gallery/07-primary.jpg", caption: "Учні початкової школи" },
+    { src: "img/gallery/08-flag.jpg", caption: "З державним прапором України" },
+    { src: "img/gallery/09-library.jpg", caption: "Шкільна бібліотека" }
   ];
 
   return {

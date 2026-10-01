@@ -82,15 +82,7 @@
     if (b) b.addEventListener("click", function () { setPref(cls, !root.classList.contains(cls)); });
   });
   syncButtons();
-  /* Якщо людина сама не обирала тему, слідуємо за налаштуваннями системи */
-  if (window.matchMedia) {
-    var mq = matchMedia("(prefers-color-scheme:dark)");
-    var follow = function (e) {
-      if (prefs.theme || root.classList.contains("contrast")) return;
-      root.classList.toggle("dark", e.matches); syncButtons();
-    };
-    if (mq.addEventListener) mq.addEventListener("change", follow); else if (mq.addListener) mq.addListener(follow);
-  }
+  /* За замовчуванням сайт світлий; темна тема — лише якщо відвідувач сам її увімкнув кнопкою */
 
   /* 4. «ХВИЛЯ» ПІД ЧАС НАТИСКАННЯ НА КНОПКИ ------------------------------------ */
   document.addEventListener("click", function (e) {
