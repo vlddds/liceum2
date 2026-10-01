@@ -208,7 +208,7 @@
   var slides = $$(".gal-slide", track), cur = 0;
   function nearest() {
     var x = track.scrollLeft, best = 0, d = Infinity;
-    slides.forEach(function (s, i) { var dd = Math.abs(s.offsetLeft - track.offsetLeft - x); if (dd < d) { d = dd; best = i; } });
+    slides.forEach(function (s, i) { var dd = Math.abs(s.offsetLeft - slides[0].offsetLeft - x); if (dd < d) { d = dd; best = i; } });
     /* дійшли до кінця стрічки: активний останній */
     if (x + track.clientWidth >= track.scrollWidth - 4) best = slides.length - 1;
     return best;
@@ -221,13 +221,20 @@
   }
   function go(i) {
     i = Math.max(0, Math.min(slides.length - 1, i));
-    track.scrollTo({ left: slides[i].offsetLeft - track.offsetLeft, behavior: reduce ? "auto" : "smooth" });
+    var start = track.scrollLeft, target = slides[i].offsetLeft - slides[0].offsetLeft;
+    track.scrollTo({ left: target, behavior: reduce ? "auto" : "smooth" });
+    /* Деякі браузери ігнорують плавну прокрутку — тоді перескакуємо одразу */
+    if (!reduce) setTimeout(function () {
+      if (Math.abs(track.scrollLeft - target) > 2 && Math.abs(track.scrollLeft - start) < 2) track.scrollTo({ left: target, behavior: "auto" });
+      paintDots();
+    }, 700);
+    if (reduce) paintDots();
   }
   var raf = 0;
   track.addEventListener("scroll", function () { cancelAnimationFrame(raf); raf = requestAnimationFrame(paintDots); }, { passive: true });
   window.addEventListener("resize", paintDots);
-  $("#gal-prev").addEventListener("click", function () { go(cur - 1); });
-  $("#gal-next").addEventListener("click", function () { go(cur + 1); });
+  $("#gal-prev").addEventListener("click", function () { go(nearest() - 1); });
+  $("#gal-next").addEventListener("click", function () { go(nearest() + 1); });
   dots.addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) go(+b.getAttribute("data-k")); });
   paintDots();
 

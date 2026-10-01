@@ -214,7 +214,7 @@ window.ARCHIVE = (function () {
               "зарахування на бюджетну форму навчання — 22.08.2022."
             ] },
             { type: "text", text: "У 2022 році вступити на бакалаврат денної форми за державним замовленням можна було на підставі вступного випробування (без результатів НМТ). Оформити особову справу та пройти медичний огляд можна було безпосередньо в обраному закладі вищої освіти МВС." },
-            { type: "links", items: [ { title: "Вступ до ДДУВС", url: "https://dduvs.in.ua/vstup-k/", text: "Дніпропетровський державний університет внутрішніх справ" } ] },
+            { type: "links", items: [ { title: "Вступ до ДДУВС", url: "https://dduvs.edu.ua/vstup/", text: "Дніпропетровський державний університет внутрішніх справ" } ] },
             { type: "docs", items: [ { title: "Наказ про зарахування дітей до 1 класів", url: drive("1benPRNu2VPkplnEtsrCOY9D6aRX1SiuR") } ] },
             { type: "gallery", items: [""] },
             { type: "heading", text: "Форма навчання" },
@@ -352,8 +352,7 @@ window.ARCHIVE = (function () {
             ] },
             { type: "links", items: [
               { title: "Мотиваційний лист при вступі до закладу вищої освіти", url: "https://osvita.ua/consultations/bachelor/73165/", text: "Освіта.ua" },
-              { title: "Зміни до Порядку проведення зовнішнього незалежного оцінювання", url: "https://zakon.rada.gov.ua/laws/show/z0003-20#Text" },
-              { title: "ЗНО 2020", url: "https://mon-covid19.info/zno-2020" }
+              { title: "Зміни до Порядку проведення зовнішнього незалежного оцінювання", url: "https://zakon.rada.gov.ua/laws/show/z0003-20#Text" }
             ] }
           ] },
         { id: "dpa-2022", title: "ДПА 2021/2022", icon: "check",

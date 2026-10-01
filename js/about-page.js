@@ -159,6 +159,17 @@
   });
   showRule(0, false);
 
+  /* Друк правил: усі розділи на окремому аркуші */
+  var rp = document.createElement("div");
+  rp.className = "rules-printable";
+  rp.innerHTML = "<h1>Правила внутрішньошкільного розпорядку та поведінки учнів</h1><p>Ліцей №2 Підгородненської міської ради</p>" +
+    A.rules.map(function (r, i) {
+      return "<h2>" + ["I", "II", "III", "IV", "V"][i] + ". " + esc(r.title) + '</h2><ol class="rule-list">' + r.items.map(item).join("") + "</ol>";
+    }).join("");
+  document.body.appendChild(rp);
+  $("#rules-print").addEventListener("click", function () { document.body.classList.add("rules-printing"); window.print(); });
+  window.addEventListener("afterprint", function () { document.body.classList.remove("rules-printing"); });
+
   /* 3. ПЕРЕХІД ЗА АДРЕСОЮ: about.html#structure відкриває потрібний пункт ----------- */
   var ALIAS = { reception: "administration" };
   function fromHash(scroll) {

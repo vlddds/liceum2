@@ -1075,7 +1075,15 @@ html.dark .b-ph{box-shadow:inset 0 0 0 1px var(--line)}
   .reveal,[data-reveal]{opacity:1!important;transform:none!important}
   body.mn-printing .sp-sec,body.mn-printing .hero{display:none!important}
   body.mn-printing .mn-printable{display:block!important}
+  body.rules-printing>*:not(.rules-printable){display:none!important}
+  body.rules-printing .rules-printable{display:block!important}
+  .rules-printable h1{font-size:16pt;margin:0 0 .2rem}
+  .rules-printable h2{font-size:13pt;margin:1rem 0 .4rem}
+  .rules-printable .rule-list>li{padding:.3rem .5rem .3rem 2.4rem}
+  .rules-printable .rule-list>li::before{background:#333;width:1.4rem;height:1.4rem;left:.5rem;top:.3rem}
 }
+.rules-printable{display:none}
+.rules-print{margin-top:1rem}
 
 /* 19. МЕНЮ ЇДАЛЬНІ (menu.html) --------------------------------------------------- */
 .mn-now>.ic{color:var(--sun)}

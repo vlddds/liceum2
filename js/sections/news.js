@@ -98,7 +98,6 @@ window.SECTION = (function () {
         blocks: [
           { type: "gallery", items: [""] },
           { type: "links", items: [
-            { title: "Заявка на добір до складу Молодіжної ради при Підгородненській міській раді", url: "https://docs.google.com/forms/d/e/1FAIpQLSfnhDBcmWHsmDslZaCVcJvWHtW6i2bF4-M0g_sWdBgp4tLxYw/viewform", text: "Google-форма" },
             { title: "Добір до нового складу Молодіжної ради Підгородненської громади", url: "https://www.facebook.com/story.php?story_fbid=1016306844087713&id=100071252201797", text: "Facebook" }
           ] }
         ] },

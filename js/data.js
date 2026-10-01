@@ -42,8 +42,8 @@ window.SITE_DATA = (function () {
     ["МОН України", "https://mon.gov.ua/ua"],
     ["Освіта.ua", "http://osvita.ua/"],
     ["Український центр оцінювання якості освіти", "https://testportal.gov.ua/"],
-    ["Дніпропетровський регіональний центр оцінювання якості освіти", "https://dneprtest.dp.ua/cms/index.php"],
-    ["Державна служба якості освіти", "http://www.sqe.gov.ua/index.php/uk-ua/upravlinnia-derzhavnoi-sluzhby-iakosti-osvity-u-dnipropetrovskii-oblasti"],
+    ["Дніпропетровський регіональний центр оцінювання якості освіти", "https://dneprtest.dp.ua/"],
+    ["Державна служба якості освіти", "https://sqe.gov.ua/"],
     ["Дія.Цифрова освіта", "https://osvita.diia.gov.ua/"]
   ];
 

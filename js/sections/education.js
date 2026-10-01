@@ -38,12 +38,7 @@ window.SECTION = (function () {
             { label: "Зимові канікули", value: "29 грудня 2025 – 11 січня 2026" },
             { label: "Весняні канікули", value: "23 – 29 березня 2026" }
           ] },
-          { type: "docs", items: [
-            { group: "Розклади на початку 2025/2026 н.р.", title: "Розклад дзвінків", url: drive("1penDQMrCRt17GJZfTr_t0yvsWMNNU2WR") },
-            { group: "Розклади на початку 2025/2026 н.р.", title: "Розклад уроків 1–4 класів", url: drive("1E-3rDmBC7-PUlj9x18Sl-eCd6NLgA-4a") },
-            { group: "Розклади на початку 2025/2026 н.р.", title: "Розклад уроків 5–11 класів", url: drive("1Jxze-06KBx6-GERJKCowJseriLZYVk3e") },
-            { group: "Розклади на початку 2025/2026 н.р.", title: "Розклад уроків педагогічного колективу", url: drive("1YkeHDMTULjpGv_RsG7CWt4hwNAbUGMLy") }
-          ] }
+          { type: "button", title: "Розклад уроків за класами", url: "schedule.html", text: "Що зараз: урок чи перерва, розклад на день і тиждень" }
         ] },
 
       { id: "schedule-archive", title: "Режим роботи: попередні роки", short: "Попередні роки", icon: "archive",

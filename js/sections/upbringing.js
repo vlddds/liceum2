@@ -62,8 +62,7 @@ window.SECTION = (function () {
             { title: "Якщо ви знайшли боєприпаси: правила поведінки для дітей", yt: "l83IhF2dWK0" }
           ] },
           { type: "links", items: [
-            { title: "Суперкоманда проти мін", url: "https://inforce.team/ua", text: "Навчання мінної безпеки для дітей" },
-            { title: "Відео для дітей про безпеку", url: "https://ns-plus.com.ua/2018/08/10/9-video-dlya-ditej-pro-bezpeku/" }
+            { title: "Суперкоманда проти мін", url: "https://inforce.team/ua", text: "Навчання мінної безпеки для дітей" }
           ] },
 
           { type: "heading", text: "Пам'ятка з попередження всіх видів дитячого травматизму" },
@@ -278,7 +277,6 @@ window.SECTION = (function () {
           { type: "heading", text: "Корисні сайти для вибору професії" },
           { type: "links", items: [
             { title: "Дія.Освіта", url: "https://osvita.diia.gov.ua/", text: "Професії майбутнього, поради щодо вибору професії" },
-            { title: "Career Hub", url: "https://careerhub.in.ua/", text: "Про професії, вакансії та необхідні навички" },
             { title: "Всеукраїнський проєкт з профорієнтації та побудови кар'єри", url: "https://hryoutest.in.ua/" },
             { title: "«Абітурієнт»", url: "https://vstup.osvita.ua/", text: "Каталог професій та навчальних закладів" },
             { title: "Державна служба зайнятості", url: "https://www.dcz.gov.ua/", text: "База професій та поради" }
