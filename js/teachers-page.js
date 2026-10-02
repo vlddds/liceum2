@@ -15,7 +15,7 @@
   GROUPS.forEach(function (g) {
     g.people.forEach(function (p) {
       p.name = p.name || ""; p._g = g; if (!g.retired) total++;
-      p.hay = norm([p.name, p.role, p.post, p.category, p.title, p.education, g.title].join(" "));
+      p.hay = norm([p.name, p.role, p.post, p.category, p.title, p.education, g.title].concat(p.projects || []).join(" "));
     });
   });
 
@@ -147,7 +147,11 @@
     $("#d-dl").hidden = !rows.length;
     $("#d-about").innerHTML = p.about
       ? p.about.split(/\n+/).map(function (t) { return "<p>" + esc(t) + "</p>"; }).join("")
-      : rows.length ? "" : '<p class="t-soon">Докладна інформація про педагога з\'явиться згодом.</p>';
+      : rows.length || (p.projects && p.projects.length) ? "" : '<p class="t-soon">Докладна інформація про педагога з\'явиться згодом.</p>';
+    if (p.projects && p.projects.length) {
+      $("#d-about").innerHTML += '<h3 class="t-proj-h">Проєкти в ліцеї</h3><ul class="t-proj">' +
+        p.projects.map(function (t) { return "<li>" + ICON("award") + "<span>" + esc(t) + "</span></li>"; }).join("") + "</ul>";
+    }
     $("#d-pos").textContent = (k + 1) + " з " + list.length;
     $("#d-prev").disabled = k === 0;
     $("#d-next").disabled = k === list.length - 1;
