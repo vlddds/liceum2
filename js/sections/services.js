@@ -23,7 +23,7 @@ window.SECTION = (function () {
         ] },
 
       { id: "menu", title: "Меню їдальні на тиждень", short: "Меню", icon: "utensils", href: "menu.html",
-        sub: "Страви на кожен день і вихід порцій (меню — у файлі js/menu.js)" },
+        sub: "Страви на кожен день і вихід порцій" },
 
       { id: "library", title: "Бібліотека", short: "Бібліотека", icon: "book",
         blocks: [
