@@ -54,7 +54,7 @@
   }
   function video(title, yt) {
     return '<div class="b-yt"><button type="button" class="yt" data-yt="' + esc(yt) + '" aria-label="Відтворити відео: ' + esc(title) + '">' +
-      '<img src="https://i.ytimg.com/vi/' + esc(yt) + '/hqdefault.jpg" alt="" loading="lazy">' +
+      '<img src="https://i.ytimg.com/vi/' + esc(yt) + '/hqdefault.jpg" alt="" loading="lazy" decoding="async">' +
       '<span class="yt-play" aria-hidden="true"></span></button><span class="yt-t">' + esc(title) + "</span></div>";
   }
   function doc(d) {
@@ -95,7 +95,7 @@
     people: function (b) {
       return '<ul class="b-people">' + b.items.map(function (p) {
         var w = (p.name || "").trim().split(/\s+/), ini = ((w[0] || "").charAt(0) + (w[1] || "").charAt(0)).toUpperCase();
-        return '<li><span class="t-ph">' + (p.photo ? '<img src="' + esc(p.photo) + '" alt="" loading="lazy">' : '<span class="t-ini">' + esc(ini) + "</span>") + "</span>" +
+        return '<li><span class="t-ph">' + (p.photo ? '<img src="' + esc(p.photo) + '" alt="" loading="lazy" decoding="async">' : '<span class="t-ini">' + esc(ini) + "</span>") + "</span>" +
           '<div><span class="adm-pos">' + esc(p.role || "") + "</span><b>" + esc(p.name) + "</b>" +
           (p.hours ? "<small>" + ICON("clock") + esc(p.hours) + "</small>" : "") +
           (p.phone ? '<a href="tel:' + esc(p.phone.replace(/[^\d+]/g, "")) + '">' + ICON("phone") + esc(p.phone) + "</a>" : "") +

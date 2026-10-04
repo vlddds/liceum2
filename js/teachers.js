@@ -35,7 +35,7 @@ window.TEACHERS = (function () {
         { name: "Боднянська Марина Ігорівна", role: "Вчитель початкових класів", photo: "img/teachers/BiodnyanskaMaryna.JPG" },
         { name: "Старишко Ольга Іванівна", role: "Вчитель початкових класів", photo: "img/teachers/StaryshkoOlha.JPG" },
         /*{ name: "Піщета Наталія Владиславівна", role: "Вчитель початкових класів", post: "Голова МО", photo: "" },*/
-        /*{ name: "Кудінова Олена Миколаївна", role: "Вчитель початкових класів", photo: "" },*/
+        { name: "Кудінова Олена Миколаївна", role: "Вчитель початкових класів", photo: "img/teachers/KudinovaOlena.JPG" },
         { name: "Поливяна Алла Анатоліївна", role: "Вчитель початкових класів", photo: "img/teachers/PolyvyanaAlla.JPG" },
         /*{ name: "Ступак Наталія Пилипівна", role: "Вчитель початкових класів", photo: "" },*/
         { name: "Вітер Тамара Євгеніївна", role: "Вчитель початкових класів", post: "Декретна відпустка", photo: "img/teachers/ViterTamara.JPG" }

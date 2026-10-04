@@ -154,9 +154,22 @@
   /* 7. ФОТО: заглушка і перегляд на весь екран (карусель на головній, архів) ----------
      Для сторінок, де є фото, у наборі іконок потрібні i-image, i-close та i-chev. */
   function photoHTML(p, i, lazy) {
-    if (p && p.src) return '<img src="' + esc(p.src) + '" alt="' + esc(p.caption || "") + '"' + (lazy ? ' loading="lazy"' : "") + ">";
+    if (p && p.src) return '<img src="' + esc(p.src) + '" alt="' + esc(p.caption || "") + '"' + (lazy ? ' loading="lazy" decoding="async"' : "") + ">";
     return '<span class="gal-ph">' + ICON("image") + (i >= 0 ? "<small>Фото " + (i + 1) + "</small>" : "") + "</span>";
   }
+  /* Lazyload: фото з loading="lazy" вантажаться, коли до них доходить прокрутка,
+     і плавно з'являються (поки вантажаться — мерехтливий фон, див. style.css) */
+  document.documentElement.classList.add("lazy-on");
+  function loaded(e) {
+    var img = e.target;
+    if (img.tagName === "IMG") img.classList.add("is-loaded");
+  }
+  document.addEventListener("load", loaded, true);
+  document.addEventListener("error", loaded, true);
+  /* На випадок, якщо фото вже було в кеші й подія пройшла раніше */
+  setInterval(function () {
+    $$('img[loading="lazy"]:not(.is-loaded)').forEach(function (img) { if (img.complete && img.naturalWidth) img.classList.add("is-loaded"); });
+  }, 1000);
   /* Фото не завантажилось: замість «битої» картинки показуємо заглушку */
   document.addEventListener("error", function (e) {
     var img = e.target;

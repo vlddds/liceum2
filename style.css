@@ -1128,3 +1128,15 @@ html.dark .b-ph{box-shadow:inset 0 0 0 1px var(--line)}
 .mn-printable h3{margin:.6rem 0 .25rem;font-size:12pt}
 @media (max-width:900px){.mn-grid{grid-template-columns:1fr}}
 @media (max-width:560px){.mn-list li{padding:.6rem .7rem;gap:.6rem}.mn-list .ico{width:34px;height:34px}}
+
+/* Lazyload: фото плавно з'являються, поки вантажаться — мерехтливий фон (js/common.js) */
+.lazy-on img[loading="lazy"]{opacity:0;transition:opacity .45s var(--ease),transform .5s var(--ease)}
+.lazy-on img[loading="lazy"].is-loaded{opacity:1}
+.lazy-on :is(.t-ph,.gal-item,.ev-cover):has(img[loading="lazy"]:not(.is-loaded)){
+  background-image:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.18) 50%,transparent 70%);
+  background-size:220% 100%;animation:lazy-shimmer 1.3s linear infinite}
+@keyframes lazy-shimmer{from{background-position:120% 0}to{background-position:-120% 0}}
+@media (prefers-reduced-motion:reduce){
+  .lazy-on img[loading="lazy"]{transition:none}
+  .lazy-on :is(.t-ph,.gal-item,.ev-cover):has(img[loading="lazy"]:not(.is-loaded)){animation:none}
+}
