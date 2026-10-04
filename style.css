@@ -476,6 +476,13 @@ noscript div{padding:1rem;background:var(--sun);color:#2A1E00;text-align:center}
 @media (max-width:640px){
   .t-dlg-in{grid-template-columns:1fr}
   .t-dlg .t-ph{min-height:0;aspect-ratio:auto;height:min(58vw,260px)}
+  /* Є фото: вертикальний портрет по центру, голова не обрізається */
+  .t-dlg .t-ph:has(img){width:min(62%,230px);height:auto;aspect-ratio:4/5;margin:1.5rem auto 0;border-radius:var(--r-m)}
+  .t-dlg .t-ph:has(img) img{object-position:50% 12%}
+  .t-dlg .t-ph:has(img)::after{display:none}
+  .t-dlg .t-info{text-align:center}
+  .t-dlg .t-info :is(.t-dl,.t-about){text-align:left}
+  .t-dlg .t-info .t-grp{margin-right:0}
 }
 html.contrast .t-card,html.contrast .t-groups,html.contrast .t-pick,html.contrast .t-dlg{border:2px solid #000}
 
