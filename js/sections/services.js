@@ -104,7 +104,7 @@ window.SECTION = (function () {
       { id: "nurse", title: "Медичний кабінет", short: "Медсестра", icon: "heart",
         blocks: [
           { type: "people", items: [
-            { name: "Стародубцева Людмила Григорівна", role: "Медична сестра", hours: "" }
+            { name: "Стародубцева Людмила Григорівна", role: "Медична сестра", hours: "", photo:"img/teachers/StarodubtcevaLudmila.JPG" }
           ] },
           { type: "links", items: [
             { title: "5 речей про коронавірус, які потрібно знати батькам", url: "https://mon.gov.ua/ua/news/5-rechej-pro-koronavirus-yaki-potribno-znati-batkam-mon-ta-moz-dayut-rozyasnennya", text: "Роз'яснення МОН та МОЗ" },
