@@ -253,7 +253,7 @@ window.SITE_DATA = (function () {
   /* ФОТО ШКОЛИ для каруселі на головній. src: шлях до файлу, caption: підпис.
      Поки src порожній, показується заглушка. Рекомендовано горизонтальні фото ~1600×1000. */
   var photos = [
-    { src: "img/gallery/01-building.png", caption: "Будівля ліцею" },
+    { src: "img/gallery/01-building.jpg", caption: "Будівля ліцею" },
     { src: "img/gallery/02-lesson.jpg", caption: "Урок у початковій школі" },
     { src: "img/gallery/03-holiday.jpg", caption: "Свято в початковій школі" },
     { src: "img/gallery/04-laughter-day.jpg", caption: "День сміху" },

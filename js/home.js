@@ -66,18 +66,45 @@
   summary();
 
   /* Схвалені в Google-таблиці відгуки (див. tools/google-apps-script.gs) додаються зверху автоматично */
+  /* Відповідь таблиці кешується в sessionStorage на 10 хв; запит обривається через 8 с;
+     якщо таблиця не відповіла — показуємо збережену раніше копію або запасний текст. */
   var feed = CONFIG.reviewEndpoint || CONFIG.formEndpoint;
+  var RV_KEY = "l2reviews", RV_TTL = 10 * 60 * 1000, RV_TIMEOUT = 8000;
+  function addFeed(list) {
+    if (!Array.isArray(list) || !list.length) return;
+    var have = {};
+    reviews.forEach(function (r) { have[(r.name || "") + "|" + (r.text || "")] = 1; });
+    reviews = list.filter(function (r) { return r && r.text && !have[(r.name || "") + "|" + r.text]; }).concat(reviews);
+    summary(); renderReviews();
+  }
+  function rvNote(text) {
+    var n = $("#rv-note");
+    if (!n) { n = document.createElement("p"); n.id = "rv-note"; n.className = "rv-note"; rvList.parentNode.insertBefore(n, rvList.nextSibling); }
+    n.textContent = text;
+  }
   if (feed && /script\.google\.com/.test(feed) && window.fetch) {
-    fetch(feed + (feed.indexOf("?") > -1 ? "&" : "?") + "action=reviews")
-      .then(function (r) { return r.json(); })
-      .then(function (list) {
-        if (!Array.isArray(list) || !list.length) return;
-        var have = {};
-        reviews.forEach(function (r) { have[(r.name || "") + "|" + (r.text || "")] = 1; });
-        reviews = list.filter(function (r) { return r && r.text && !have[(r.name || "") + "|" + r.text]; }).concat(reviews);
-        summary(); renderReviews();
-      })
-      .catch(function () {});
+    var cached = null;
+    try { cached = JSON.parse(sessionStorage.getItem(RV_KEY) || "null"); } catch (e) {}
+    if (cached && Date.now() - cached.t < RV_TTL) addFeed(cached.list);
+    else {
+      var ctrl = window.AbortController ? new AbortController() : null;
+      var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, RV_TIMEOUT);
+      Promise.race([
+        fetch(feed + (feed.indexOf("?") > -1 ? "&" : "?") + "action=reviews", ctrl ? { signal: ctrl.signal } : {})
+          .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }),
+        new Promise(function (_, no) { setTimeout(function () { no(new Error("timeout")); }, RV_TIMEOUT + 100); })
+      ]).then(function (list) {
+        clearTimeout(timer);
+        try { sessionStorage.setItem(RV_KEY, JSON.stringify({ t: Date.now(), list: list })); } catch (e) {}
+        addFeed(list);
+      }).catch(function () {
+        clearTimeout(timer);
+        if (cached && cached.list) addFeed(cached.list);
+        rvNote(cached && cached.list
+          ? "Не вдалося оновити відгуки — показуємо збережені раніше."
+          : "Нові відгуки зараз не завантажились. Спробуйте оновити сторінку трохи пізніше.");
+      });
+    }
   }
 
   function rvCard(r, i) {
@@ -199,7 +226,7 @@
   track.innerHTML = photos.map(function (p, i) {
     return '<li class="gal-slide" aria-roledescription="слайд" aria-label="' + (i + 1) + " з " + photos.length + '">' +
       '<button type="button" class="gal-item" data-k="' + i + '" aria-label="Відкрити фото: ' + esc(p.caption || "фото " + (i + 1)) + '">' +
-      photoHTML(p, i, true) + (p.caption ? '<span class="gal-cap">' + esc(p.caption) + "</span>" : "") + "</button></li>";
+      photoHTML(p, i, i === 0 ? "high" : true) + (p.caption ? '<span class="gal-cap">' + esc(p.caption) + "</span>" : "") + "</button></li>";
   }).join("");
   dots.innerHTML = photos.map(function (p, i) {
     return '<button type="button" data-k="' + i + '" aria-label="Фото ' + (i + 1) + '"></button>';

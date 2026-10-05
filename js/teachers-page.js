@@ -77,7 +77,7 @@
     return (w[0].charAt(0) + (w[1] ? w[1].charAt(0) : "")).toUpperCase();
   }
   function photo(p) {
-    if (p.photo) return '<img src="' + esc(p.photo) + '" alt="" loading="lazy" decoding="async">';
+    if (p.photo) return '<img src="' + esc(p.photo) + '" alt=""' + L.imgSize(p.photo) + ' loading="lazy" decoding="async">';
     return p.name.trim() ? '<span class="t-ini">' + esc(initials(p.name)) + "</span>" : ICON("user");
   }
   function card(p, k, withGroup) {

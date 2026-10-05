@@ -25,7 +25,7 @@
 
   /* 1. ЛОГОТИП, ВЕРХНЯ СМУЖКА, ПІДВАЛ ------------------------------------------ */
   $("#logo").innerHTML = CONFIG.logoUrl
-    ? '<img class="mark" src="' + esc(CONFIG.logoUrl) + '" alt="">'
+    ? '<img class="mark" src="' + esc(CONFIG.logoUrl) + '" alt="" width="48" height="48" fetchpriority="high">'
     : '<svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#14274E"/><rect y="33" width="48" height="3" fill="#F4B400"/><text x="24" y="29" text-anchor="middle" font-family="Literata,Georgia,serif" font-weight="700" font-size="26" fill="#fff">2</text></svg>';
   $("#u-mail").href = mailto; $("#u-mail span").textContent = CONFIG.email;
   $("#u-addr span").textContent = "вул. Державна, 2, м. Підгородне";
@@ -101,7 +101,7 @@
   function openGame() {
     if (window.L2Game) { window.L2Game.open(); return; }
     var s = document.createElement("script");
-    s.src = "js/game.js";
+    s.src = "js/game.js?v=20261005";
     s.onload = function () { if (window.L2Game) window.L2Game.open(); };
     document.body.appendChild(s);
   }
@@ -153,8 +153,15 @@
 
   /* 7. ФОТО: заглушка і перегляд на весь екран (карусель на головній, архів) ----------
      Для сторінок, де є фото, у наборі іконок потрібні i-image, i-close та i-chev. */
+  /* Розміри фото з js/img-sizes.js → width/height, щоб сторінка не «стрибала» */
+  function imgSize(src) {
+    var s = (window.IMG_SIZES || {})[src];
+    return s ? ' width="' + s[0] + '" height="' + s[1] + '"' : "";
+  }
+  /* lazy: true — вантажити, коли дійде прокрутка; "high" — головне фото (перший слайд), вантажити першим */
   function photoHTML(p, i, lazy) {
-    if (p && p.src) return '<img src="' + esc(p.src) + '" alt="' + esc(p.caption || "") + '"' + (lazy ? ' loading="lazy" decoding="async"' : "") + ">";
+    if (p && p.src) return '<img src="' + esc(p.src) + '" alt="' + esc(p.caption || "") + '"' + imgSize(p.src) +
+      (lazy === "high" ? ' fetchpriority="high" decoding="async"' : lazy ? ' loading="lazy" decoding="async"' : "") + ">";
     return '<span class="gal-ph">' + ICON("image") + (i >= 0 ? "<small>Фото " + (i + 1) + "</small>" : "") + "</span>";
   }
   /* Lazyload: фото з loading="lazy" вантажаться, коли до них доходить прокрутка,
@@ -223,5 +230,5 @@
 
   window.L2 = { $: $, $$: $$, esc: esc, ICON: ICON, restart: restart, plural: plural,
     reduce: reduce, mailto: mailto, openGame: openGame,
-    photoHTML: photoHTML, lightbox: lightbox, postForm: postForm, lightboxOpen: function () { return !!(lb && lb.open); } };
+    photoHTML: photoHTML, imgSize: imgSize, lightbox: lightbox, postForm: postForm, lightboxOpen: function () { return !!(lb && lb.open); } };
 })();
