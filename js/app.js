@@ -287,79 +287,16 @@
     bunnyCheck();
   });
 
-  /* Пасхалка: напишіть у пошуку «bunny» — з'явиться кролик, який стрибає за вказівником.
-     Прибрати: Esc або ще раз «bunny». */
-  var bunnyShown = false, B = null;
+  /* Пасхалка: напишіть у пошуку «bunny» — з'явиться кролик (js/common.js, L2.bunny). Ще раз «bunny» — сховається */
+  var bunnyShown = false;
   function bunnyCheck() {
     var isBunny = norm(input.value.trim()) === "bunny";
-    if (isBunny && !bunnyShown) { if (B) bunnyLeave(); else bunnyStart(); }
+    if (isBunny && !bunnyShown) {
+      var r = input.getBoundingClientRect();
+      window.L2.bunny.toggle(r.left + 60, r.bottom + 90);
+    }
     bunnyShown = isBunny;
   }
-  var BW = 80, BH = 67;   /* розмір кролика, px */
-  function bunnyStart() {
-    var el = document.createElement("div");
-    el.className = "bunny"; el.setAttribute("aria-hidden", "true");
-    el.innerHTML = '<svg viewBox="0 0 120 100"><g>' +
-        '<ellipse cx="72" cy="22" rx="7" ry="18" transform="rotate(-22 72 22)" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
-        '<ellipse cx="72" cy="22" rx="3" ry="12" transform="rotate(-22 72 22)" fill="#ffb3c7"/>' +
-        '<ellipse cx="86" cy="19" rx="7" ry="18" transform="rotate(-6 86 19)" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
-        '<ellipse cx="86" cy="19" rx="3" ry="12" transform="rotate(-6 86 19)" fill="#ffb3c7"/>' +
-        '<circle cx="22" cy="70" r="9" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
-        '<ellipse cx="58" cy="70" rx="36" ry="24" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
-        '<circle cx="80" cy="50" r="20" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
-        '<circle cx="86" cy="46" r="3.2" fill="#16213a"/><circle cx="87.2" cy="44.8" r="1" fill="#fff"/>' +
-        '<ellipse cx="98" cy="53" rx="3" ry="2.3" fill="#ff7aa2"/>' +
-        '<circle cx="84" cy="56" r="4" fill="#ffb3c7" opacity=".6"/>' +
-        '<ellipse cx="44" cy="92" rx="12" ry="5" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
-        '<ellipse cx="76" cy="92" rx="9" ry="4.5" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
-      "</g></svg>";
-    document.body.appendChild(el);
-    var r = input.getBoundingClientRect();
-    B = { el: el, dir: 1, leaving: false,
-          x: Math.max(BW / 2, Math.min(r.left + 60, innerWidth - BW / 2)), y: Math.max(BH + 10, Math.min(r.bottom + 90, innerHeight - 8)) };
-    B.tx = B.x; B.ty = B.y;
-    place(B.x, B.y, 0);
-    status.textContent = "Пасхалка: кролик стрибає за вказівником. Esc — прибрати.";
-    hop();
-  }
-  function place(x, y, rot) {
-    B.el.style.transform = "translate(" + (x - BW / 2) + "px," + (y - BH) + "px) scaleX(" + B.dir + ") rotate(" + rot + "deg)";
-  }
-  function bunnyTarget(px, py) {
-    if (!B || B.leaving) return;
-    var side = px < B.x ? 1 : -1;   /* сідає збоку від вказівника, з того боку, звідки прийшов */
-    B.tx = Math.max(BW / 2, Math.min(innerWidth - BW / 2, px + side * 55));
-    B.ty = Math.max(BH, Math.min(innerHeight - 6, py + 34));
-  }
-  function bunnyLeave() {
-    if (!B) return;
-    B.leaving = true; B.tx = innerWidth + 140; B.ty = B.y;
-    status.textContent = "";
-  }
-  function hop() {
-    if (!B) return;
-    var dx = B.tx - B.x, dy = B.ty - B.y, d = Math.sqrt(dx * dx + dy * dy);
-    if (B.leaving && B.x > innerWidth + 60) { B.el.remove(); B = null; return; }
-    if (d < 14) { setTimeout(hop, 160); return; }
-    if (Math.abs(dx) > 4) B.dir = dx < 0 ? -1 : 1;
-    var step = Math.min(d, reduce ? 60 : 120), x0 = B.x, y0 = B.y,
-        x1 = x0 + dx / d * step, y1 = y0 + dy / d * step,
-        dur = reduce ? 260 : 380, h = reduce ? 0 : 20 + step * 0.2, t0 = null;
-    B.el.classList.remove("land");
-    requestAnimationFrame(function frame(now) {
-      if (!B) return;
-      if (t0 === null) t0 = now;
-      var t = Math.min(1, (now - t0) / dur), arc = Math.sin(Math.PI * t);
-      place(x0 + (x1 - x0) * t, y0 + (y1 - y0) * t - arc * h, reduce ? 0 : -8 * arc);
-      if (t < 1) { requestAnimationFrame(frame); return; }
-      B.x = x1; B.y = y1;
-      if (!reduce) { var el = B.el; el.classList.add("land"); setTimeout(function () { el.classList.remove("land"); }, 130); }
-      setTimeout(hop, reduce ? 30 : 90);
-    });
-  }
-  document.addEventListener("pointermove", function (e) { bunnyTarget(e.clientX, e.clientY); });
-  document.addEventListener("pointerdown", function (e) { bunnyTarget(e.clientX, e.clientY); });
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && B) bunnyLeave(); });
   input.addEventListener("focus", function () { stopTyping(); render(); });
   input.addEventListener("blur", function () { if (!input.value) startTyping(); });
   input.addEventListener("keydown", function (e) {

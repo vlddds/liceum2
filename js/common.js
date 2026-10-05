@@ -101,7 +101,7 @@
   function openGame() {
     if (window.L2Game) { window.L2Game.open(); return; }
     var s = document.createElement("script");
-    s.src = "js/game.js?v=20261005-9";
+    s.src = "js/game.js?v=20261005-13";
     s.onload = function () { if (window.L2Game) window.L2Game.open(); };
     document.body.appendChild(s);
   }
@@ -228,7 +228,127 @@
     lb.showModal(); $(".lb-x", lb).focus();
   }
 
+  /* 8. ПАСХАЛКА «КРОЛИК» ------------------------------------------------------------
+     На кожній сторінці з-за однієї з карток визирає маленький кролик (щоразу в іншому місці).
+     Знайшли й натиснули — він вистрибує і стрибає за вказівником. Також: «bunny» у пошуку на головній.
+     Прибрати: Esc. */
+  var bunny = (function () {
+    var B = null, BW = 80, BH = 67;
+    var SVG = '<svg viewBox="0 0 120 100"><g>' +
+        '<ellipse cx="72" cy="22" rx="7" ry="18" transform="rotate(-22 72 22)" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
+        '<ellipse cx="72" cy="22" rx="3" ry="12" transform="rotate(-22 72 22)" fill="#ffb3c7"/>' +
+        '<ellipse cx="86" cy="19" rx="7" ry="18" transform="rotate(-6 86 19)" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
+        '<ellipse cx="86" cy="19" rx="3" ry="12" transform="rotate(-6 86 19)" fill="#ffb3c7"/>' +
+        '<circle cx="22" cy="70" r="9" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
+        '<ellipse cx="58" cy="70" rx="36" ry="24" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
+        '<circle cx="80" cy="50" r="20" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
+        '<circle cx="86" cy="46" r="3.2" fill="#16213a"/><circle cx="87.2" cy="44.8" r="1" fill="#fff"/>' +
+        '<ellipse cx="98" cy="53" rx="3" ry="2.3" fill="#ff7aa2"/>' +
+        '<circle cx="84" cy="56" r="4" fill="#ffb3c7" opacity=".6"/>' +
+        '<ellipse cx="44" cy="92" rx="12" ry="5" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
+        '<ellipse cx="76" cy="92" rx="9" ry="4.5" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
+      "</g></svg>";
+    function place(x, y, rot) {
+      B.el.style.transform = "translate(" + (x - BW / 2) + "px," + (y - BH) + "px) scaleX(" + B.dir + ") rotate(" + rot + "deg)";
+    }
+    function start(x, y) {
+      if (B) return;
+      var el = document.createElement("div");
+      el.className = "bunny"; el.setAttribute("aria-hidden", "true");
+      el.innerHTML = SVG;
+      document.body.appendChild(el);
+      B = { el: el, dir: 1, leaving: false,
+            x: Math.max(BW / 2, Math.min(x, innerWidth - BW / 2)), y: Math.max(BH + 10, Math.min(y, innerHeight - 8)) };
+      B.tx = B.x; B.ty = B.y;
+      place(B.x, B.y, 0);
+      hop();
+    }
+    function leave() {
+      if (!B) return;
+      B.leaving = true; B.tx = innerWidth + 140; B.ty = B.y;
+    }
+    function target(px, py) {
+      if (!B || B.leaving) return;
+      var side = px < B.x ? 1 : -1;   /* сідає збоку від вказівника, з того боку, звідки прийшов */
+      B.tx = Math.max(BW / 2, Math.min(innerWidth - BW / 2, px + side * 55));
+      B.ty = Math.max(BH, Math.min(innerHeight - 6, py + 34));
+    }
+    function hop() {
+      if (!B) return;
+      var dx = B.tx - B.x, dy = B.ty - B.y, d = Math.sqrt(dx * dx + dy * dy);
+      if (B.leaving && B.x > innerWidth + 60) { B.el.remove(); B = null; return; }
+      if (d < 14) { setTimeout(hop, 160); return; }
+      if (Math.abs(dx) > 4) B.dir = dx < 0 ? -1 : 1;
+      var step = Math.min(d, reduce ? 60 : 120), x0 = B.x, y0 = B.y,
+          x1 = x0 + dx / d * step, y1 = y0 + dy / d * step,
+          dur = reduce ? 260 : 380, h = reduce ? 0 : 20 + step * 0.2, t0 = null;
+      requestAnimationFrame(function frame(now) {
+        if (!B) return;
+        if (t0 === null) t0 = now;
+        var t = Math.min(1, (now - t0) / dur), arc = Math.sin(Math.PI * t);
+        place(x0 + (x1 - x0) * t, y0 + (y1 - y0) * t - arc * h, reduce ? 0 : -8 * arc);
+        if (t < 1) { requestAnimationFrame(frame); return; }
+        B.x = x1; B.y = y1;
+        if (!reduce) { var el = B.el; el.classList.add("land"); setTimeout(function () { el.classList.remove("land"); }, 130); }
+        setTimeout(hop, reduce ? 30 : 90);
+      });
+    }
+    document.addEventListener("pointermove", function (e) { target(e.clientX, e.clientY); });
+    document.addEventListener("pointerdown", function (e) { target(e.clientX, e.clientY); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && B) leave(); });
+
+    /* Схованка: маленький кролик визирає з-за верхнього краю випадкової картки на сторінці */
+    var peek = null, spot = null;
+    function cards() {
+      return $$("main *").filter(function (el) {
+        if (el.closest("dialog, .bunny-peek, .results, [hidden]")) return false;
+        var shut = el.closest("details:not([open])");   /* за згорнутим блоком можна, у його схований вміст — ні */
+        if (shut && shut !== el) return false;
+        var r = el.getBoundingClientRect();
+        if (r.width < 180 || r.height < 70) return false;
+        var s = getComputedStyle(el);
+        return parseFloat(s.borderTopLeftRadius) >= 10 && s.position !== "fixed" &&
+          (s.backgroundColor !== "rgba(0, 0, 0, 0)" || s.backgroundImage !== "none");
+      });
+    }
+    function placePeek() {
+      if (!peek || !spot || !document.contains(spot)) return;
+      var r = spot.getBoundingClientRect();
+      peek.style.left = (r.left + scrollX + r.width * 0.72 - 21) + "px";
+      peek.style.top = (r.top + scrollY - 21) + "px";
+    }
+    function hide() {
+      var list = cards();
+      if (!list.length) return;
+      spot = list[Math.floor(Math.random() * list.length)];
+      peek = document.createElement("button");
+      peek.type = "button"; peek.className = "bunny-peek";
+      peek.setAttribute("aria-label", "Схований кролик");
+      peek.innerHTML = '<svg viewBox="0 0 60 32" aria-hidden="true">' +
+        '<ellipse cx="22" cy="14" rx="5.5" ry="13" transform="rotate(-12 22 14)" fill="#fff" stroke="#8a93a6" stroke-width="2"/>' +
+        '<ellipse cx="22" cy="14" rx="2.3" ry="9" transform="rotate(-12 22 14)" fill="#ffb3c7"/>' +
+        '<ellipse cx="38" cy="14" rx="5.5" ry="13" transform="rotate(12 38 14)" fill="#fff" stroke="#8a93a6" stroke-width="2"/>' +
+        '<ellipse cx="38" cy="14" rx="2.3" ry="9" transform="rotate(12 38 14)" fill="#ffb3c7"/>' +
+        '<circle cx="30" cy="40" r="17" fill="#fff" stroke="#8a93a6" stroke-width="2"/>' +
+        '<circle cx="24" cy="30" r="2.3" fill="#16213a"/><circle cx="36" cy="30" r="2.3" fill="#16213a"/>' +
+        "</svg>";
+      document.body.appendChild(peek);
+      placePeek();
+      peek.addEventListener("click", function () {
+        var r = peek.getBoundingClientRect();
+        peek.remove(); peek = null;
+        start(r.left + r.width / 2, r.bottom + 20);
+      });
+    }
+    window.addEventListener("resize", placePeek);
+    window.addEventListener("load", function () {
+      setTimeout(function () { hide(); setInterval(placePeek, 700); }, 1200);   /* картки «виїжджають» анімацією — підлаштовуємось */
+    });
+
+    return { start: start, leave: leave, toggle: function (x, y) { if (B) leave(); else start(x, y); } };
+  })();
+
   window.L2 = { $: $, $$: $$, esc: esc, ICON: ICON, restart: restart, plural: plural,
     reduce: reduce, mailto: mailto, openGame: openGame,
-    photoHTML: photoHTML, imgSize: imgSize, lightbox: lightbox, postForm: postForm, lightboxOpen: function () { return !!(lb && lb.open); } };
+    photoHTML: photoHTML, imgSize: imgSize, lightbox: lightbox, postForm: postForm, lightboxOpen: function () { return !!(lb && lb.open); }, bunny: bunny };
 })();

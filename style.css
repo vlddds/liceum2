@@ -1156,3 +1156,14 @@ html.dark .b-ph{box-shadow:inset 0 0 0 1px var(--line)}
 .bunny svg{display:block;width:100%;height:auto;overflow:visible;transform-origin:50% 100%;transition:transform .12s ease-out;
   filter:drop-shadow(0 6px 6px rgba(10,20,50,.22))}
 .bunny.land svg{transform:scale(1.06,.9)}
+/* Схований кролик: вушка й очі визирають з-за верхнього краю картки */
+.bunny-peek{position:absolute;z-index:5;width:42px;height:22px;padding:0;margin:0;border:0;background:none;cursor:pointer;
+  transform-origin:50% 100%;transition:transform .2s var(--ease)}
+.bunny-peek svg{display:block;width:100%;height:100%}
+.bunny-peek:hover,.bunny-peek:focus-visible{transform:translateY(-3px) scale(1.08)}
+.bunny-peek:focus-visible{outline:2px solid var(--sun);outline-offset:3px;border-radius:6px}
+@media (prefers-reduced-motion:no-preference){
+  .bunny-peek svg ellipse{transform-box:fill-box;transform-origin:50% 100%;animation:peek-ears 6s ease-in-out infinite}
+}
+@keyframes peek-ears{0%,90%,100%{rotate:0deg}93%{rotate:-10deg}96%{rotate:8deg}}
+@media print{.bunny,.bunny-peek{display:none!important}}
