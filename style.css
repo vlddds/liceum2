@@ -1162,8 +1162,15 @@ html.dark .b-ph{box-shadow:inset 0 0 0 1px var(--line)}
 .bunny-peek svg{display:block;width:100%;height:100%}
 .bunny-peek:hover,.bunny-peek:focus-visible{transform:translateY(-3px) scale(1.08)}
 .bunny-peek:focus-visible{outline:2px solid var(--sun);outline-offset:3px;border-radius:6px}
+.bunny-peek .ear{transform-box:view-box}
 @media (prefers-reduced-motion:no-preference){
-  .bunny-peek svg ellipse{transform-box:fill-box;transform-origin:50% 100%;animation:peek-ears 6s ease-in-out infinite}
+  .bunny-peek .ear{animation:peek-ears 6s ease-in-out infinite}
+  .bunny-peek .ear-r{animation-delay:.12s}
+  .bunny-peek.out{animation:peek-out .28s ease-in forwards}
+  .bunny.pop svg{animation:bunny-pop .52s cubic-bezier(.25,1.5,.5,1) both}
 }
-@keyframes peek-ears{0%,90%,100%{rotate:0deg}93%{rotate:-10deg}96%{rotate:8deg}}
+@keyframes peek-ears{0%,90%,100%{rotate:0deg}93%{rotate:-12deg}96%{rotate:9deg}}
+@keyframes peek-out{40%{transform:translateY(-10px) scale(1.15)}100%{transform:translateY(-4px) scale(.6);opacity:0}}
+@keyframes bunny-pop{0%{transform:translateY(30%) scale(.35);opacity:0}45%{transform:translateY(-45%) scale(1.05,.95);opacity:1}
+  70%{transform:translateY(0) scale(1.12,.86)}85%{transform:scale(.95,1.06)}100%{transform:none}}
 @media print{.bunny,.bunny-peek{display:none!important}}

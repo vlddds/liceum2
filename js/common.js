@@ -101,7 +101,7 @@
   function openGame() {
     if (window.L2Game) { window.L2Game.open(); return; }
     var s = document.createElement("script");
-    s.src = "js/game.js?v=20261005-15";
+    s.src = "js/game.js?v=20261005-16";
     s.onload = function () { if (window.L2Game) window.L2Game.open(); };
     document.body.appendChild(s);
   }
@@ -251,17 +251,17 @@
     function place(x, y, rot) {
       B.el.style.transform = "translate(" + (x - BW / 2) + "px," + (y - BH) + "px) scaleX(" + B.dir + ") rotate(" + rot + "deg)";
     }
-    function start(x, y) {
+    function start(x, y, pop) {
       if (B) return;
       var el = document.createElement("div");
-      el.className = "bunny"; el.setAttribute("aria-hidden", "true");
+      el.className = "bunny" + (pop && !reduce ? " pop" : ""); el.setAttribute("aria-hidden", "true");
       el.innerHTML = SVG;
       document.body.appendChild(el);
       B = { el: el, dir: 1, leaving: false,
             x: Math.max(BW / 2, Math.min(x, innerWidth - BW / 2)), y: Math.max(BH + 10, Math.min(y, innerHeight - 8)) };
       B.tx = B.x; B.ty = B.y;
       place(B.x, B.y, 0);
-      hop();
+      if (pop && !reduce) setTimeout(function () { el.classList.remove("pop"); hop(); }, 520); else hop();
     }
     function leave() {
       if (!B) return;
@@ -333,19 +333,24 @@
       peek.type = "button"; peek.className = "bunny-peek";
       peek.setAttribute("aria-label", "Схований кролик");
       peek.innerHTML = '<svg viewBox="0 0 60 32" aria-hidden="true">' +
-        '<ellipse cx="22" cy="14" rx="5.5" ry="13" transform="rotate(-12 22 14)" fill="#fff" stroke="#8a93a6" stroke-width="2"/>' +
-        '<ellipse cx="22" cy="14" rx="2.3" ry="9" transform="rotate(-12 22 14)" fill="#ffb3c7"/>' +
-        '<ellipse cx="38" cy="14" rx="5.5" ry="13" transform="rotate(12 38 14)" fill="#fff" stroke="#8a93a6" stroke-width="2"/>' +
-        '<ellipse cx="38" cy="14" rx="2.3" ry="9" transform="rotate(12 38 14)" fill="#ffb3c7"/>' +
+        /* кожне вушко — одна група: біле й рожеве ворушаться разом навколо основи вуха */
+        '<g class="ear" style="transform-origin:23px 27px"><g transform="rotate(-12 22 14)">' +
+          '<ellipse cx="22" cy="14" rx="5.5" ry="13" fill="#fff" stroke="#8a93a6" stroke-width="2"/>' +
+          '<ellipse cx="22" cy="14" rx="2.3" ry="9" fill="#ffb3c7"/></g></g>' +
+        '<g class="ear ear-r" style="transform-origin:37px 27px"><g transform="rotate(12 38 14)">' +
+          '<ellipse cx="38" cy="14" rx="5.5" ry="13" fill="#fff" stroke="#8a93a6" stroke-width="2"/>' +
+          '<ellipse cx="38" cy="14" rx="2.3" ry="9" fill="#ffb3c7"/></g></g>' +
         '<circle cx="30" cy="40" r="17" fill="#fff" stroke="#8a93a6" stroke-width="2"/>' +
         '<circle cx="24" cy="30" r="2.3" fill="#16213a"/><circle cx="36" cy="30" r="2.3" fill="#16213a"/>' +
         "</svg>";
       document.body.appendChild(peek);
       placePeek();
       peek.addEventListener("click", function () {
-        var r = peek.getBoundingClientRect();
-        peek.remove(); peek = null;
-        start(r.left + r.width / 2, r.bottom + 20);
+        var p = peek, r = p.getBoundingClientRect();
+        peek = null;
+        /* вихід зі схованки: визирає вище, вистрибує й «пружинить» до повного розміру */
+        p.classList.add("out");
+        setTimeout(function () { p.remove(); start(r.left + r.width / 2, r.bottom, true); }, reduce ? 0 : 280);
       });
     }
     window.addEventListener("resize", placePeek);
