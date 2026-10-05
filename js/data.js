@@ -20,8 +20,8 @@ window.SITE_DATA = (function () {
     /* Куди надсилати форми: адреса Google Apps Script (інструкція — tools/google-apps-script.gs)
        або Formspree тощо. Порожньо = відкриється пошта.
        reviewEndpoint: окремо для відгуків; якщо порожньо, береться formEndpoint. */
-    formEndpoint: "",
-    reviewEndpoint: "",
+    formEndpoint: "https://script.google.com/macros/s/AKfycbwTJq2oWbsZiJZuL5DNLyF_kVlvwBRi5V9S6jwNaKJPGMRVSzWtOBKuNWUqUD5wg3jM/exec",
+    reviewEndpoint: "https://script.google.com/macros/s/AKfycbwTJq2oWbsZiJZuL5DNLyF_kVlvwBRi5V9S6jwNaKJPGMRVSzWtOBKuNWUqUD5wg3jM/exec",
 
     /* Пасхалка: це слово, введене в пошук на головній, відкриває міні-гру.
        Ще способи: код ↑ ↑ ↓ ↓ ← → ← → B A на клавіатурі або 5 натискань на рік у підвалі. */
