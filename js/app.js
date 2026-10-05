@@ -299,10 +299,10 @@
     b.className = "bunny"; b.setAttribute("aria-hidden", "true");
     b.innerHTML = '<span class="bunny-say">Знайшли кролика!</span>' +
       '<svg viewBox="0 0 120 100"><g class="bunny-body">' +
-        '<ellipse cx="44" cy="20" rx="7" ry="22" transform="rotate(-14 44 20)" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
-        '<ellipse cx="44" cy="20" rx="3" ry="15" transform="rotate(-14 44 20)" fill="#ffb3c7"/>' +
-        '<ellipse cx="60" cy="18" rx="7" ry="22" transform="rotate(12 60 18)" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
-        '<ellipse cx="60" cy="18" rx="3" ry="15" transform="rotate(12 60 18)" fill="#ffb3c7"/>' +
+        '<ellipse cx="72" cy="22" rx="7" ry="18" transform="rotate(-22 72 22)" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
+        '<ellipse cx="72" cy="22" rx="3" ry="12" transform="rotate(-22 72 22)" fill="#ffb3c7"/>' +
+        '<ellipse cx="86" cy="19" rx="7" ry="18" transform="rotate(-6 86 19)" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
+        '<ellipse cx="86" cy="19" rx="3" ry="12" transform="rotate(-6 86 19)" fill="#ffb3c7"/>' +
         '<circle cx="22" cy="70" r="9" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
         '<ellipse cx="58" cy="70" rx="36" ry="24" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
         '<circle cx="80" cy="50" r="20" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
