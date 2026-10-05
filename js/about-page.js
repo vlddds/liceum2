@@ -57,7 +57,7 @@
     }).join("");
     var contacts = (p.phone ? '<a href="tel:' + esc(p.phone.replace(/[^\d+]/g, "")) + '">' + ICON("phone") + esc(p.phone) + "</a>" : "") +
       (p.email ? '<a href="mailto:' + esc(p.email) + '">' + ICON("mail") + esc(p.email) + "</a>" : "");
-    return '<li class="adm' + (i === 0 ? " lead" : "") + '">' +
+    return '<li class="adm' + (i === 0 ? " adm-lead" : "") + '">' +
       '<span class="t-ph">' + (p.photo ? '<img src="' + esc(p.photo) + '" alt="" loading="lazy" decoding="async">' : '<span class="t-ini">' + esc(initials(p.name)) + "</span>") + "</span>" +
       '<div class="adm-body"><span class="adm-pos">' + esc(p.position) + "</span><h4>" + esc(p.name) + "</h4>" +
       (p.subject ? '<span class="adm-sub">' + esc(p.subject) + "</span>" : "") +

@@ -722,7 +722,7 @@ html.dark .gal-item,html.dark .t-ph{box-shadow:inset 0 0 0 1px var(--line)}
 .adm{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden;transition:transform .2s var(--ease),box-shadow .2s}
 .adm:hover{transform:translateY(-3px);box-shadow:var(--sh2)}
 .adm .t-ph{aspect-ratio:1/1}
-.adm.lead .t-ph::after{transform:scaleX(1)}
+.adm.adm-lead .t-ph::after{transform:scaleX(1)}
 .adm-body{display:flex;flex-direction:column;gap:.25rem;padding:.95rem 1.05rem 1.1rem;flex:1}
 .adm-pos{font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--navy-2)}
 .adm h4{font-family:var(--serif);font-weight:650;font-size:1.12rem;line-height:1.25;margin:0}
