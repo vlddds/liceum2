@@ -190,7 +190,7 @@
     var data = { type: "review", name: RV.name.el.value.trim(), who: who ? who.value : "",
       rating: rate ? +rate.value : "", text: rvText.value.trim() };
     function done(viaMail) {
-      btn.classList.remove("loading"); lbl.textContent = "Надіслати на перевірку";
+      btn.classList.remove("loading"); lbl.textContent = "Надіслати";
       $("#rv-sent-text").textContent = viaMail
         ? "Відкрилась ваша поштова програма: надішліть лист, і після перевірки відгук з'явиться на сайті."
         : "Він з'явиться на сайті після перевірки адміністрацією.";
