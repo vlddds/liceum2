@@ -101,7 +101,7 @@
   function openGame() {
     if (window.L2Game) { window.L2Game.open(); return; }
     var s = document.createElement("script");
-    s.src = "js/game.js?v=20261005-2";
+    s.src = "js/game.js?v=20261005-3";
     s.onload = function () { if (window.L2Game) window.L2Game.open(); };
     document.body.appendChild(s);
   }

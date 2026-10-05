@@ -66,15 +66,16 @@
   summary();
 
   /* Схвалені в Google-таблиці відгуки (див. tools/google-apps-script.gs) додаються зверху автоматично */
-  /* Відповідь таблиці кешується в sessionStorage на 10 хв; запит обривається через 8 с;
-     якщо таблиця не відповіла — показуємо збережену раніше копію або запасний текст. */
+  /* Відповідь таблиці кешується в sessionStorage на 1 хв (зняли галочку — відгук зникне протягом хвилини);
+     запит обривається через 8 с; якщо таблиця не відповіла — показуємо збережену раніше копію або запасний текст. */
   var feed = CONFIG.reviewEndpoint || CONFIG.formEndpoint;
-  var RV_KEY = "l2reviews", RV_TTL = 10 * 60 * 1000, RV_TIMEOUT = 8000;
+  var RV_KEY = "l2reviews", RV_TTL = 60 * 1000, RV_TIMEOUT = 8000, base = reviews;
   function addFeed(list) {
-    if (!Array.isArray(list) || !list.length) return;
+    if (!Array.isArray(list)) return;
     var have = {};
-    reviews.forEach(function (r) { have[(r.name || "") + "|" + (r.text || "")] = 1; });
-    reviews = list.filter(function (r) { return r && r.text && !have[(r.name || "") + "|" + r.text]; }).concat(reviews);
+    base.forEach(function (r) { have[(r.name || "") + "|" + (r.text || "")] = 1; });
+    /* список із таблиці замінює попередній (а не додається), тож зняті відгуки зникають */
+    reviews = list.filter(function (r) { return r && r.text && !have[(r.name || "") + "|" + r.text]; }).concat(base);
     summary(); renderReviews();
   }
   function rvNote(text) {
