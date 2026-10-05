@@ -34,20 +34,19 @@ window.TEACHERS = (function () {
         { name: "Олійник Інна Львівна", role: "Вчитель початкових класів", photo: "img/teachers/OliynykInna.JPG" },
         { name: "Боднянська Марина Ігорівна", role: "Вчитель початкових класів", photo: "img/teachers/BiodnyanskaMaryna.JPG" },
         { name: "Старишко Ольга Іванівна", role: "Вчитель початкових класів", photo: "img/teachers/StaryshkoOlha.JPG" },
-        /*{ name: "Піщета Наталія Владиславівна", role: "Вчитель початкових класів", post: "Голова МО", photo: "" },*/
+        { name: "Піщета Наталія Владиславівна", role: "Вчитель початкових класів", photo: "" },
         { name: "Кудінова Олена Миколаївна", role: "Вчитель початкових класів", photo: "img/teachers/KudinovaOlena.JPG" },
         { name: "Поливяна Алла Анатоліївна", role: "Вчитель початкових класів", photo: "img/teachers/PolyvyanaAlla.JPG" },
         /*{ name: "Ступак Наталія Пилипівна", role: "Вчитель початкових класів", photo: "" },*/
-        { name: "Вітер Тамара Євгеніївна", role: "Вчитель початкових класів", post: "Декретна відпустка", photo: "img/teachers/ViterTamara.JPG" }
       ] },
 
     { id: "ukrainska", title: "Українська мова та література", icon: "pen",
       desc: "Методичне об'єднання вчителів української мови та літератури.",
       people: [
         { name: "Дуб Любов Анатоліївна", role: "Вчитель української мови та літератури", post: "Голова МО", photo: "img/teachers/DubLyubov.JPG" },
-        { name: "Терехова Наталія Миколаївна", role: "Вчитель української мови та літератури", post: "Заступник директора з НВР", photo: "img/teachers/TerehovaNatalya.JPG" },
+        { name: "Терехова Наталія Миколаївна", role: "Вчитель української мови та літератури", photo: "img/teachers/TerehovaNatalya.JPG" },
         { name: "Хоменко Людмила Степанівна", role: "Вчитель української мови", post: "Заступник директора з НВР", photo: "img/teachers/KhomenkoLudmila.JPG" },
-        { name: "Погребна Юлія Сергіївна", role: "Вчитель української мови та літератури", post: "Педагог-організатор", photo: "img/teachers/YakovetsYuliya.JPG" },
+        { name: "Яковець Юлія Сергіївна", role: "Вчитель української мови та літератури", photo: "img/teachers/YakovetsYuliya.JPG" },
         /*{ name: "Ткаченко Тамара Григорівна", role: "Вчитель української мови та літератури", post: "Сумісник", photo: "" },*/
         { name: "Шаповал Наталія Володимирівна", role: "Вчитель української мови та літератури", photo: "img/teachers/ShapovalNatalya.JPG" },
         { name: "Грецький Ярослав Сергійович", role: "Вчитель української мови та літератури", photo: "img/teachers/YaroslavGretskiy.JPG" }
@@ -65,7 +64,7 @@ window.TEACHERS = (function () {
       people: [
         { name: "Гошкодеря Олена Вікторівна", role: "Вчитель англійської мови", post: "Директор", photo: "img/teachers/GoshkoderyaOlena.JPG" },
         { name: "Овсеєва Вікторія Олександрівна", role: "Вчитель англійської мови", photo: "img/teachers/OvseevaViktoviya.JPG" },
-        { name: "Коваль Яна Анатоліївна", role: "Вчитель англійської мови", photo: "img/teachers/KovalYanna.JPG" },
+        { name: "Коваль Яна Анатоліївна", role: "Вчитель англійської мови", post: "Заступник директора з ВР", photo: "img/teachers/KovalYanna.JPG" },
         { name: "Співак Тетяна Яківна", role: "Вчитель англійської мови", photo: "" },
         { name: "Пихаленко Юлія Анатоліївна", role: "Вчитель англійської мови", photo: "img/teachers/PykhalenkoYuliya.JPG" }
       ] },
@@ -92,7 +91,7 @@ window.TEACHERS = (function () {
         { name: "Плис Світлана Андріївна", role: "Вчитель математики", photo: "" },
         { name: "Баранович Олеся Володимирівна", role: "Вчитель математики", photo: "img/teachers/BaranovichOlesya.JPG" },
        /* { name: "Запорожець Ольга Миколаївна", role: "Вчитель інформатики", post: "Сумісник", photo: "" },*/
-        { name: "Суравцова Олена Анатоліївна", role: "Вчитель інформатики", photo: "img/teachers/SuravtsovaOlena.JPG" },
+        { name: "Суравцова Олена Анатоліївна", role: "Вчитель інформатики", post: "Заступник директора з НВР", photo: "img/teachers/SuravtsovaOlena.JPG" },
         { name: "Сидоров Владислав Іванович", role: "Вчитель інформатики", photo: "img/teachers/SydorovVladyslav.JPG" }
       ] },
 
@@ -118,11 +117,14 @@ window.TEACHERS = (function () {
     { id: "asystenty", title: "Асистенти вчителів", icon: "heart",
       desc: "Асистенти, які супроводжують дітей з особливими освітніми потребами в інклюзивних класах.",
       people: [
-        /*{ name: "Демчук Ольга Олегівна", role: "Асистент учителя початкових класів", photo: "" },*/
+        { name: "Демчук Ольга Олегівна", role: "Асистент учителя початкових класів", photo: "" },
         { name: "Лісна Марина Сергіївна", role: "Асистент учителя", photo: "img/teachers/LysnaMaryna.JPG" },
         { name: "Доманська Ірина Анатоліївна", role: "Асистент учителя", photo: "img/teachers/DomanskaIryna.JPG" },
         { name: "Носов Євген Вячеславович", role: "Асистент учителя початкових класів", photo: "img/teachers/NosovEvgen.JPG" },
-        { name: "Воробєй Марія Андріївна", role: "Асистент учителя початкових класів", photo: "img/teachers/VorobeyMaryna.JPG" }
+        { name: "Воробєй Марія Андріївна", role: "Асистент учителя початкових класів", photo: "img/teachers/VorobeyMaryna.JPG" },
+        { name: "Вітер Тамара Євгеніївна", role: "Асистент учителя", photo: "img/teachers/ViterTamara.JPG" },
+        { name: "Семеліт", role: "Асистент учителя", photo: "" },
+        { name: "Анацька", role: "Асистент учителя", photo: "" }
       ] },
 
     { id: "organizator", title: "Викладач-організатор", icon: "users",

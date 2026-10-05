@@ -31,13 +31,13 @@ window.ABOUT = (function () {
      !!! Час прийому нижче — ЗРАЗОК. Замініть на дані з графіка прийому (PDF за посиланням receptionDoc нижче). */
   var admin = [
     { name: "Гошкодеря Олена Вікторівна", position: "Директор ліцею", subject: "Учитель англійської мови",
-      photo: "", phone: "", email: "", reception: [{ day: 1, time: "14:00–16:00" }, { day: 4, time: "09:00–11:00" }] },
-    { name: "Терехова Наталія Миколаївна", position: "Заступник директора з НВР", subject: "Учитель української мови та літератури",
-      photo: "", phone: "", email: "", reception: [{ day: 2, time: "14:00–16:00" }] },
+      photo: "img/teachers/GoshkoderyaOlena.JPG", phone: "", email: "", reception: [{ day: 1, time: "14:00–16:00" }, { day: 4, time: "09:00–11:00" }] },
+    { name: "Суравцова Олена Анатоліївна", position: "Заступник директора з НВР", subject: "Учитель інформатики",
+      photo: "img/teachers/SuravtsovaOlena.JPG", phone: "", email: "", reception: [{ day: 2, time: "14:00–16:00" }] },
     { name: "Хоменко Людмила Степанівна", position: "Заступник директора з НВР", subject: "Учитель української мови",
-      photo: "", phone: "", email: "", reception: [{ day: 3, time: "14:00–16:00" }] },
-    { name: "Шаповал Наталія Володимирівна", position: "Заступник директора з ВР", subject: "Учитель української мови",
-      photo: "", phone: "", email: "", reception: [{ day: 5, time: "13:00–15:00" }] }
+      photo: "img/teachers/KhomenkoLudmila.JPG", phone: "", email: "", reception: [{ day: 3, time: "14:00–16:00" }] },
+    { name: "Коваль Яна Анатоліївна", position: "Заступник директора з ВР", subject: "Учитель англійської мови",
+      photo: "img/teachers/KovalYanna.JPG", phone: "", email: "", reception: [{ day: 5, time: "13:00–15:00" }] }
   ];
   var receptionNote = "Попередньо записатися на прийом можна за електронною поштою ліцею.";
   var receptionDoc = "https://drive.google.com/file/d/1I8MPSfuc-UrYHSmfa6Z9Fk9If-yBEFHl/view";   /* PDF з графіком прийому */
