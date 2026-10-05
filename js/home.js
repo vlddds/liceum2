@@ -26,12 +26,19 @@
       esc(c || "Усі") + "<span>" + n + "</span></button>";
   }).join("") : "";
 
+  /* Частинки для анімацій гуртків при наведенні (fx у js/data.js, стилі — style.css) */
+  var FX_BITS = { dance: ["♪", "♫", "♪"], sing: ["♪", "♫", "♬"], paint: ["", "", ""], robot: ["0", "1", "0"],
+                  eco: [ICON("leaf"), ICON("leaf"), ICON("leaf")], chess: ["♞"] };
+  function fxBits(fx) {
+    var b = FX_BITS[fx];
+    return b ? '<span class="fx-bits" aria-hidden="true">' + b.map(function (x) { return "<i>" + x + "</i>"; }).join("") + "</span>" : "";
+  }
   function clubCard(c, i) {
     var meta = [["user", "Керівник", c.leader], ["users", "Класи", c.grades], ["clock", "Розклад", c.time], ["pin", "Де проходить", c.place]]
       .filter(function (m) { return m[2]; });
     return '<li class="club' + (c.fx ? " fx-" + esc(c.fx) : "") + '" style="--i:' + i + '">' +
       '<div class="club-top"><span class="ico">' + ICON(c.icon || "star") +
-      (c.fx === "dance" ? '<span class="dance-notes" aria-hidden="true"><i>♪</i><i>♫</i><i>♪</i></span>' : "") +
+      fxBits(c.fx) +
       "</span><div><h3>" + esc(c.name) + "</h3>" +
       (c.cat ? '<span class="club-cat">' + esc(c.cat) + "</span>" : "") + "</div></div>" +
       (c.desc ? "<p>" + esc(c.desc) + "</p>" : "") +
