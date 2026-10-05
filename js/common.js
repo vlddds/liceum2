@@ -101,7 +101,7 @@
   function openGame() {
     if (window.L2Game) { window.L2Game.open(); return; }
     var s = document.createElement("script");
-    s.src = "js/game.js?v=20261005-13";
+    s.src = "js/game.js?v=20261005-15";
     s.onload = function () { if (window.L2Game) window.L2Game.open(); };
     document.body.appendChild(s);
   }
@@ -305,16 +305,24 @@
         var shut = el.closest("details:not([open])");   /* за згорнутим блоком можна, у його схований вміст — ні */
         if (shut && shut !== el) return false;
         var r = el.getBoundingClientRect();
-        if (r.width < 180 || r.height < 70) return false;
+        if (r.width < (innerWidth < 600 ? 120 : 180) || r.height < 70 || !inView(r)) return false;
+        /* не в каруселях і інших блоках, що прокручуються вбік, — інакше кролик опиниться за краєм екрана */
+        for (var a = el.parentElement; a && a.tagName !== "MAIN"; a = a.parentElement) {
+          if (/auto|scroll/.test(getComputedStyle(a).overflowX)) return false;
+        }
         var s = getComputedStyle(el);
         return parseFloat(s.borderTopLeftRadius) >= 10 && s.position !== "fixed" &&
           (s.backgroundColor !== "rgba(0, 0, 0, 0)" || s.backgroundImage !== "none");
       });
     }
+    function inView(r) { return r.left >= 0 && r.right <= document.documentElement.clientWidth; }
     function placePeek() {
-      if (!peek || !spot || !document.contains(spot)) return;
-      var r = spot.getBoundingClientRect();
-      peek.style.left = (r.left + scrollX + r.width * 0.72 - 21) + "px";
+      if (!peek) return;
+      var r = spot && document.contains(spot) ? spot.getBoundingClientRect() : null;
+      /* картка зникла або вийшла за край (поворот телефона, зміна вікна) — ховаємось деінде */
+      if (!r || !r.width || !inView(r)) { peek.remove(); peek = null; hide(); return; }
+      var x = Math.max(8, Math.min(r.left + r.width * 0.72 - 21, document.documentElement.clientWidth - 50));
+      peek.style.left = (x + scrollX) + "px";
       peek.style.top = (r.top + scrollY - 21) + "px";
     }
     function hide() {
