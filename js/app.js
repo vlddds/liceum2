@@ -268,7 +268,9 @@
       current = search(q);
       status.textContent = current.length ? "Знайдено результатів: " + current.length : "Нічого не знайдено";
     }
-    if (!current.length) {
+    if (!current.length && norm(q) === "bunny") {
+      list.innerHTML = '<li class="none">🐰 Ви знайшли кролика! На сайті сховано ще одну пасхалку — пошукайте.</li>';
+    } else if (!current.length) {
       list.innerHTML = '<li class="none">Нічого не знайдено. Спробуйте інше слово або <a href="' + mailto + '">напишіть нам</a>.</li>';
     } else {
       list.innerHTML = head + current.map(function (p, k) {
@@ -282,7 +284,38 @@
   input.addEventListener("input", function () {
     syncText(); render();
     if (!reduce) restart(sicon, "bump");
+    bunnyCheck();
   });
+
+  /* Пасхалка: напишіть у пошуку «bunny» — унизу екрана пробіжить кролик */
+  var bunnyShown = false;
+  function bunnyCheck() {
+    var isBunny = norm(input.value.trim()) === "bunny";
+    if (isBunny && !bunnyShown && !$(".bunny")) bunny();
+    bunnyShown = isBunny;
+  }
+  function bunny() {
+    var b = document.createElement("div");
+    b.className = "bunny"; b.setAttribute("aria-hidden", "true");
+    b.innerHTML = '<span class="bunny-say">Знайшли кролика!</span>' +
+      '<svg viewBox="0 0 120 100"><g class="bunny-body">' +
+        '<ellipse cx="44" cy="20" rx="7" ry="22" transform="rotate(-14 44 20)" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
+        '<ellipse cx="44" cy="20" rx="3" ry="15" transform="rotate(-14 44 20)" fill="#ffb3c7"/>' +
+        '<ellipse cx="60" cy="18" rx="7" ry="22" transform="rotate(12 60 18)" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
+        '<ellipse cx="60" cy="18" rx="3" ry="15" transform="rotate(12 60 18)" fill="#ffb3c7"/>' +
+        '<circle cx="22" cy="70" r="9" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
+        '<ellipse cx="58" cy="70" rx="36" ry="24" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
+        '<circle cx="80" cy="50" r="20" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
+        '<circle cx="86" cy="46" r="3.2" fill="#16213a"/><circle cx="87.2" cy="44.8" r="1" fill="#fff"/>' +
+        '<ellipse cx="98" cy="53" rx="3" ry="2.3" fill="#ff7aa2"/>' +
+        '<circle cx="84" cy="56" r="4" fill="#ffb3c7" opacity=".6"/>' +
+        '<ellipse cx="44" cy="92" rx="12" ry="5" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
+        '<ellipse cx="76" cy="92" rx="9" ry="4.5" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
+      "</g></svg>";
+    document.body.appendChild(b);
+    status.textContent = "Пасхалка: знайшли кролика!";
+    setTimeout(function () { b.remove(); }, reduce ? 3500 : 5200);
+  }
   input.addEventListener("focus", function () { stopTyping(); render(); });
   input.addEventListener("blur", function () { if (!input.value) startTyping(); });
   input.addEventListener("keydown", function (e) {
