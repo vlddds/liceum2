@@ -29,8 +29,10 @@
   function clubCard(c, i) {
     var meta = [["user", "Керівник", c.leader], ["users", "Класи", c.grades], ["clock", "Розклад", c.time], ["pin", "Де проходить", c.place]]
       .filter(function (m) { return m[2]; });
-    return '<li class="club" style="--i:' + i + '">' +
-      '<div class="club-top"><span class="ico">' + ICON(c.icon || "star") + "</span><div><h3>" + esc(c.name) + "</h3>" +
+    return '<li class="club' + (c.fx ? " fx-" + esc(c.fx) : "") + '" style="--i:' + i + '">' +
+      '<div class="club-top"><span class="ico">' + ICON(c.icon || "star") +
+      (c.fx === "dance" ? '<span class="dance-notes" aria-hidden="true"><i>♪</i><i>♫</i><i>♪</i></span>' : "") +
+      "</span><div><h3>" + esc(c.name) + "</h3>" +
       (c.cat ? '<span class="club-cat">' + esc(c.cat) + "</span>" : "") + "</div></div>" +
       (c.desc ? "<p>" + esc(c.desc) + "</p>" : "") +
       '<dl class="club-meta">' + meta.map(function (m) {
