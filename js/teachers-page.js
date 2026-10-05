@@ -14,15 +14,16 @@
   var norm = function (s) { return String(s || "").toLowerCase().replace(/[’ʼ`]/g, "'"); };
   GROUPS.forEach(function (g) {
     g.people.forEach(function (p) {
-      p.name = p.name || ""; p._g = g; if (!g.retired) total++;
+      p.name = p.name || ""; p._g = g; if (!g.retired && !g.extra) total++;
       p.hay = norm([p.name, p.role, p.post, p.category, p.title, p.education, g.title].concat(p.projects || []).join(" "));
     });
   });
 
   $("#t-num").textContent = total;
+  var dirs = GROUPS.filter(function (g) { return !g.retired && !g.extra; }).length;
   $("#t-stats").innerHTML =
     "<li><b>" + total + "</b> " + plural(total, "педагог", "педагоги", "педагогів") + "</li>" +
-    "<li><b>" + GROUPS.filter(function (g) { return !g.retired; }).length + "</b> " + plural(GROUPS.length - 1, "напрям", "напрями", "напрямів") + "</li>";
+    "<li><b>" + dirs + "</b> " + plural(dirs, "напрям", "напрями", "напрямів") + "</li>";
 
   /* 3. НАПРЯМИ ---------------------------------------------------------------- */
   var side = $("#t-side"), pick = $("#t-pick"), groupsEl = $("#t-groups"), grid = $("#t-grid"),

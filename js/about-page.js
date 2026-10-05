@@ -94,9 +94,10 @@
 
   /* 2.2 Педагогічний колектив: кількість з js/teachers.js, якщо він підключений */
   if (window.TEACHERS) {
-    var n = 0; window.TEACHERS.groups.forEach(function (g) { n += g.people.length; });
+    var n = 0, dirs = 0;
+    window.TEACHERS.groups.forEach(function (g) { if (!g.retired && !g.extra) { n += g.people.length; dirs++; } });
     $("#ped-count").textContent = n + " " + plural(n, "педагог", "педагоги", "педагогів") + " · " +
-      window.TEACHERS.groups.length + " " + plural(window.TEACHERS.groups.length, "напрям", "напрями", "напрямів");
+      dirs + " " + plural(dirs, "напрям", "напрями", "напрямів");
   }
 
   /* 2.3 Структура управління */
