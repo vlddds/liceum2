@@ -434,7 +434,7 @@
   });
 
   var links = {};
-  $$(".nav li:not(.nav-search) a").forEach(function (a) { links[a.getAttribute("href").slice(1)] = a; });
+  $$('.nav li:not(.nav-search) > a[href^="#"]').forEach(function (a) { links[a.getAttribute("href").slice(1)] = a; });
   if ("IntersectionObserver" in window) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {

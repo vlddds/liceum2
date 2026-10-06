@@ -38,6 +38,48 @@
   }).join("");
 
   /* 2. МЕНЮ, ПРОКРУТКА, «НАГОРУ» ------------------------------------------------ */
+  /* Головне меню — одне на всі сторінки. Група підсвічується, якщо в ній поточна сторінка.
+     Щоб додати сторінку: допишіть ["файл.html", "Назва"] у потрібну групу. */
+  var NAV = [
+    { title: "Про ліцей", items: [["about.html", "Все про заклад"], ["teachers.html", "Педагогічний колектив"],
+      ["public.html", "Публічна інформація"], ["albums.html", "Фотоальбоми"]] },
+    { title: "Новини", items: [["news.html", "Новини"], ["calendar.html", "Календар подій"], ["archive.html", "Архів"]] },
+    { title: "Навчання", items: [["schedule.html", "Розклад уроків"], ["education.html", "Освітній процес"],
+      ["upbringing.html", "Виховна робота"], ["index.html#clubs", "Гуртки"]] },
+    { title: "Учням і батькам", items: [["menu.html", "Меню їдальні"], ["services.html", "Сервіси та служби"], ["faq.html", "Часті питання"]] },
+    { title: "Контакти", href: "index.html#contacts" }
+  ];
+  var page = location.pathname.split("/").pop() || "index.html";
+  function navHref(h) { return page === "index.html" && h.indexOf("index.html#") === 0 ? h.slice(10) : h; }
+  $("#nav").innerHTML = "<ul>" + NAV.map(function (g, i) {
+    if (g.href) return '<li><a href="' + navHref(g.href) + '">' + g.title + "</a></li>";
+    var here = g.items.some(function (it) { return it[0] === page; });
+    return '<li class="nav-grp' + (here ? " here" : "") + '"><button type="button" class="nav-btn" aria-expanded="false" aria-controls="ng-' + i + '">' +
+      g.title + ICON("chev") + '</button><ul class="nav-sub" id="ng-' + i + '">' + g.items.map(function (it) {
+        return '<li><a href="' + navHref(it[0]) + '"' + (it[0] === page ? ' aria-current="page"' : "") + ">" + it[1] + "</a></li>";
+      }).join("") + "</ul></li>";
+  }).join("") +
+    '<li class="nav-search"><a href="' + navHref("index.html#search") + '">' + ICON("search") + "Пошук</a></li></ul>";
+  function closeGroups(except) {
+    $$("#nav .nav-grp.open").forEach(function (li) {
+      if (li !== except) { li.classList.remove("open"); $(".nav-btn", li).setAttribute("aria-expanded", "false"); }
+    });
+  }
+  $("#nav").addEventListener("click", function (e) {
+    var b = e.target.closest(".nav-btn");
+    if (!b) return;
+    var li = b.parentNode, open = li.classList.toggle("open");
+    b.setAttribute("aria-expanded", open ? "true" : "false");
+    closeGroups(li);
+  });
+  document.addEventListener("click", function (e) { if (!e.target.closest("#nav")) closeGroups(); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    var li = e.target.closest && e.target.closest(".nav-grp.open");
+    closeGroups();
+    if (li) $(".nav-btn", li).focus();
+  });
+
   var header = $(".site-header"), menuBtn = $("#menu-btn"), totop = $("#totop"), progress = $("#progress");
   menuBtn.addEventListener("click", function () {
     var open = header.classList.toggle("open");
@@ -101,7 +143,7 @@
   function openGame() {
     if (window.L2Game) { window.L2Game.open(); return; }
     var s = document.createElement("script");
-    s.src = "js/game.js?v=20261006";
+    s.src = "js/game.js?v=20261006-2";
     s.onload = function () { if (window.L2Game) window.L2Game.open(); };
     document.body.appendChild(s);
   }

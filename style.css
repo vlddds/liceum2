@@ -105,17 +105,40 @@ h1,h2,h3{margin:0}
 .brand small{font-size:.78rem;color:var(--muted);display:block;line-height:1.25}
 .nav{margin-left:auto}
 .nav ul{display:flex;align-items:center;gap:.15rem;list-style:none;margin:0;padding:0}
-.nav a{display:flex;align-items:center;gap:.4rem;padding:.55rem .8rem;border-radius:var(--r-s);text-decoration:none;font-weight:500;font-size:.95rem;transition:background .2s,color .2s}
-.nav a:hover{background:var(--sky)}
+.nav a,.nav-btn{display:flex;align-items:center;gap:.4rem;padding:.55rem .8rem;border-radius:var(--r-s);text-decoration:none;font:inherit;font-weight:500;font-size:.95rem;color:inherit;
+  background:none;border:0;cursor:pointer;transition:background .2s,color .2s}
+.nav a:hover,.nav-btn:hover{background:var(--sky)}
 .nav a.active{background:var(--fill);color:#fff}
 .nav .nav-search a{border:1px solid var(--line);margin-left:.35rem}
+/* Групи меню: кнопка зі стрілкою + список сторінок */
+.nav-grp{position:relative}
+.nav-btn .ic{width:1em;height:1em;transform:rotate(90deg);transition:transform .2s var(--ease);opacity:.7}
+.nav-grp.open>.nav-btn .ic{transform:rotate(-90deg)}
+.nav-grp.here>.nav-btn{background:var(--fill);color:#fff}
+.nav .nav-sub{display:none;flex-direction:column;align-items:stretch;gap:.1rem}
+.nav .nav-sub a{font-size:.93rem;white-space:nowrap}
+.nav .nav-sub a[aria-current="page"]{background:var(--sky);color:var(--navy);font-weight:600}
 .menu-btn{display:none;margin-left:auto;background:none;border:1px solid var(--line);border-radius:var(--r-s);padding:.55rem;cursor:pointer;color:var(--ink)}
-@media (max-width:1240px){
+@media (min-width:1081px){
+  /* комп'ютер: список випадає під кнопкою — при наведенні або натисканні */
+  .nav .nav-sub{position:absolute;top:100%;left:0;z-index:50;min-width:230px;margin-top:.35rem;padding:.4rem;
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--r-m);box-shadow:0 18px 40px rgba(10,20,50,.16)}
+  .nav .nav-sub::before{content:"";position:absolute;left:0;right:0;top:-.45rem;height:.45rem}   /* «місток», щоб курсор не губив меню */
+  .nav-grp:is(.open,:hover,:focus-within)>.nav-sub{display:flex;animation:drop .2s var(--ease)}
+  .nav-grp:is(:hover,:focus-within)>.nav-btn .ic{transform:rotate(-90deg)}
+}
+@media (max-width:1080px){
+  /* телефон і планшет: меню за кнопкою, групи розгортаються дотиком */
   .menu-btn{display:inline-flex}
-  .nav{display:none;position:absolute;left:0;right:0;top:100%;background:var(--surface);border-bottom:1px solid var(--line);padding:.5rem 1.25rem 1rem;box-shadow:0 14px 24px rgba(10,20,50,.12)}
+  .nav{display:none;position:absolute;left:0;right:0;top:100%;max-height:calc(100vh - 80px);overflow:auto;background:var(--surface);border-bottom:1px solid var(--line);padding:.5rem 1.25rem 1rem;box-shadow:0 14px 24px rgba(10,20,50,.12)}
   .site-header.open .nav{display:block;animation:drop .25s var(--ease)}
   .nav ul{flex-direction:column;align-items:stretch}
-  .nav a{padding:.85rem .5rem;font-size:1.05rem}
+  .nav a,.nav-btn{padding:.85rem .5rem;font-size:1.05rem;width:100%;justify-content:flex-start}
+  .nav-btn .ic{margin-left:auto}
+  .nav-grp.here>.nav-btn{background:none;color:var(--navy);font-weight:700}
+  .nav .nav-sub{padding:0 0 .4rem .9rem;border-left:2px solid var(--line);margin-left:.5rem}
+  .nav .nav-sub a{padding:.65rem .5rem;font-size:1rem}
+  .nav-grp.open>.nav-sub{display:flex}
   .nav .nav-search a{margin:.4rem 0 0}
 }
 
