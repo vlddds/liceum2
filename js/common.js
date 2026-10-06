@@ -101,7 +101,7 @@
   function openGame() {
     if (window.L2Game) { window.L2Game.open(); return; }
     var s = document.createElement("script");
-    s.src = "js/game.js?v=20261005-19";
+    s.src = "js/game.js?v=20261006";
     s.onload = function () { if (window.L2Game) window.L2Game.open(); };
     document.body.appendChild(s);
   }
@@ -298,7 +298,7 @@
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && B) leave(); });
 
     /* Схованка: маленький кролик визирає з-за верхнього краю випадкової картки на сторінці */
-    var peek = null, spot = null;
+    var peek = null, spot = null, hidden = false;   /* hidden — кролик уже сховався (повторно не ховаємо після виходу) */
     function cards() {
       return $$("main *").filter(function (el) {
         if (el.closest("dialog, .bunny-peek, .results, [hidden]")) return false;
@@ -343,7 +343,7 @@
         '<circle cx="30" cy="40" r="17" fill="#fff" stroke="#8a93a6" stroke-width="2"/>' +
         '<circle cx="24" cy="30" r="2.3" fill="#16213a"/><circle cx="36" cy="30" r="2.3" fill="#16213a"/>' +
         "</svg>";
-      document.body.appendChild(peek);
+      document.body.appendChild(peek); hidden = true;
       placePeek();
       peek.addEventListener("click", function () {
         var p = peek, r = p.getBoundingClientRect();
@@ -355,7 +355,10 @@
     }
     window.addEventListener("resize", placePeek);
     window.addEventListener("load", function () {
-      setTimeout(function () { hide(); setInterval(placePeek, 700); }, 1200);   /* картки «виїжджають» анімацією — підлаштовуємось */
+      setTimeout(function () {
+        hide();
+        setInterval(function () { if (!hidden) hide(); else placePeek(); }, 700);   /* не вдалося сховатися (напр. вкладка у фоні) — пробуємо ще */
+      }, 1200);   /* картки «виїжджають» анімацією — підлаштовуємось */
     });
 
     return { start: start, leave: leave, toggle: function (x, y) { if (B) leave(); else start(x, y); } };
