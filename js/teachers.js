@@ -106,7 +106,7 @@ window.TEACHERS = (function () {
         { name: "Бессалова Інна Миколаївна", role: "Вчитель трудового навчання", photo: "img/teachers/BessalovaInna.JPG" }
       ] },
 
-    { id: "fizkultura", title: "Фізична культура та курс «Захист Вітчизни»", icon: "shield",
+    { id: "fizkultura", title: "Фізична культура та курс «Захист України»", icon: "shield",
       desc: "Вчителі фізичної культури та предмета «Захист України».",
       people: [
         { name: "Щитовський Анатолій Іванович", role: "Вчитель фізичної культури", photo: "img/teachers/SchitovskyiAnatoliy.JPG" },
@@ -128,10 +128,10 @@ window.TEACHERS = (function () {
         { name: "Анацька", role: "Асистент учителя", photo: "" }
       ] },
 
-    { id: "organizator", title: "Викладач-організатор", icon: "users",
+    { id: "organizator", title: "Педагог-організатор", icon: "users",
       desc: "Організовує позакласне життя ліцею: свята, конкурси, проєкти й учнівське самоврядування.",
       people: [
-        { name: "Харьков Вадим Сергійович", role: "Викладач-організатор", photo: "img/teachers/KharkovVadim.JPG",
+        { name: "Харьков Вадим Сергійович", role: "Педагог-організатор", photo: "img/teachers/KharkovVadim.JPG",
           projects: [
             "День вчителя — Постановка та курування виступу для вчителів",
             "L2 comunity — Самоврядування студентів через чат бот",
