@@ -1,5 +1,5 @@
-/* «Освітній процес» (education.html). Як заповнювати блоки — див. опис на початку js/blocks.js.
-   Документ на Google Drive: drive("ID файлу"); у галереях "" — заготовка під фото. */
+/* Освітній процес. Як заповнювати блоки - дивись на початку blocks.js.
+   Документи з гугл-диска: drive("ID файлу"), "" в галереї = місце під фото. */
 window.SECTION = (function () {
   function drive(id) { return "https://drive.google.com/file/d/" + id + "/view"; }
   function gdoc(id) { return "https://docs.google.com/document/d/" + id + "/edit"; }
@@ -247,5 +247,5 @@ window.SECTION = (function () {
   };
 })();
 
-/* Реєстр для пошуку по сайту на головній (не змінюйте) */
+/* для пошуку на головній, не чіпати */
 (window.SECTIONS = window.SECTIONS || {}).education = window.SECTION;

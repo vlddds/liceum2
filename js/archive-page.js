@@ -1,4 +1,4 @@
-/* Сторінка «Архів» (archive.html). Дані: js/archive.js */
+/* сторінка архіву, дані в archive.js */
 (function () {
   "use strict";
 
@@ -6,7 +6,7 @@
   if (!AR || !L) { if (window.console) console.error("Не завантажено js/common.js або js/archive.js"); return; }
   var $ = L.$, $$ = L.$$, esc = L.esc, ICON = L.ICON, restart = L.restart, plural = L.plural, reduce = L.reduce;
 
-  /* archive.html?preview показує і приховані роки (для перевірки перед публікацією) */
+  /* з ?preview видно і приховані роки, щоб глянути перед публікацією */
   var preview = /[?&]preview\b/.test(location.search);
   var years = AR.years.filter(function (y) { return y.show || preview; });
   if (preview) $("#ar-preview").hidden = false;
@@ -32,7 +32,7 @@
   }
   $("#ar-num").textContent = years[years.length - 1].title.split("/")[0];
 
-  /* 1. ВКЛАДКИ РОКІВ (з «пігулкою», як на головній) -------------------------------- */
+  /* вкладки з роками */
   var tabsEl = $("#ar-tabs"), panel = $("#ar-panel"), cur = 0;
   var pill = document.createElement("span");
   pill.className = "tab-pill"; pill.setAttribute("aria-hidden", "true");
@@ -60,7 +60,7 @@
   window.addEventListener("resize", movePill);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(movePill);
 
-  /* 2. ВМІСТ РОКУ: події з фото + документи --------------------------------------- */
+  /* що всередині року: події з фото і документи */
   function ext(url) {
     if (/drive\.google|docs\.google/.test(url)) return "Google";
     var m = /\.([a-z0-9]{2,4})(?:[?#]|$)/i.exec(url || "");

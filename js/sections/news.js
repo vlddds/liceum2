@@ -1,6 +1,5 @@
-/* «Новини» (news.html). Кожна новина — окремий пункт (найновіші зверху).
-   Як заповнювати блоки — див. js/blocks.js. Документ на Google Drive: drive("ID файлу");
-   у галереях "" — заготовка під фото. Короткі анонси на головній — у js/data.js (розділ news). */
+/* Новини, свіжі зверху. Блоки як у blocks.js, документи через drive("ID файлу"),
+   "" в галереї = місце під фото. Короткі анонси для головної лежать у data.js (news). */
 window.SECTION = (function () {
   var fb = (window.SITE_DATA && window.SITE_DATA.config.facebook) || "";
   function drive(id) { return "https://drive.google.com/file/d/" + id + "/view"; }
@@ -194,5 +193,5 @@ window.SECTION = (function () {
   };
 })();
 
-/* Реєстр для пошуку по сайту на головній (не змінюйте) */
+/* для пошуку на головній, не чіпати */
 (window.SECTIONS = window.SECTIONS || {}).news = window.SECTION;

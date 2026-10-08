@@ -1,5 +1,5 @@
-/* Головна: гуртки, відгуки, фотокарусель. Дані: js/data.js (clubs, reviews, photos).
-   Підключається після js/common.js і перед js/app.js (той додає анімацію появи). */
+/* головна: гуртки, відгуки, фотокарусель (дані з data.js).
+   підключати після common.js і перед app.js, бо app.js додає анімацію появи */
 (function () {
   "use strict";
 
@@ -14,7 +14,7 @@
     return s;
   }
 
-  /* 1. ГУРТКИ ---------------------------------------------------------------- */
+  /* гуртки */
   var clubs = D.clubs || [], filters = $("#club-filters"), clubList = $("#clubs-list"), curCat = "";
   var cats = [""].concat((D.clubCats || []).filter(function (c) {
     return clubs.some(function (x) { return x.cat === c; });
@@ -26,7 +26,7 @@
       esc(c || "Усі") + "<span>" + n + "</span></button>";
   }).join("") : "";
 
-  /* Частинки для анімацій гуртків при наведенні (fx у js/data.js, стилі — style.css) */
+  /* частинки для анімацій гуртків (fx в data.js, стилі в style.css) */
   var FX_BITS = { dance: ["♪", "♫", "♪"], sing: ["♪", "♫", "♬"], paint: ["", "", ""], robot: ["0", "1", "0"],
                   eco: [ICON("leaf"), ICON("leaf"), ICON("leaf")], chess: ["♞"] };
   function fxBits(fx) {
@@ -61,7 +61,7 @@
   });
   renderClubs(false);
 
-  /* 2. ВІДГУКИ (на сайті лише перевірені, з data.js) ---------------------------- */
+  /* відгуки (тільки перевірені) */
   var reviews = D.reviews || [], rvList = $("#rv-list"), rvMore = $("#rv-more"), PAGE = 6, shown = PAGE;
 
   function summary() {
@@ -74,16 +74,16 @@
   }
   summary();
 
-  /* Схвалені в Google-таблиці відгуки (див. tools/google-apps-script.gs) додаються зверху автоматично */
-  /* Відповідь таблиці кешується в sessionStorage на 1 хв (зняли галочку — відгук зникне протягом хвилини);
-     запит обривається через 8 с; якщо таблиця не відповіла — показуємо збережену раніше копію або запасний текст. */
+  /* схвалені в гугл-таблиці відгуки самі додаються зверху */
+  /* відповідь таблиці тримаємо в sessionStorage 1 хв (зняли галочку - за хвилину зникне),
+     якщо 8 с нема відповіді - показуємо збережене або просто текст */
   var feed = CONFIG.reviewEndpoint || CONFIG.formEndpoint;
   var RV_KEY = "l2reviews", RV_TTL = 60 * 1000, RV_TIMEOUT = 8000, base = reviews;
   function addFeed(list) {
     if (!Array.isArray(list)) return;
     var have = {};
     base.forEach(function (r) { have[(r.name || "") + "|" + (r.text || "")] = 1; });
-    /* список із таблиці замінює попередній (а не додається), тож зняті відгуки зникають */
+    /* замінюємо список повністю, а не докидаємо, інакше зняті відгуки не зникнуть */
     reviews = list.filter(function (r) { return r && r.text && !have[(r.name || "") + "|" + r.text]; }).concat(base);
     summary(); renderReviews();
   }
@@ -145,7 +145,7 @@
   });
   renderReviews();
 
-  /* Форма відгуку */
+  /* форма відгуку */
   var rvDlg = $("#rv-dlg"), rvForm = $("#rv-form"), rvSent = $("#rv-sent"), rvText = $("#rv-text");
   var WHO = ["Батьки", "Учень / учениця", "Випускник", "Вчитель", "Інше"];
   $("#rv-who").innerHTML = WHO.map(function (w, i) {
@@ -205,7 +205,7 @@
         : "Він з'явиться на сайті після перевірки адміністрацією.";
       rvForm.hidden = true; rvSent.hidden = false; $("#rv-done").focus();
     }
-    /* Бот заповнив приховане поле: робимо вигляд, що все гаразд, і нічого не надсилаємо */
+    /* бот заповнив приховане поле - робимо вигляд, що все ок, і нічого не шлемо */
     if ($("#rv-hp").value) { done(false); return; }
 
     btn.classList.add("loading"); lbl.textContent = "Надсилаємо";
@@ -228,7 +228,7 @@
     }
   });
 
-  /* 3. ФОТОКАРУСЕЛЬ + ПЕРЕГЛЯД НА ВЕСЬ ЕКРАН ---------------------------------- */
+  /* фотокарусель і перегляд на весь екран */
   var photos = D.photos || [], track = $("#gal-track"), dots = $("#gal-dots"), gal = $("#gal");
   if (!photos.length) { $("#gallery").hidden = true; return; }
 
@@ -246,7 +246,7 @@
   function nearest() {
     var x = track.scrollLeft, best = 0, d = Infinity;
     slides.forEach(function (s, i) { var dd = Math.abs(s.offsetLeft - slides[0].offsetLeft - x); if (dd < d) { d = dd; best = i; } });
-    /* дійшли до кінця стрічки: активний останній */
+    /* докрутили до кінця - активний останній */
     if (x + track.clientWidth >= track.scrollWidth - 4) best = slides.length - 1;
     return best;
   }
@@ -260,7 +260,7 @@
     i = Math.max(0, Math.min(slides.length - 1, i));
     var start = track.scrollLeft, target = slides[i].offsetLeft - slides[0].offsetLeft;
     track.scrollTo({ left: target, behavior: reduce ? "auto" : "smooth" });
-    /* Деякі браузери ігнорують плавну прокрутку — тоді перескакуємо одразу */
+    /* деякі браузери не вміють плавно скролити, тоді просто стрибаємо */
     if (!reduce) setTimeout(function () {
       if (Math.abs(track.scrollLeft - target) > 2 && Math.abs(track.scrollLeft - start) < 2) track.scrollTo({ left: target, behavior: "auto" });
       paintDots();
@@ -275,7 +275,7 @@
   dots.addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) go(+b.getAttribute("data-k")); });
   paintDots();
 
-  /* Автопрокрутка: кожні 5 с, пауза коли курсор/фокус на каруселі або її не видно */
+  /* автопрокрутка раз на 5 с, стоп, коли мишка/фокус на каруселі або її не видно */
   var hold = false, visible = false, holdTimer = null;
   function pause(ms) { hold = true; clearTimeout(holdTimer); if (ms) holdTimer = setTimeout(function () { hold = false; }, ms); }
   gal.addEventListener("mouseenter", function () { pause(); });
@@ -294,7 +294,7 @@
     }, 5000);
   }
 
-  /* Перегляд на весь екран (js/common.js); після закриття карусель стає на те саме фото */
+  /* на весь екран, а після закриття карусель стає на те саме фото */
   track.addEventListener("click", function (e) {
     var b = e.target.closest(".gal-item");
     if (!b) return;

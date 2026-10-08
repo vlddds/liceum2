@@ -74,7 +74,7 @@
     $("#notice-x").addEventListener("click", function () { $("#notice").hidden = true; });
   }
 
-  /* Логотип, верхня смужка, підвал, меню й налаштування: js/common.js */
+  /* шапка, підвал і меню - в common.js */
   if (CONFIG.heroPhoto) {
     var hb = $(".hero-bg");
     hb.classList.add("has-photo");
@@ -179,13 +179,13 @@
   window.addEventListener("resize", movePill);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(movePill);
 
-  /* 5. ПОШУК --------------------------------------------------------------- */
+  /* 5. пошук */
   var input = $("#q"), sform = $("#sform"), list = $("#results"), status = $("#status"),
       sicon = $(".si", sform), active = -1, current = [];
   var norm = function (s) { return s.toLowerCase().replace(/ё/g, "е").replace(/[’ʼ]/g, "'"); };
 
-  /* Пошук по всьому сайту: текст розділових сторінок (js/sections/*.js), документи, вчителі.
-     Файли розділів підключені в index.html і записують себе в window.SECTIONS. */
+  /* шукаємо по всьому сайту: тексти розділів (sections/*.js), документи, вчителі.
+     файли розділів підключені в index.html і самі записуються в window.SECTIONS */
   var seen = {};
   INDEX.forEach(function (i) { seen[i.url] = 1; });
   function flat(b) {
@@ -224,7 +224,7 @@
    ["albums.html", "Фотоальбоми", "фото галерея"], ["menu.html", "Меню їдальні", "меню обід їдальня харчування страви"], ["faq.html", "Часті питання", "питання відповіді допомога"]].forEach(function (x) {
     if (!seen[x[0]]) INDEX.push({ title: x[1], kw: x[2], group: "Корисне", url: x[0] });
   });
-  /* Прихована сторінка: на неї не веде жодне посилання на сайті, знайти можна лише через пошук */
+  /* профтест прихований, туди можна потрапити тільки через пошук */
   INDEX.push({ title: "Профорієнтаційний тест", group: "Учням", url: "proforientation.html",
     kw: "профорієнтація професія професії тест вибір професії профіль профільна освіта академічний ліцей " +
         "голланд інтереси інтелекти гарднер ким стати кар'єра" });
@@ -291,7 +291,7 @@
     bunnyCheck();
   });
 
-  /* Пасхалка: напишіть у пошуку «bunny» — з'явиться кролик (js/common.js, L2.bunny). Ще раз «bunny» — сховається */
+  /* пасхалка: пишеш bunny і вилазить кролик (сам кролик в common.js), ще раз bunny - ховається */
   var bunnyShown = false;
   function bunnyCheck() {
     var isBunny = norm(input.value.trim()) === "bunny";
@@ -318,7 +318,7 @@
     }
     var p = input.value.trim() ? current[active >= 0 ? active : 0] : null;
     if (p) { window.open(p.url, tgt(p.url)); return; }
-    /* порожньо або нічого не знайдено: «струшуємо» форму */
+    /* нічого не знайшли - трусимо форму */
     restart(sform, "shake"); input.focus();
   });
   document.addEventListener("click", function (e) { if (!e.target.closest(".search")) closeList(); });

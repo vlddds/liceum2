@@ -1,4 +1,4 @@
-/* Сторінка «Меню їдальні» (menu.html). Дані: js/menu.js */
+/* меню їдальні, дані в menu.js */
 (function () {
   "use strict";
 
@@ -12,13 +12,13 @@
   var KEY = "l2age";
 
   var now = new Date(); now.setHours(0, 0, 0, 0);
-  var wd = (now.getDay() + 6) % 7;            /* 0 = понеділок … 6 = неділя */
+  var wd = (now.getDay() + 6) % 7;            /* 0 - понеділок, 6 - неділя */
   var weekend = wd > 4;
   var day = weekend ? 0 : wd;
   var age = 0; try { age = +localStorage.getItem(KEY) || 0; } catch (e) {}
   if (!M.ages[age]) age = 0;
 
-  /* Який тиждень циклу зараз (у вихідні — наступний) */
+  /* який зараз тиждень циклу (у вихідні показуємо наступний) */
   function weekIndex() {
     if (M.weeks.length < 2 || !M.cycleStart) return 0;
     var p = M.cycleStart.split("-"), start = new Date(+p[0], +p[1] - 1, +p[2]);
@@ -28,7 +28,7 @@
   }
   var W = M.weeks[weekIndex()];
 
-  /* Іконка до страви за назвою */
+  /* іконка під страву по назві */
   var KIND = [
     [/салат/i, "leaf", "Салат"],
     [/компот|узвар|какао|сік|чай|кисіль|молоко/i, "utensils", "Напій"],
@@ -45,7 +45,7 @@
     return d.getDate() + " " + MONTHS_G[d.getMonth()];
   }
 
-  /* 1. СТОРІНКА ------------------------------------------------------------------- */
+  /* 1. сторінка */
   $("#main").innerHTML =
     '<section class="hero t-hero on-dark" aria-labelledby="h1"><div class="hero-bg" aria-hidden="true"><span class="num">' + (day + 1) + "</span></div>" +
     '<div class="wrap hero-in"><nav class="crumbs" aria-label="Ви тут"><a href="index.html">Головна</a><span aria-hidden="true">/</span><a href="services.html">Сервіси та служби</a><span aria-hidden="true">/</span><span aria-current="page">Меню їдальні</span></nav>' +
@@ -68,7 +68,7 @@
     return '<button type="button" class="chip" role="tab" data-d="' + i + '" aria-pressed="false">' + d + (!weekend && i === wd ? " · сьогодні" : "") + "</button>";
   }).join("");
 
-  /* 2. ВМІСТ ------------------------------------------------------------------------ */
+  /* 2. вміст */
   function renderNow() {
     var list = W.days[weekend ? 0 : wd] || [];
     var main = list.filter(function (x) { return kind(x[0])[2] === "Основна страва"; })[0] || list[0];
@@ -111,7 +111,7 @@
   $("#mn-print").addEventListener("click", function (e) { e.preventDefault(); document.body.classList.add("mn-printing"); window.print(); });
   window.addEventListener("afterprint", function () { document.body.classList.remove("mn-printing"); });
 
-  /* Таблиця всього тижня — лише для друку */
+  /* табличка на весь тиждень, тільки для друку */
   var pt = document.createElement("div");
   pt.className = "mn-printable";
   pt.innerHTML = "<h2>" + esc(W.season || "Меню") + " · " + esc(W.title) + "</h2>" + DAYS.map(function (d, i) {

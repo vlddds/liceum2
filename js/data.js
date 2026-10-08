@@ -14,17 +14,17 @@ window.SITE_DATA = (function () {
 
     notice: { text: "", url: "", label: "Докладніше" },
 
-    /* Фото на головному екрані (під синім фоном). Порожньо = без фото. Напр.: "img/school/hero.jpg" */
+    /* фото на головному екрані під синім фоном, порожньо = без фото. напр. "img/school/hero.jpg" */
     heroPhoto: "",
 
-    /* Куди надсилати форми: адреса Google Apps Script (інструкція — tools/google-apps-script.gs)
-       або Formspree тощо. Порожньо = відкриється пошта.
-       reviewEndpoint: окремо для відгуків; якщо порожньо, береться formEndpoint. */
+    /* куди летять форми: адреса Apps Script (як налаштувати - в tools/google-apps-script.gs)
+       або Formspree. порожньо = відкриється пошта.
+       reviewEndpoint - окремо для відгуків, якщо порожньо, то береться formEndpoint */
     formEndpoint: "https://script.google.com/macros/s/AKfycbwTJq2oWbsZiJZuL5DNLyF_kVlvwBRi5V9S6jwNaKJPGMRVSzWtOBKuNWUqUD5wg3jM/exec",
     reviewEndpoint: "https://script.google.com/macros/s/AKfycbwTJq2oWbsZiJZuL5DNLyF_kVlvwBRi5V9S6jwNaKJPGMRVSzWtOBKuNWUqUD5wg3jM/exec",
 
-    /* Пасхалка: це слово, введене в пошук на головній, відкриває міні-гру.
-       Ще способи: код ↑ ↑ ↓ ↓ ← → ← → B A на клавіатурі або 5 натискань на рік у підвалі. */
+    /* пасхалка: це слово в пошуку на головній відкриває гру.
+       ще можна набрати ↑ ↑ ↓ ↓ ← → ← → B A або 5 разів клікнути по року в підвалі */
     secretWord: "дванадцять"
   };
 
@@ -79,7 +79,7 @@ window.SITE_DATA = (function () {
       P(ABOUT + "/" + slug(ACCESS_T), "Безбар'єрний простір", "інклюзія доступність", G1, "", "public.html#accessibility"),
       P(ABOUT, "Правила внутрішньошкільного розпорядку та правил поведінки", "поведінка розпорядок", G1, "", "about.html#rules")
     ],
-    /* [назва, id напряму в js/teachers.js] */
+    /* [назва, id напряму з teachers.js] */
     teachers: [["Початкова школа", "pochatkova"], ["Українська мова та література", "ukrainska"],
       ["Зарубіжна література", "zarubizhna"], ["Англійська мова", "angliyska"],
       ["Природничо-географічні науки", "pryrodnychi"], ["Фізико-математичний цикл", "fizmat"],
@@ -198,7 +198,7 @@ window.SITE_DATA = (function () {
     ctaUrl: "https://linktr.ee/vstup_tot"
   };
 
-  /* Короткі анонси на головній. Повний текст новин — у js/sections/news.js (url: "news.html#id") */
+  /* короткі анонси для головної, повний текст в sections/news.js (url: "news.html#id") */
   var news = [
     { date: "квітень 2026", title: "Конкурс на посаду директора ліцею",
       text: "Відділ освіти оголосив конкурсний відбір на посаду керівника Ліцею № 2. Документи приймаються з 27.04 до 18.05.2026.",
@@ -211,9 +211,9 @@ window.SITE_DATA = (function () {
       page: "", url: "news.html#first-grade", label: "Накази та списки" }
   ];
 
-  /* ГУРТКИ ТА СЕКЦІЇ. cat має збігатися з однією з clubCats.
-     Поля: name, cat, icon, desc, leader (керівник), grades (класи), time (розклад), place (де).
-     fx — анімація при наведенні: kick, volley, sing, paint, robot, eco, chess, dance (або без fx). */
+  /* гуртки і секції. cat має бути одна з clubCats.
+     поля: name, cat, icon, desc, leader (керівник), grades (класи), time (коли), place (де).
+     fx - анімація при наведенні: kick, volley, sing, paint, robot, eco, chess, dance (можна без fx) */
   var clubCats = ["Спорт", "Мистецтво", "Наука і техніка", "Інше"];
   var clubs = [
     { name: "Футбол", cat: "Спорт", icon: "ball", fx: "kick",
@@ -242,9 +242,9 @@ window.SITE_DATA = (function () {
       leader: "Прізвище Ім'я По батькові", grades: "2–11 класи", time: "Пн · 14:00", place: "Бібліотека" }
   ];
 
-  /* ВІДГУКИ. Сюди додаються лише перевірені відгуки (модерація).
-     Нові відгуки з форми приходять на пошту/у formEndpoint, адміністратор копіює схвалені сюди.
-     Поля: name, who (хто автор), text, rating (1–5, можна не вказувати), date. */
+  /* відгуки, сюди тільки перевірені.
+     нові з форми падають у таблицю/на пошту, схвалені можна скопіювати сюди.
+     поля: name, who (хто пише), text, rating (1-5, можна не ставити), date */
   var reviews = [
     { name: "Ім'я автора", who: "Мама учня 5 класу", rating: 5, date: "вересень 2025",
       text: "Тут буде текст відгуку, який пройшов перевірку адміністрацією ліцею." },
@@ -254,8 +254,8 @@ window.SITE_DATA = (function () {
       text: "Тут буде текст відгуку, який пройшов перевірку адміністрацією ліцею." }
   ];
 
-  /* ФОТО ШКОЛИ для каруселі на головній. src: шлях до файлу, caption: підпис.
-     Поки src порожній, показується заглушка. Рекомендовано горизонтальні фото ~1600×1000. */
+  /* фото для каруселі на головній. src - шлях, caption - підпис.
+     поки src порожній, буде заглушка. краще горизонтальні фото десь 1600x1000 */
   var photos = [
     { src: "img/gallery/01-building.jpg", caption: "Будівля ліцею" },
     { src: "img/gallery/02-lesson.jpg", caption: "Урок у початковій школі" },

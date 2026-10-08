@@ -1,6 +1,5 @@
-/* Профорієнтаційний тест (proforientation.html).
-   Профілі ліцею та гуртки — у js/proforientation-config.js.
-   Усе рахується на пристрої: відповіді нікуди не надсилаються, лише зберігаються в localStorage. */
+/* Профтест. Профілі й гуртки лежать в proforientation-config.js.
+   Все рахується прямо в браузері, нікуди нічого не відправляється, тільки localStorage. */
 (function () {
   "use strict";
 
@@ -9,7 +8,7 @@
   var $ = L.$, $$ = L.$$, esc = L.esc, ICON = L.ICON, restart = L.restart, reduce = L.reduce;
   var CLUBS = ((window.SITE_DATA || {}).clubs || []).map(function (c) { return c.name; });
 
-  /* 1. ДАНІ ------------------------------------------------------------------- */
+  /* твердження, типи, професії */
   var ORDER = ["R", "I", "A", "S", "E", "C"];
   var TYPES = {
     R: { name: "Практичний", nick: "Майстер",
@@ -101,8 +100,8 @@
   var SCALE = ["Зовсім не про мене", "Скоріше ні", "Частково", "Скоріше так", "Точно про мене"];
   var PER_SCREEN = 6, KEY = "l2prof-progress", KEY_RES = "l2prof-result";
 
-  /* 2. ПОРЯДОК ТВЕРДЖЕНЬ: перемішаний, але однаковий для всіх (фіксований seed),
-        і твердження одного типу ніколи не йдуть підряд ---------------------------- */
+  /* порядок тверджень: перемішаний, але однаковий у всіх (фіксований seed),
+     і два однакові типи ніколи не стоять поруч */
   function rng(seed) {   /* mulberry32 */
     return function () {
       seed = (seed + 0x6D2B79F5) | 0;
@@ -116,8 +115,8 @@
     for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(rand() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; }
     return a;
   }
-  /* groups: { ключ: [твердження…] } однакової довжини. Кожен «раунд» бере по одному твердженню
-     кожного ключа в перемішаному порядку; перше в раунді не збігається з останнім попереднього. */
+  /* groups: { ключ: [твердження...] }, всі однакової довжини. кожен раунд бере по одному
+     твердженню кожного ключа в перемішаному порядку, і перше в раунді не таке, як останнє в попередньому */
   function interleave(groups, seed) {
     var rand = rng(seed), keys = Object.keys(groups), out = [], last = null;
     keys.forEach(function (k) { groups[k] = shuffle(groups[k], rand); });
@@ -140,7 +139,7 @@
     for (var i = 0; i < p[1].length; i += PER_SCREEN) SCREENS.push({ part: p[0], items: p[1].slice(i, i + PER_SCREEN) });
   });
 
-  /* 3. ЗБЕРЕЖЕННЯ (лише в цьому браузері) ---------------------------------------- */
+  /* зберігаємо тільки в цьому браузері */
   function load(k) { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (e) { return null; } }
   function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   function drop(k) { try { localStorage.removeItem(k); } catch (e) {} }
@@ -149,7 +148,7 @@
   if (!state.answers) state = { answers: {}, screen: 0 };
   function answered() { return ALL.filter(function (q) { return state.answers[q.id]; }).length; }
 
-  /* 4. КАРКАС СТОРІНКИ ------------------------------------------------------------ */
+  /* каркас сторінки */
   $("#main").innerHTML =
     '<section class="hero t-hero on-dark" aria-labelledby="h1"><div class="hero-bg" aria-hidden="true"><span class="num">?</span></div>' +
     '<div class="wrap hero-in"><nav class="crumbs" aria-label="Ви тут"><a href="index.html">Головна</a><span aria-hidden="true">/</span>' +
@@ -170,7 +169,7 @@
     try { return new Date(iso).toLocaleDateString("uk-UA", { day: "numeric", month: "long", year: "numeric" }); } catch (e) { return ""; }
   }
 
-  /* 5. ВСТУП ----------------------------------------------------------------------- */
+  /* вступ */
   function intro() {
     var res = load(KEY_RES), n = answered(), resume = n > 0 && n < ALL.length;
     var html = '<div class="pf-card pf-intro">' +
@@ -193,7 +192,7 @@
     show(html, "#pf-h");
   }
 
-  /* 6. ЕКРАН З ТВЕРДЖЕННЯМИ -------------------------------------------------------- */
+  /* екран з твердженнями */
   function screen(n) {
     state.screen = n; save(KEY, state);
     var s = SCREENS[n], firstOfPart = n === 0 || SCREENS[n - 1].part !== s.part;
@@ -256,7 +255,7 @@
     else finish();
   }
 
-  /* 7. ПІДРАХУНОК ----------------------------------------------------------------- */
+  /* рахуємо бали */
   function compute() {
     var riasec = {}, gardner = {};
     ORDER.forEach(function (t) { riasec[t] = 0; });
@@ -274,8 +273,8 @@
     result(res, false);
   }
 
-  /* 8. РЕЗУЛЬТАТ ------------------------------------------------------------------ */
-  /* Радарна діаграма: чистий SVG. Підписи у два рядки (назва + бал), щоб уміщалися й на вузькому екрані */
+  /* результат */
+  /* радар на чистому svg, підписи у два рядки, щоб влазили на телефоні */
   function radar(sc) {
     var W = 360, H = 268, cx = 180, cy = 134, R = 84, n = ORDER.length;
     function pt(i, f) { var a = -Math.PI / 2 + i * 2 * Math.PI / n; return [cx + Math.cos(a) * R * f, cy + Math.sin(a) * R * f]; }
@@ -289,8 +288,8 @@
     ORDER.forEach(function (t, i) {
       var p = pt(i, val(t)); svg += '<circle class="pf-pt" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="4"/>';
       var v = pt(i, 1), x, y, anchor;
-      if (i === 0) { x = cx; y = v[1] - 26; anchor = "middle"; }            /* верх: над вершиною */
-      else if (i === n / 2) { x = cx; y = v[1] + 18; anchor = "middle"; }   /* низ: під вершиною */
+      if (i === 0) { x = cx; y = v[1] - 26; anchor = "middle"; }            /* верхній підпис над вершиною */
+      else if (i === n / 2) { x = cx; y = v[1] + 18; anchor = "middle"; }   /* нижній під вершиною */
       else { anchor = v[0] > cx ? "start" : "end"; x = v[0] + (v[0] > cx ? 10 : -10); y = v[1] - 4; }
       svg += '<text class="pf-lbl" text-anchor="' + anchor + '"><tspan x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '">' + esc(TYPES[t].nick) + "</tspan>" +
         '<tspan class="pf-val" x="' + x.toFixed(1) + '" dy="15">' + sc[t] + " з 30</tspan></text>";
@@ -300,7 +299,7 @@
   function result(res, previous) {
     var sc = res.riasec, gd = res.gardner;
     var sorted = ORDER.slice().sort(function (a, b) { return sc[b] - sc[a] || ORDER.indexOf(a) - ORDER.indexOf(b); });
-    var cut = sc[sorted[1]], top = sorted.filter(function (t) { return sc[t] >= cut; }).slice(0, 4);   /* топ-2, за рівності — усі рівні */
+    var cut = sc[sorted[1]], top = sorted.filter(function (t) { return sc[t] >= cut; }).slice(0, 4);   /* топ-2, а якщо є однакові бали - беремо всіх */
     var code = sorted[0] + sorted[1];
 
     var profs = CFG.profiles.map(function (p) {
@@ -366,7 +365,7 @@
     show(html, "#pf-h");
   }
 
-  /* 9. КНОПКИ ---------------------------------------------------------------------- */
+  /* кнопки */
   box.addEventListener("click", function (e) {
     var b = e.target.closest("[data-act]");
     if (!b) return;

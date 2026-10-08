@@ -1,5 +1,5 @@
-/* Спільне для всіх сторінок: шапка, підвал, налаштування (тема, розмір тексту, контраст), пасхалка.
-   Підключається після js/data.js і перед скриптом сторінки. */
+/* спільне для всіх сторінок: шапка, підвал, тема/контраст/розмір тексту, пасхалки.
+   підключати після data.js, але перед скриптом сторінки */
 (function () {
   "use strict";
 
@@ -23,7 +23,7 @@
     return a === 1 && b !== 11 ? one : a >= 2 && a <= 4 && (b < 12 || b > 14) ? few : many;
   }
 
-  /* 1. ЛОГОТИП, ВЕРХНЯ СМУЖКА, ПІДВАЛ ------------------------------------------ */
+  /* логотип, верхня смужка, підвал */
   $("#logo").innerHTML = CONFIG.logoUrl
     ? '<img class="mark" src="' + esc(CONFIG.logoUrl) + '" alt="" width="48" height="48" fetchpriority="high">'
     : '<svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#14274E"/><rect y="33" width="48" height="3" fill="#F4B400"/><text x="24" y="29" text-anchor="middle" font-family="Literata,Georgia,serif" font-weight="700" font-size="26" fill="#fff">2</text></svg>';
@@ -37,9 +37,9 @@
     return '<li><a href="' + esc(l[1]) + '">' + esc(l[0]) + "</a></li>";
   }).join("");
 
-  /* 2. МЕНЮ, ПРОКРУТКА, «НАГОРУ» ------------------------------------------------ */
-  /* Головне меню — одне на всі сторінки. Група підсвічується, якщо в ній поточна сторінка.
-     Щоб додати сторінку: допишіть ["файл.html", "Назва"] у потрібну групу. */
+  /* меню, скрол і кнопка нагору */
+  /* меню одне на весь сайт, група підсвічується, якщо ми на її сторінці.
+     нова сторінка: дописати ["файл.html", "Назва"] в потрібну групу */
   var NAV = [
     { title: "Про ліцей", items: [["about.html", "Все про заклад"], ["teachers.html", "Педагогічний колектив"],
       ["public.html", "Публічна інформація"], ["albums.html", "Фотоальбоми"]] },
@@ -98,8 +98,8 @@
   onScroll();
   totop.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); });
 
-  /* 3. НАЛАШТУВАННЯ: темна тема, більший текст, контраст (запам'ятовуються) ------------
-     Початковий стан ставить короткий скрипт у <head>, щоб не було «спалаху» світлої теми. */
+  /* налаштування: темна тема, більший текст, контраст (запам'ятовуються).
+     перший раз їх ставить маленький скрипт у <head>, щоб не мигала світла тема */
   var KEY = "l2prefs", prefs = {};
   try { prefs = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { prefs = {}; }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(prefs)); } catch (e) {} }
@@ -124,9 +124,9 @@
     if (b) b.addEventListener("click", function () { setPref(cls, !root.classList.contains(cls)); });
   });
   syncButtons();
-  /* За замовчуванням сайт світлий; темна тема — лише якщо відвідувач сам її увімкнув кнопкою */
+  /* за замовчуванням світла, темна тільки якщо людина сама її увімкнула */
 
-  /* 4. «ХВИЛЯ» ПІД ЧАС НАТИСКАННЯ НА КНОПКИ ------------------------------------ */
+  /* хвилька при натисканні на кнопки */
   document.addEventListener("click", function (e) {
     var b = e.target.closest(".btn, .search .go");
     if (!b || reduce || e.detail === 0) return;
@@ -139,7 +139,7 @@
     setTimeout(function () { sp.remove(); }, 700);
   });
 
-  /* 5. ПАСХАЛКА: міні-гра (js/game.js завантажується лише коли потрібна) -------------- */
+  /* пасхалка з грою, game.js вантажиться тільки коли треба */
   function openGame() {
     if (window.L2Game) { window.L2Game.open(); return; }
     var s = document.createElement("script");
@@ -164,15 +164,15 @@
     if (taps >= 5) { taps = 0; openGame(); }
   });
 
-  /* 6. ЗОВНІШНІ ПОСИЛАННЯ відкриваються так, як задано в config.linkTarget ------------ */
+  /* зовнішні посилання відкриваються так, як задано в config.linkTarget */
   document.addEventListener("DOMContentLoaded", function () {
     $$("a[href]").forEach(function (a) {
       if (isWeb(a.getAttribute("href"))) { a.target = CONFIG.linkTarget; a.rel = "noopener"; }
     });
   });
 
-  /* Відправка форм. Google Apps Script не приймає JSON-заголовки з іншого сайту,
-     тому йому шлемо «простий» запит (text/plain); іншим сервісам (Formspree тощо) — JSON. */
+  /* відправка форм. Apps Script не любить JSON-заголовки з чужого сайту,
+     тому шлемо як text/plain, а всяким Formspree - нормальний JSON */
   function postForm(url, data) {
     var gas = /script\.google\.com/.test(url);
     return fetch(url, {
@@ -185,7 +185,7 @@
     });
   }
 
-  /* Перед друком розгортаємо всі «питання-відповіді» та згорнуті блоки, після — повертаємо як було */
+  /* перед друком розгортаємо все згорнуте, після друку повертаємо як було */
   window.addEventListener("beforeprint", function () {
     $$("details").forEach(function (d) { d.setAttribute("data-was", d.open ? "1" : "0"); d.open = true; });
   });
@@ -193,21 +193,21 @@
     $$("details[data-was]").forEach(function (d) { d.open = d.getAttribute("data-was") === "1"; d.removeAttribute("data-was"); });
   });
 
-  /* 7. ФОТО: заглушка і перегляд на весь екран (карусель на головній, архів) ----------
-     Для сторінок, де є фото, у наборі іконок потрібні i-image, i-close та i-chev. */
-  /* Розміри фото з js/img-sizes.js → width/height, щоб сторінка не «стрибала» */
+  /* фото: заглушка і перегляд на весь екран (карусель, архів).
+     на сторінці мають бути іконки i-image, i-close та i-chev */
+  /* беремо розміри з img-sizes.js, щоб сторінка не стрибала, поки вантажаться фото */
   function imgSize(src) {
     var s = (window.IMG_SIZES || {})[src];
     return s ? ' width="' + s[0] + '" height="' + s[1] + '"' : "";
   }
-  /* lazy: true — вантажити, коли дійде прокрутка; "high" — головне фото (перший слайд), вантажити першим */
+  /* lazy=true - вантажимо, коли докрутили, "high" - перший слайд, вантажимо одразу */
   function photoHTML(p, i, lazy) {
     if (p && p.src) return '<img src="' + esc(p.src) + '" alt="' + esc(p.caption || "") + '"' + imgSize(p.src) +
       (lazy === "high" ? ' fetchpriority="high" decoding="async"' : lazy ? ' loading="lazy" decoding="async"' : "") + ">";
     return '<span class="gal-ph">' + ICON("image") + (i >= 0 ? "<small>Фото " + (i + 1) + "</small>" : "") + "</span>";
   }
-  /* Lazyload: фото з loading="lazy" вантажаться, коли до них доходить прокрутка,
-     і плавно з'являються (поки вантажаться — мерехтливий фон, див. style.css) */
+  /* lazyload: фото вантажаться, коли до них докрутили, і плавно проявляються
+     (поки вантажиться - мерехтить фон, див. style.css) */
   document.documentElement.classList.add("lazy-on");
   function loaded(e) {
     var img = e.target;
@@ -215,11 +215,11 @@
   }
   document.addEventListener("load", loaded, true);
   document.addEventListener("error", loaded, true);
-  /* На випадок, якщо фото вже було в кеші й подія пройшла раніше */
+  /* якщо фото вже було в кеші і подію load ми проґавили */
   setInterval(function () {
     $$('img[loading="lazy"]:not(.is-loaded)').forEach(function (img) { if (img.complete && img.naturalWidth) img.classList.add("is-loaded"); });
   }, 1000);
-  /* Фото не завантажилось: замість «битої» картинки показуємо заглушку */
+  /* фото не завантажилось - показуємо заглушку замість битої картинки */
   document.addEventListener("error", function (e) {
     var img = e.target;
     if (img.tagName === "IMG" && img.closest(".gal-item, .lb-img, .ev-cover")) img.outerHTML = photoHTML(null, -1);
@@ -261,7 +261,7 @@
     $$(".lb-nav", lb).forEach(function (b) { b.hidden = n < 2; });
     if (!reduce) restart($(".lb-img", lb), "swap");
   }
-  /* items: [{ src, caption }], i: з якого почати, onClose(i): викликається після закриття */
+  /* items: [{ src, caption }], i - з якого фото почати, onClose(i) - після закриття */
   function lightbox(items, i, onClose) {
     if (!items || !items.length) return;
     if (!lb) lbBuild();
@@ -270,10 +270,10 @@
     lb.showModal(); $(".lb-x", lb).focus();
   }
 
-  /* 8. ПАСХАЛКА «КРОЛИК» ------------------------------------------------------------
-     На кожній сторінці з-за однієї з карток визирає маленький кролик (щоразу в іншому місці).
-     Знайшли й натиснули — він вистрибує і стрибає за вказівником. Також: «bunny» у пошуку на головній.
-     Прибрати: Esc. */
+  /* пасхалка з кроликом
+     на кожній сторінці він визирає з-за якоїсь картки (щоразу з іншої).
+     знайшли, натиснули - вистрибує і бігає за мишкою. ще можна написати bunny в пошуку.
+     Esc - прибрати */
   var bunny = (function () {
     var B = null, BW = 80, BH = 67;
     var SVG = '<svg viewBox="0 0 120 100"><g>' +
@@ -311,7 +311,7 @@
     }
     function target(px, py) {
       if (!B || B.leaving) return;
-      var side = px < B.x ? 1 : -1;   /* сідає збоку від вказівника, з того боку, звідки прийшов */
+      var side = px < B.x ? 1 : -1;   /* сідає збоку від курсора, з того боку, звідки прибіг */
       B.tx = Math.max(BW / 2, Math.min(innerWidth - BW / 2, px + side * 55));
       B.ty = Math.max(BH, Math.min(innerHeight - 6, py + 34));
     }
@@ -339,16 +339,16 @@
     document.addEventListener("pointerdown", function (e) { target(e.clientX, e.clientY); });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && B) leave(); });
 
-    /* Схованка: маленький кролик визирає з-за верхнього краю випадкової картки на сторінці */
-    var peek = null, spot = null, hidden = false;   /* hidden — кролик уже сховався (повторно не ховаємо після виходу) */
+    /* схованка: вушка визирають з-за верхнього краю випадкової картки */
+    var peek = null, spot = null, hidden = false;   /* hidden = вже сховався (після того як вистрибнув, вдруге не ховаємо) */
     function cards() {
       return $$("main *").filter(function (el) {
         if (el.closest("dialog, .bunny-peek, .results, [hidden]")) return false;
-        var shut = el.closest("details:not([open])");   /* за згорнутим блоком можна, у його схований вміст — ні */
+        var shut = el.closest("details:not([open])");   /* за згорнутий блок можна, а всередину нього ні */
         if (shut && shut !== el) return false;
         var r = el.getBoundingClientRect();
         if (r.width < (innerWidth < 600 ? 120 : 180) || r.height < 70 || !inView(r)) return false;
-        /* не в каруселях і інших блоках, що прокручуються вбік, — інакше кролик опиниться за краєм екрана */
+        /* в каруселях не ховаємось, бо кролик опиниться за краєм екрана */
         for (var a = el.parentElement; a && a.tagName !== "MAIN"; a = a.parentElement) {
           if (/auto|scroll/.test(getComputedStyle(a).overflowX)) return false;
         }
@@ -361,7 +361,7 @@
     function placePeek() {
       if (!peek) return;
       var r = spot && document.contains(spot) ? spot.getBoundingClientRect() : null;
-      /* картка зникла або вийшла за край (поворот телефона, зміна вікна) — ховаємось деінде */
+      /* картка зникла або поїхала за край (повернули телефон і т.д.) - шукаємо інше місце */
       if (!r || !r.width || !inView(r)) { peek.remove(); peek = null; hide(); return; }
       var x = Math.max(8, Math.min(r.left + r.width * 0.72 - 21, document.documentElement.clientWidth - 50));
       peek.style.left = (x + scrollX) + "px";
@@ -375,7 +375,7 @@
       peek.type = "button"; peek.className = "bunny-peek";
       peek.setAttribute("aria-label", "Схований кролик");
       peek.innerHTML = '<svg viewBox="0 0 60 32" aria-hidden="true">' +
-        /* кожне вушко — одна група: біле й рожеве ворушаться разом навколо основи вуха */
+        /* вушко = одна група, щоб біле і рожеве рухались разом */
         '<g class="ear" style="transform-origin:23px 27px"><g transform="rotate(-12 22 14)">' +
           '<ellipse cx="22" cy="14" rx="5.5" ry="13" fill="#fff" stroke="#8a93a6" stroke-width="2"/>' +
           '<ellipse cx="22" cy="14" rx="2.3" ry="9" fill="#ffb3c7"/></g></g>' +
@@ -390,7 +390,7 @@
       peek.addEventListener("click", function () {
         var p = peek, r = p.getBoundingClientRect();
         peek = null;
-        /* вихід зі схованки: визирає вище, вистрибує й «пружинить» до повного розміру */
+        /* виходить зі схованки: визирає, вистрибує і пружинить */
         p.classList.add("out");
         setTimeout(function () { p.remove(); start(r.left + r.width / 2, r.bottom, true); }, reduce ? 0 : 280);
       });
@@ -399,8 +399,8 @@
     window.addEventListener("load", function () {
       setTimeout(function () {
         hide();
-        setInterval(function () { if (!hidden) hide(); else placePeek(); }, 700);   /* не вдалося сховатися (напр. вкладка у фоні) — пробуємо ще */
-      }, 1200);   /* картки «виїжджають» анімацією — підлаштовуємось */
+        setInterval(function () { if (!hidden) hide(); else placePeek(); }, 700);   /* не вийшло сховатись (наприклад, вкладка у фоні) - пробуємо ще раз */
+      }, 1200);   /* картки виїжджають з анімацією, тому підлаштовуємось */
     });
 
     return { start: start, leave: leave, toggle: function (x, y) { if (B) leave(); else start(x, y); } };

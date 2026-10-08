@@ -1,5 +1,5 @@
-/* «Виховна робота» та «Батькам і учням» (upbringing.html). Як заповнювати блоки — див. js/blocks.js.
-   Документ на Google Drive: drive("ID файлу"); у галереях "" — заготовка під фото. */
+/* Виховна робота + батькам і учням, блоки як у blocks.js.
+   drive("ID файлу") для документів, "" в галереї = місце під фото. */
 window.SECTION = (function () {
   function drive(id) { return "https://drive.google.com/file/d/" + id + "/view"; }
 
@@ -295,5 +295,5 @@ window.SECTION = (function () {
   };
 })();
 
-/* Реєстр для пошуку по сайту на головній (не змінюйте) */
+/* для пошуку на головній, не чіпати */
 (window.SECTIONS = window.SECTIONS || {}).upbringing = window.SECTION;

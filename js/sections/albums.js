@@ -1,6 +1,6 @@
-/* «Фотоальбоми» (albums.html). Кожен альбом — окремий пункт (найновіші зверху).
-   Фото: у блоці gallery замініть "" на шлях до файлу, напр. "img/albums/first-bell-2025/1.jpg".
-   Щоб додати альбом, скопіюйте один пункт і змініть id, назву й дату. */
+/* Фотоальбоми, нові зверху.
+   Фото: в gallery замість "" пишемо шлях, напр. "img/albums/first-bell-2025/1.jpg".
+   Новий альбом = копія пункту з іншим id, назвою і датою. */
 window.SECTION = (function () {
   function slots(n) { var a = []; for (var i = 0; i < n; i++) a.push(""); return a; }
 
@@ -27,5 +27,5 @@ window.SECTION = (function () {
   };
 })();
 
-/* Реєстр для пошуку по сайту на головній (не змінюйте) */
+/* для пошуку на головній, не чіпати */
 (window.SECTIONS = window.SECTIONS || {}).albums = window.SECTION;

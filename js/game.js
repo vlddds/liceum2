@@ -1,12 +1,12 @@
-/* Пасхалка: міні-гра «Лови дванадцятки».
-   Завантажується лише після секретного коду (див. js/common.js, розділ 5). */
+/* пасхалка: міні-гра "Лови дванадцятки".
+   вантажиться тільки після секретного коду (див. common.js) */
 (function () {
   "use strict";
 
   var L = window.L2, $ = L.$, ICON = L.ICON;
   var BEST_KEY = "l2game-best", GOOD = [10, 11, 12], BAD = [1, 2, 3];
 
-  /* Вікно гри створюємо один раз */
+  /* вікно гри створюється один раз */
   var dlg = document.createElement("dialog");
   dlg.className = "game";
   dlg.setAttribute("aria-label", "Міні-гра «Лови дванадцятки»");
@@ -74,7 +74,7 @@
     if (st.tx !== null) st.px += (st.tx - st.px) * Math.min(1, dt * 14);
     st.px = Math.min(Math.max(st.px, st.pw / 2), W - st.pw / 2);
 
-    /* поява оцінок: що довше граєш, то частіше й швидше */
+    /* оцінки падають все частіше і швидше */
     st.spawn -= dt;
     if (st.spawn <= 0) { spawn(); st.spawn = Math.max(0.32, 0.95 - st.t * 0.012); }
 

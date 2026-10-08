@@ -1,4 +1,4 @@
-/* Сторінка «Розклад уроків» (schedule.html). Дані: js/schedule.js */
+/* розклад уроків, дані в schedule.js */
 (function () {
   "use strict";
 
@@ -12,12 +12,12 @@
   var names = Object.keys(S.classes);
   var saved = null; try { saved = localStorage.getItem(KEY); } catch (e) {}
   var cls = saved && S.classes[saved] ? saved : null;
-  var wd = (new Date().getDay() + 6) % 7; /* 0 = понеділок */
+  var wd = (new Date().getDay() + 6) % 7; /* 0 - понеділок */
   var day = wd < 5 ? wd : 0;
 
   function bellsFor(c) { return c && /^1-/.test(c) && S.bellsFirst ? S.bellsFirst : S.bells; }
 
-  /* 1. СТОРІНКА ------------------------------------------------------------------- */
+  /* 1. сторінка */
   var grades = {};
   names.forEach(function (n) { var g = n.split("-")[0]; (grades[g] = grades[g] || []).push(n); });
 
@@ -47,7 +47,7 @@
     return '<button type="button" class="chip" role="tab" data-d="' + i + '" aria-pressed="false">' + d + (i === wd ? " · сьогодні" : "") + "</button>";
   }).join("");
 
-  /* 2. ЗАРАЗ: урок чи перерва ------------------------------------------------------ */
+  /* що зараз: урок чи перерва */
   function status() {
     var now = new Date(), m = now.getHours() * 60 + now.getMinutes(), b = bellsFor(cls), box = $("#sch-now");
     var html;
@@ -77,12 +77,12 @@
     });
   }
 
-  /* 3. РОЗКЛАД КЛАСУ -------------------------------------------------------------- */
+  /* розклад класу */
   function renderBells() {
     var b = bellsFor(cls);
     $("#sch-bells").innerHTML = b.map(function (x, i) { return "<li><span>" + (i + 1) + " урок</span><b>" + x[0] + "–" + x[1] + "</b></li>"; }).join("");
   }
-  /* Клас заповнено, якщо є хоч один предмет (порожні заготовки не рахуються) */
+  /* клас вважаємо заповненим, якщо є хоч один предмет (порожні заготовки не рахуються) */
   function filled(c) {
     return S.classes[c].days.some(function (d) { return d.some(function (l) { return Array.isArray(l) ? l[0] : l; }); });
   }

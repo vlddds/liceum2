@@ -1,6 +1,5 @@
-/* «Публічна інформація» — прозорість та інформаційна відкритість закладу (public.html).
-   Як заповнювати блоки — див. опис на початку js/blocks.js.
-   Документ на Google Drive: drive("ID файлу") — ID є в посиланні drive.google.com/file/d/ID/view */
+/* Публічна інформація (прозорість закладу), блоки як у blocks.js.
+   drive("ID файлу"), ID видно в посиланні drive.google.com/file/d/ID/view */
 window.SECTION = (function () {
   function drive(id) { return "https://drive.google.com/file/d/" + id + "/view"; }
 
@@ -222,5 +221,5 @@ window.SECTION = (function () {
   };
 })();
 
-/* Реєстр для пошуку по сайту на головній (не змінюйте) */
+/* для пошуку на головній, не чіпати */
 (window.SECTIONS = window.SECTIONS || {}).public = window.SECTION;

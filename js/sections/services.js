@@ -1,5 +1,5 @@
-/* «Сервіси та служби» (services.html): харчування, бібліотека, психолог, медсестра, корисні посилання.
-   Як заповнювати блоки — див. js/blocks.js. Документ на Google Drive: drive("ID файлу"). */
+/* Сервіси та служби: харчування, бібліотека, психолог, медсестра, корисні посилання.
+   Блоки як у blocks.js, документи через drive("ID файлу"). */
 window.SECTION = (function () {
   var useful = (window.SITE_DATA && window.SITE_DATA.useful) || [];
   function drive(id) { return "https://drive.google.com/file/d/" + id + "/view"; }
@@ -131,5 +131,5 @@ window.SECTION = (function () {
   };
 })();
 
-/* Реєстр для пошуку по сайту на головній (не змінюйте) */
+/* для пошуку на головній, не чіпати */
 (window.SECTIONS = window.SECTIONS || {}).services = window.SECTION;

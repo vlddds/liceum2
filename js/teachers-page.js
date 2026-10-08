@@ -1,4 +1,4 @@
-/* Сторінка «Педагогічний колектив» (teachers.html). Дані: js/teachers.js */
+/* педколектив, дані в teachers.js */
 (function () {
   "use strict";
 
@@ -7,9 +7,9 @@
   var L = window.L2, $ = L.$, $$ = L.$$, esc = L.esc, ICON = L.ICON, restart = L.restart,
       plural = L.plural, reduce = L.reduce;
 
-  /* Шапка, підвал, меню й налаштування: js/common.js */
+  /* шапка, підвал і меню в common.js */
 
-  /* 2. ДАНІ ------------------------------------------------------------------ */
+  /* 2. дані */
   var GROUPS = T.groups, PH_NAME = "Прізвище Ім'я По батькові", total = 0;
   var norm = function (s) { return String(s || "").toLowerCase().replace(/[’ʼ`]/g, "'"); };
   GROUPS.forEach(function (g) {
@@ -25,7 +25,7 @@
     "<li><b>" + total + "</b> " + plural(total, "педагог", "педагоги", "педагогів") + "</li>" +
     "<li><b>" + dirs + "</b> " + plural(dirs, "напрям", "напрями", "напрямів") + "</li>";
 
-  /* 3. НАПРЯМИ ---------------------------------------------------------------- */
+  /* 3. напрями */
   var side = $("#t-side"), pick = $("#t-pick"), groupsEl = $("#t-groups"), grid = $("#t-grid"),
       empty = $("#t-empty"), status = $("#t-status"), q = $("#t-q"),
       mobile = window.matchMedia ? matchMedia("(max-width:899px)") : { matches: false },
@@ -71,7 +71,7 @@
     }
   });
 
-  /* 4. КАРТКИ ----------------------------------------------------------------- */
+  /* 4. картки */
   function initials(name) {
     var w = name.trim().split(/\s+/);
     return (w[0].charAt(0) + (w[1] ? w[1].charAt(0) : "")).toUpperCase();
@@ -97,7 +97,7 @@
     if (animate && !reduce) restart(grid, "swap");
   }
 
-  /* Фото не завантажилось: показуємо заглушку замість «битої» картинки */
+  /* фото не завантажилось - ставимо заглушку */
   document.addEventListener("error", function (e) {
     var img = e.target;
     if (img.tagName === "IMG" && img.parentNode && img.parentNode.classList.contains("t-ph")) {
@@ -110,7 +110,7 @@
     if (c) open(+c.getAttribute("data-k"), c);
   });
 
-  /* 5. ПОШУК ------------------------------------------------------------------ */
+  /* 5. пошук */
   q.addEventListener("input", function () {
     var tokens = norm(q.value.trim()).split(/\s+/).filter(Boolean);
     if (!tokens.length) { select(cur, true); status.textContent = ""; return; }
@@ -130,7 +130,7 @@
     if (e.key === "Escape" && q.value) { q.value = ""; select(cur, true); }
   });
 
-  /* 6. ВІКНО З ІНФОРМАЦІЄЮ ПРО ПЕДАГОГА ---------------------------------------- */
+  /* вікно з інфою про педагога */
   var dlg = $("#t-dlg"), at = 0, opener = null;
   var FIELDS = [["post", "Посада"], ["category", "Кваліфікаційна категорія"], ["title", "Педагогічне звання"],
     ["experience", "Педагогічний стаж"], ["education", "Освіта"]];
@@ -182,7 +182,7 @@
     else if (e.key === "ArrowRight" && at < list.length - 1) fill(at + 1);
   });
 
-  /* 7. СТАРТ: напрям з адреси (teachers.html#fizmat) ---------------------------- */
+  /* старт: напрям беремо з адреси (teachers.html#fizmat) */
   function fromHash() {
     var id = decodeURIComponent(location.hash.slice(1));
     for (var i = 0; i < GROUPS.length; i++) if (GROUPS[i].id === id) return i;

@@ -1,4 +1,4 @@
-/* Сторінка «Все про заклад» (about.html). Дані: js/about.js */
+/* сторінка "Все про заклад", дані беруться з about.js */
 (function () {
   "use strict";
 
@@ -18,7 +18,7 @@
   }
   function paras(t) { return String(t || "").split(/\n+/).filter(Boolean).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join(""); }
 
-  /* 1. ІСТОРІЯ ---------------------------------------------------------------- */
+  /* 1. історія */
   var H = A.history, age = new Date().getFullYear() - H.founded;
   $("#a-num").textContent = H.founded;
   $("#h-intro").innerHTML = paras(H.intro);
@@ -32,7 +32,7 @@
       "<small>" + esc(d.years) + (d.current ? " · чинний директор" : "") + "</small></span></li>";
   }).join("");
 
-  /* 2. АКОРДЕОН ----------------------------------------------------------------- */
+  /* 2. акордеон */
   var acc = $("#acc");
   function setPanel(item, open, animate) {
     var btn = $(".acc-head", item);
@@ -49,7 +49,7 @@
     if (open && history.replaceState) history.replaceState(null, "", "#" + item.id);
   });
 
-  /* 2.1 Адміністрація + графік прийому */
+  /* адміністрація і графік прийому */
   $("#adm-count").textContent = A.admin.length + " " + plural(A.admin.length, "особа", "особи", "осіб");
   $("#adm-grid").innerHTML = A.admin.map(function (p, i) {
     var rec = (p.reception || []).map(function (r) {
@@ -66,7 +66,7 @@
       "</div></li>";
   }).join("");
 
-  var today = new Date().getDay();   /* 0 = неділя … 6 = субота */
+  var today = new Date().getDay();   /* 0 - неділя, 6 - субота */
   var week = [1, 2, 3, 4, 5].map(function (d) {
     var slots = [];
     A.admin.forEach(function (p) {
@@ -92,7 +92,7 @@
     (A.receptionDoc ? ' <a class="more" href="' + esc(A.receptionDoc) + '">Графік прийому (PDF)</a>' : "");
   $("#rec-mail").href = L.mailto + "?subject=" + encodeURIComponent("Запис на особистий прийом");
 
-  /* 2.2 Педагогічний колектив: кількість з js/teachers.js, якщо він підключений */
+  /* скільки педагогів (якщо teachers.js підключений) */
   if (window.TEACHERS) {
     var n = 0, dirs = 0;
     window.TEACHERS.groups.forEach(function (g) { if (!g.retired && !g.extra) { n += g.people.length; dirs++; } });
@@ -100,7 +100,7 @@
       dirs + " " + plural(dirs, "напрям", "напрями", "напрямів");
   }
 
-  /* 2.3 Структура управління */
+  /* структура управління */
   var S = A.structure;
   function node(x, cls) { return '<div class="org-node ' + (cls || "") + '"><b>' + esc(x.title) + "</b>" + (x.text ? "<small>" + esc(x.text) + "</small>" : "") + "</div>"; }
   $("#org").innerHTML =
@@ -117,7 +117,7 @@
       : '<span class="doc-link off">' + ICON("doc") + "<span>" + esc(d.title) + "<small>Документ скоро з'явиться</small></span></span>";
   }).join("");
 
-  /* 2.4 Учнівське самоврядування */
+  /* самоврядування */
   var G = A.selfGov;
   $("#sg-intro").innerHTML = paras(G.intro);
   $("#sg-leader").innerHTML = '<span class="ico">' + ICON("award") + "</span><div><small>" + esc(G.leader.title) + "</small><b" +
@@ -127,7 +127,7 @@
     return '<li style="--i:' + i + '"><span class="ico">' + ICON(c.icon || "star") + "</span><b>" + esc(c.title) + "</b><p>" + esc(c.text) + "</p></li>";
   }).join("");
 
-  /* 2.5 Правила: вкладки-розділи */
+  /* правила, розбиті на вкладки */
   var rTabs = $("#rules-tabs"), rBody = $("#rules-body"), curRule = 0;
   var total = 0;
   A.rules.forEach(function (r) { total += r.items.length; });
@@ -160,7 +160,7 @@
   });
   showRule(0, false);
 
-  /* Друк правил: усі розділи на окремому аркуші */
+  /* друкуємо правила всі разом */
   var rp = document.createElement("div");
   rp.className = "rules-printable";
   rp.innerHTML = "<h1>Правила внутрішньошкільного розпорядку та поведінки учнів</h1><p>Ліцей №2 Підгородненської міської ради</p>" +
@@ -171,7 +171,7 @@
   $("#rules-print").addEventListener("click", function () { document.body.classList.add("rules-printing"); window.print(); });
   window.addEventListener("afterprint", function () { document.body.classList.remove("rules-printing"); });
 
-  /* 3. ПЕРЕХІД ЗА АДРЕСОЮ: about.html#structure відкриває потрібний пункт ----------- */
+  /* about.html#structure одразу відкриває потрібний пункт */
   var ALIAS = { reception: "administration" };
   function fromHash(scroll) {
     var id = decodeURIComponent(location.hash.slice(1));
@@ -187,7 +187,7 @@
   fromHash(true);
   window.addEventListener("hashchange", function () { fromHash(true); });
 
-  /* Внутрішні посилання на цій сторінці (#history, #structure …) */
+  /* посилання всередині сторінки (#history, #structure...) */
   document.addEventListener("click", function (e) {
     var a = e.target.closest('a[href^="#"]');
     if (!a) return;
@@ -199,7 +199,7 @@
     if (!t.classList.contains("acc-item")) t.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
   });
 
-  /* 4. ПОЯВА ПРИ ПРОКРУТЦІ --------------------------------------------------------- */
+  /* 4. поява при прокрутці */
   var reveal = $$(".sec-head, .h-grid > *, .timeline, .acc-item");
   reveal.forEach(function (el, i) { el.setAttribute("data-reveal", ""); el.style.setProperty("--d", (Math.min(i % 6, 5) * 0.07).toFixed(2) + "s"); });
   if ("IntersectionObserver" in window && !reduce) {

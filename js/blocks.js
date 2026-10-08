@@ -1,31 +1,30 @@
-/* ==========================================================================
-   Блоки вмісту для розділових сторінок і архіву. Підключається після js/common.js.
-   window.L2B.render(blocks)  → HTML;  події (галереї, відео) обробляються тут самі.
+/* Блоки для розділових сторінок і архіву. Підключати після common.js.
+   window.L2B.render(blocks) віддає HTML, кліки по галереях і відео ловляться тут же.
 
-   Типи блоків (поле type):
-     text     { text }                          абзаци, новий абзац — \n
+   Які бувають блоки (type):
+     text     { text }                          абзаци, новий абзац через \n
      heading  { text }                          підзаголовок
      list     { items: [..] }                   список
      steps    { items: [..] }                   нумерований список
-     docs     { items: [{ title, url, date, group }] }   документи (групуються за group)
+     docs     { items: [{ title, url, date, group }] }   документи (групуються по group)
      links    { items: [{ title, url, text }] }           корисні сайти
      cards    { items: [{ icon, title, text, url }] }     картки
      people   { items: [{ name, role, photo, phone, email, hours }] }
-     phones   { items: [{ title, phone, alt, note }] }    телефони (натискаються)
-     stats    { items: [{ value, label }] }                великі числа
-     facts    { items: [{ label, value }] }                «назва — значення»
+     phones   { items: [{ title, phone, alt, note }] }    телефони (можна натиснути)
+     stats    { items: [{ value, label }] }                великі цифри
+     facts    { items: [{ label, value }] }                "назва - значення"
      table    { head: [..], rows: [[..], ..] }
-     note     { text, tone: "info" | "warn" }             виділене повідомлення
-     button   { title, url, text }                         кнопка-перехід
-     gallery  { items: ["img/…jpg", …] }                  фото (натискаються — перегляд на весь екран);
-                                                            порожній рядок "" — заготовка під фото
-     videos   { items: [{ title, yt }] }                   відео YouTube (yt — код відео)
-     feed     { items: [[вид, …], …] }                     стрічка «як на старій сторінці»:
-                ["h", текст] ["p", текст, [[підпис, url], …]] ["li", текст] ["img", шлях]
+     note     { text, tone: "info" | "warn" }             виділена плашка
+     button   { title, url, text }                         кнопка
+     gallery  { items: ["img/...jpg", ...] }               фото, відкриваються на весь екран;
+                                                            "" = місце під фото
+     videos   { items: [{ title, yt }] }                   відео з ютуба (yt - код відео)
+     feed     { items: [[вид, ...], ...] }                 стрічка як на старому сайті:
+                ["h", текст] ["p", текст, [[підпис, url], ...]] ["li", текст] ["img", шлях]
                 ["file", назва, url] ["video", назва, кодYouTube] ["link", текст, url]
-     news     {}                                           усі новини з js/data.js
+     news     {}                                           всі новини з data.js
      faq      { items: [{ q, a, url, link }] }             питання-відповіді, що розгортаються
-   ========================================================================== */
+*/
 (function () {
   "use strict";
 
@@ -43,7 +42,7 @@
     return m ? m[1].toUpperCase() : "";
   }
 
-  /* Галереї реєструються тут, щоб по кліку відкрити перегляд на весь екран */
+  /* галереї запам'ятовуємо тут, щоб по кліку відкрити фото на весь екран */
   var GAL = [];
   function gallery(srcs, caption) {
     var g = GAL.push(srcs.map(function (s) { return { src: s, caption: caption || "" }; })) - 1;
@@ -170,7 +169,7 @@
     }).join("");
   }
 
-  /* Кліки: фото → перегляд на весь екран; відео → вбудований плеєр YouTube */
+  /* клік по фото - на весь екран, по відео - вставляємо плеєр */
   document.addEventListener("click", function (e) {
     var ph = e.target.closest(".b-ph");
     if (ph) { L.lightbox(GAL[+ph.getAttribute("data-g")], +ph.getAttribute("data-i"), function () { ph.focus(); }); return; }

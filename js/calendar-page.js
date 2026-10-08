@@ -1,4 +1,4 @@
-/* Сторінка «Календар подій» (calendar.html). Дані: js/calendar.js */
+/* календар подій, дані в calendar.js */
 (function () {
   "use strict";
 
@@ -23,7 +23,7 @@
   var shown = {}; Object.keys(C.types).forEach(function (t) { shown[t] = true; });
   var view = new Date(today.getFullYear(), today.getMonth(), 1);
 
-  /* розкладаємо події по днях */
+  /* розкидаємо події по днях */
   var byDay = {};
   events.forEach(function (e) {
     for (var d = new Date(e.start); d <= e.end; d.setDate(d.getDate() + 1)) {
@@ -31,7 +31,7 @@
     }
   });
 
-  /* 1. ШАПКА СТОРІНКИ ------------------------------------------------------------ */
+  /* шапка */
   $("#main").innerHTML =
     '<section class="hero t-hero on-dark" aria-labelledby="h1"><div class="hero-bg" aria-hidden="true"><span class="num">' + today.getDate() + "</span></div>" +
     '<div class="wrap hero-in"><nav class="crumbs" aria-label="Ви тут"><a href="index.html">Головна</a><span aria-hidden="true">/</span><span aria-current="page">Календар подій</span></nav>' +
@@ -59,7 +59,7 @@
     return "<li>" + (e.url ? '<a href="' + esc(e.url) + '">' + inner + "</a>" : "<div>" + inner + "</div>") + "</li>";
   }
 
-  /* 2. СІТКА МІСЯЦЯ ---------------------------------------------------------------- */
+  /* сітка місяця */
   function render(animate) {
     var y = view.getFullYear(), m = view.getMonth();
     $("#cal-title").textContent = MONTHS[m] + " " + y;

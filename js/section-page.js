@@ -1,11 +1,9 @@
-/* ==========================================================================
-   Розділова сторінка (education.html, public.html, upbringing.html, services.html, news.html).
-   Малює сторінку з window.SECTION (файли js/sections/*.js). Блоки вмісту — js/blocks.js.
+/* Розділова сторінка (education, public, upbringing, services, news).
+   Малює все з window.SECTION (файли sections/*.js), блоки беруться з blocks.js.
 
-   SECTION = { title, lead, num, crumb, items: [ пункт, … ] }
-   Пункт   = { id, title, short, icon, sub, open, blocks: [ блок, … ] }
-             або посилання: { id, title, icon, sub, href }  (рядок-перехід, як «Педагогічний колектив»)
-   ========================================================================== */
+   SECTION = { title, lead, num, crumb, items: [пункт, ...] }
+   пункт   = { id, title, short, icon, sub, open, blocks: [блок, ...] }
+             або просто посилання: { id, title, icon, sub, href } (як "Педагогічний колектив") */
 (function () {
   "use strict";
 
@@ -21,7 +19,7 @@
     return n;
   }
 
-  /* 2. СТОРІНКА ------------------------------------------------------------------- */
+  /* 2. сторінка */
   var items = S.items || [];
   var main = $("#main");
   main.innerHTML =
@@ -60,7 +58,7 @@
     "</div></section>";
   document.title = S.title + " · Підгородненський Ліцей №2";
 
-  /* 3. АКОРДЕОН, ПОШУК, «РОЗГОРНУТИ ВСЕ» -------------------------------------------- */
+  /* акордеон, пошук, кнопка "розгорнути все" */
   var acc = $("#acc");
   function setPanel(item, open, animate) {
     var btn = $("button.acc-head", item);
@@ -104,7 +102,7 @@
     });
   }
 
-  /* 4. ПЕРЕХІД ЗА АДРЕСОЮ: education.html#dpa відкриває потрібний пункт --------------- */
+  /* education.html#dpa одразу відкриває потрібний пункт */
   function fromHash() {
     var id = decodeURIComponent(location.hash.slice(1)), t = id && document.getElementById(id);
     if (t && t.classList.contains("acc-item")) {
@@ -125,12 +123,12 @@
     fromHash();
   });
 
-  /* 5. ЗОВНІШНІ ПОСИЛАННЯ відкриваються в новій вкладці (як на решті сайту) ------------ */
+  /* зовнішні посилання в новій вкладці, як скрізь */
   $$("a[href]", main).forEach(function (a) {
     if (isWeb(a.getAttribute("href"))) { a.target = D.config.linkTarget; a.rel = "noopener"; }
   });
 
-  /* 6. ПОЯВА ПРИ ПРОКРУТЦІ ------------------------------------------------------------ */
+  /* 6. поява при прокрутці */
   var reveal = $$(".acc-item, .sp-tools", main);
   reveal.forEach(function (el, i) { el.setAttribute("data-reveal", ""); el.style.setProperty("--d", (Math.min(i, 6) * 0.05).toFixed(2) + "s"); });
   if ("IntersectionObserver" in window && !reduce) {
