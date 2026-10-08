@@ -1278,6 +1278,7 @@ html.dark .b-ph{box-shadow:inset 0 0 0 1px var(--line)}
 .pf-prev>.ic{color:var(--navy)}
 .pf-prev small{display:block;color:var(--muted)}
 .pf-prev-btns{display:flex;flex-wrap:wrap;gap:.5rem;margin-left:auto}
+@media (max-width:560px){.pf-prev-btns{width:100%;margin-left:0}.pf-prev-btns .btn{flex:1 1 140px}}
 /* шапка екрана і прогрес */
 .pf-part{display:inline-block;font-size:.8rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--navy-2);margin-bottom:.35rem}
 .pf-progress{margin-top:1rem}
@@ -1315,18 +1316,18 @@ html.dark .b-ph{box-shadow:inset 0 0 0 1px var(--line)}
 .pf-date{color:var(--muted);margin-top:-.3rem!important}
 .pf-res-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:1.25rem;align-items:center}
 @media (max-width:720px){.pf-res-grid{grid-template-columns:1fr}}
-.pf-radar{display:block;width:100%;max-width:380px;height:auto;margin:0 auto;overflow:visible}
+.pf-radar{display:block;width:100%;max-width:400px;height:auto;margin:0 auto;overflow:visible}
 .pf-grid{fill:none;stroke:var(--line);stroke-width:1}
 .pf-axis{stroke:var(--line);stroke-width:1}
 .pf-area{fill:var(--navy-2);fill-opacity:.2;stroke:var(--navy-2);stroke-width:2.5;stroke-linejoin:round}
 .pf-pt{fill:var(--navy-2)}
-.pf-lbl{fill:var(--ink);font-size:12.5px;font-weight:600;font-family:var(--sans)}
-.pf-val{fill:var(--muted);font-weight:500}
+.pf-lbl{fill:var(--ink);font-size:13px;font-weight:600;font-family:var(--sans)}
+.pf-val{fill:var(--muted);font-weight:500;font-size:12px}
 html.contrast .pf-area{fill:#000;fill-opacity:.12;stroke:#000;stroke-width:3}
 html.contrast .pf-grid,html.contrast .pf-axis{stroke:#000;stroke-dasharray:3 3}
 .pf-code{display:flex;align-items:baseline;gap:.75rem;margin-bottom:.5rem}
 .pf-code span{font-weight:600;color:var(--muted)}
-.pf-code b{font-family:var(--serif);font-size:2.4rem;letter-spacing:.08em;color:var(--navy)}
+.pf-code b{font-family:var(--serif);font-size:2.4rem;letter-spacing:.02em;line-height:1;color:var(--navy)}
 .pf-scores{list-style:none;margin:.75rem 0 0;padding:0;display:grid;gap:.3rem}
 .pf-scores li{display:flex;align-items:baseline;gap:.45rem;padding:.4rem .6rem;border-radius:8px;font-size:.95rem}
 .pf-scores li b{min-width:1.1rem;color:var(--navy)}

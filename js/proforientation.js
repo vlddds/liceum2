@@ -275,21 +275,25 @@
   }
 
   /* 8. РЕЗУЛЬТАТ ------------------------------------------------------------------ */
+  /* Радарна діаграма: чистий SVG. Підписи у два рядки (назва + бал), щоб уміщалися й на вузькому екрані */
   function radar(sc) {
-    var cx = 170, cy = 150, R = 104, n = ORDER.length;
+    var W = 360, H = 268, cx = 180, cy = 134, R = 84, n = ORDER.length;
     function pt(i, f) { var a = -Math.PI / 2 + i * 2 * Math.PI / n; return [cx + Math.cos(a) * R * f, cy + Math.sin(a) * R * f]; }
     function poly(f) { return ORDER.map(function (t, i) { return pt(i, typeof f === "function" ? f(t) : f).map(function (v) { return v.toFixed(1); }).join(","); }).join(" "); }
     var val = function (t) { return Math.max(0.04, (sc[t] - 6) / 24); };
-    var svg = '<svg class="pf-radar" viewBox="0 0 340 300" role="img" aria-labelledby="pf-radar-t"><title id="pf-radar-t">Діаграма інтересів: ' +
+    var svg = '<svg class="pf-radar" viewBox="0 0 ' + W + " " + H + '" role="img" aria-labelledby="pf-radar-t"><title id="pf-radar-t">Діаграма інтересів: ' +
       ORDER.map(function (t) { return TYPES[t].nick + " " + sc[t] + " з 30"; }).join(", ") + "</title>";
     [0.25, 0.5, 0.75, 1].forEach(function (f) { svg += '<polygon class="pf-grid" points="' + poly(f) + '"/>'; });
     ORDER.forEach(function (t, i) { var p = pt(i, 1); svg += '<line class="pf-axis" x1="' + cx + '" y1="' + cy + '" x2="' + p[0].toFixed(1) + '" y2="' + p[1].toFixed(1) + '"/>'; });
     svg += '<polygon class="pf-area" points="' + poly(val) + '"/>';
     ORDER.forEach(function (t, i) {
       var p = pt(i, val(t)); svg += '<circle class="pf-pt" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="4"/>';
-      var l = pt(i, 1.2), anchor = Math.abs(l[0] - cx) < 5 ? "middle" : l[0] > cx ? "start" : "end";
-      svg += '<text class="pf-lbl" x="' + l[0].toFixed(1) + '" y="' + (l[1] + (l[1] < cy - 5 ? -2 : l[1] > cy + 5 ? 12 : 4)).toFixed(1) + '" text-anchor="' + anchor + '">' +
-        esc(TYPES[t].nick) + ' <tspan class="pf-val">' + sc[t] + "</tspan></text>";
+      var v = pt(i, 1), x, y, anchor;
+      if (i === 0) { x = cx; y = v[1] - 26; anchor = "middle"; }            /* верх: над вершиною */
+      else if (i === n / 2) { x = cx; y = v[1] + 18; anchor = "middle"; }   /* низ: під вершиною */
+      else { anchor = v[0] > cx ? "start" : "end"; x = v[0] + (v[0] > cx ? 10 : -10); y = v[1] - 4; }
+      svg += '<text class="pf-lbl" text-anchor="' + anchor + '"><tspan x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '">' + esc(TYPES[t].nick) + "</tspan>" +
+        '<tspan class="pf-val" x="' + x.toFixed(1) + '" dy="15">' + sc[t] + " з 30</tspan></text>";
     });
     return svg + "</svg>";
   }
