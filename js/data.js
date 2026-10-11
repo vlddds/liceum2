@@ -20,8 +20,8 @@ window.SITE_DATA = (function () {
     /* куди летять форми: адреса Apps Script (як налаштувати - в tools/google-apps-script.gs)
        або Formspree. порожньо = відкриється пошта.
        reviewEndpoint - окремо для відгуків, якщо порожньо, то береться formEndpoint */
-    formEndpoint: "https://script.google.com/macros/s/AKfycbwTJq2oWbsZiJZuL5DNLyF_kVlvwBRi5V9S6jwNaKJPGMRVSzWtOBKuNWUqUD5wg3jM/exec",
-    reviewEndpoint: "https://script.google.com/macros/s/AKfycbwTJq2oWbsZiJZuL5DNLyF_kVlvwBRi5V9S6jwNaKJPGMRVSzWtOBKuNWUqUD5wg3jM/exec",
+    formEndpoint: "https://script.google.com/macros/s/AKfycbxTNVMCs_sJrhIZMN0nlOuB0Vz-BGEBJ0JMPEwMwWDkOMcyQ9tzOvukbd96Yf0Jwf0/exec",
+    reviewEndpoint: "https://script.google.com/macros/s/AKfycbxTNVMCs_sJrhIZMN0nlOuB0Vz-BGEBJ0JMPEwMwWDkOMcyQ9tzOvukbd96Yf0Jwf0/exec",
 
     /* пасхалка: це слово в пошуку на головній відкриває гру.
        ще можна набрати ↑ ↑ ↓ ↓ ← → ← → B A або 5 разів клікнути по року в підвалі */
