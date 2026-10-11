@@ -1,4 +1,4 @@
-/* Гугл-таблиця для форм сайту: "Швидке повідомлення" і "Відгуки".
+/* Гугл-таблиця для сайту: "Швидке повідомлення", "Відгуки" і дописи "Життя ліцею".
 
    Як підключити (один раз, хвилин 5):
    1. Створити нову таблицю (sheets.new) з акаунта ліцею.
@@ -14,10 +14,17 @@
    Модерація: на аркуші "Відгуки" ставимо галочку в "Схвалено" - відгук з'являється на сайті
    (протягом хвилини). Зняли галочку - зник.
 
+   Життя ліцею (вкладка на сторінці новин): аркуш "Життя ліцею" створюється сам, коли сайт
+   вперше його попросить. Один рядок = один допис:
+     Дата | Заголовок | Текст (можна з абзацами) | Фото | Показувати (галочка)
+   Фото: посилання на файли з Google Диска, кожне з нового рядка (або через пробіл).
+   Самі файли чи папка мають бути відкриті "Усі, хто має посилання", інакше фото не покажуться.
+   Допис з'являється на сайті, коли стоїть галочка "Показувати", нові зверху (за датою).
+
    Якщо міняли цей код: Розгорнути -> Керувати розгортаннями -> Редагувати -> Нова версія. */
 
 var NOTIFY_EMAIL = "pidgorodne.lyceum2@gmail.com";   // куди слати листи про нові звернення ("" - не слати)
-var REVIEWS = "Відгуки", MESSAGES = "Звернення";
+var REVIEWS = "Відгуки", MESSAGES = "Звернення", LIFE = "Життя ліцею";
 
 function sheet_(name, head) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -59,17 +66,52 @@ function doPost(e) {
   }
 }
 
-/* віддаємо схвалені відгуки: .../exec?action=reviews */
+/* віддаємо дані сайту: .../exec?action=reviews (схвалені відгуки), .../exec?action=life (дописи) */
 function doGet(e) {
-  if (!e || !e.parameter || e.parameter.action !== "reviews") return json_({ ok: true });
+  var action = e && e.parameter ? e.parameter.action : "";
+  if (action === "reviews") return json_(reviews_());
+  if (action === "life") return json_(life_());
+  return json_({ ok: true });
+}
+
+function reviews_() {
   var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(REVIEWS);
-  if (!sh || sh.getLastRow() < 2) return json_([]);
+  if (!sh || sh.getLastRow() < 2) return [];
   var rows = sh.getRange(2, 1, sh.getLastRow() - 1, 6).getValues();
   var months = ["січень", "лютий", "березень", "квітень", "травень", "червень", "липень", "серпень", "вересень", "жовтень", "листопад", "грудень"];
-  var out = rows.filter(function (r) { return r[5] === true; }).reverse().map(function (r) {
+  return rows.filter(function (r) { return r[5] === true; }).reverse().map(function (r) {
     var dt = r[0] instanceof Date ? r[0] : null;
     return { name: String(r[1]), who: String(r[2]), rating: Number(r[3]) || "", text: String(r[4]),
              date: dt ? months[dt.getMonth()] + " " + dt.getFullYear() : "" };
   });
-  return json_(out);
+}
+
+/* дописи "Життя ліцею": тільки з галочкою, нові зверху, не більше 30 */
+function life_() {
+  var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(LIFE);
+  if (!sh) {
+    sh = sheet_(LIFE, ["Дата", "Заголовок", "Текст", "Фото (посилання з Google Диска, кожне з нового рядка)", "Показувати"]);
+    sh.getRange("A2:A500").setNumberFormat("dd.mm.yyyy");
+    sh.getRange("E2:E500").insertCheckboxes();
+    sh.setColumnWidth(2, 220); sh.setColumnWidth(3, 420); sh.setColumnWidth(4, 320);
+  }
+  if (sh.getLastRow() < 2) return [];
+  var rows = sh.getRange(2, 1, sh.getLastRow() - 1, 5).getValues();
+  var months = ["січня", "лютого", "березня", "квітня", "травня", "червня", "липня", "серпня", "вересня", "жовтня", "листопада", "грудня"];
+  return rows.filter(function (r) { return r[4] === true && (r[1] || r[2]); })
+    .sort(function (a, b) { return (b[0] instanceof Date ? b[0].getTime() : 0) - (a[0] instanceof Date ? a[0].getTime() : 0); })
+    .slice(0, 30)
+    .map(function (r) {
+      var dt = r[0] instanceof Date ? r[0] : null;
+      return { date: dt ? dt.getDate() + " " + months[dt.getMonth()] + " " + dt.getFullYear() : String(r[0] || ""),
+               title: clean_(r[1], 200), text: clean_(r[2], 3000), photos: photos_(r[3]) };
+    });
+}
+
+/* посилання з Google Диска -> пряма картинка (файл має бути відкритий за посиланням) */
+function photos_(cell) {
+  return String(cell || "").split(/[\s,]+/).filter(Boolean).slice(0, 12).map(function (u) {
+    var m = u.match(/\/d\/([\w-]{20,})/) || u.match(/[?&]id=([\w-]{20,})/);
+    return m ? "https://drive.google.com/thumbnail?id=" + m[1] + "&sz=w1600" : (/^https:\/\//.test(u) ? u : "");
+  }).filter(Boolean);
 }

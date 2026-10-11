@@ -7,9 +7,6 @@ window.SITE_DATA = (function () {
     logoUrl: "",             
     email: "pidgorodne.lyceum2@gmail.com",
     facebook: "https://www.facebook.com/groups/257420355144626",
-    /* для вкладки "Життя ліцею" на сторінці новин. треба саме СТОРІНКА у фейсбуці (facebook.com/назва),
-       стрічку групи (facebook.com/groups/...) фейсбук вбудувати не дає - тоді буде просто кнопка "Відкрити у Facebook" */
-    FACEBOOK_PAGE_URL: "https://www.facebook.com/groups/257420355144626",
     address: "вул. Державна, 2, м. Підгородне, Дніпровський район, Дніпропетровська область, 52001",
     lat: 48.575446,
     lng: 35.107397,
