@@ -43,7 +43,7 @@
   var NAV = [
     { title: "Про ліцей", items: [["about.html", "Все про заклад"], ["teachers.html", "Педагогічний колектив"],
       ["public.html", "Публічна інформація"], ["albums.html", "Фотоальбоми"]] },
-    { title: "Новини", items: [["news.html", "Новини"], ["calendar.html", "Календар подій"], ["archive.html", "Архів"]] },
+    { title: "Новини", items: [["news.html", "Новини"], ["news.html#life", "Життя ліцею"], ["calendar.html", "Календар подій"], ["archive.html", "Архів"]] },
     { title: "Навчання", items: [["schedule.html", "Розклад уроків"], ["education.html", "Освітній процес"],
       ["upbringing.html", "Виховна робота"], ["index.html#clubs", "Гуртки"]] },
     { title: "Учням і батькам", items: [["menu.html", "Меню їдальні"], ["services.html", "Сервіси та служби"], ["faq.html", "Часті питання"]] },
@@ -143,7 +143,7 @@
   function openGame() {
     if (window.L2Game) { window.L2Game.open(); return; }
     var s = document.createElement("script");
-    s.src = "js/game.js?v=20261011-3";
+    s.src = "js/game.js?v=20261011-4";
     s.onload = function () { if (window.L2Game) window.L2Game.open(); };
     document.body.appendChild(s);
   }

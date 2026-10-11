@@ -14,7 +14,8 @@
                             17. питання, календар, розклад
                             18. друк
                             19. меню їдальні
-                            20. профтест */
+                            20. профтест
+                            21. вкладки на сторінці новин */
 
 /* 1. змінні та база */
 :root{
@@ -1385,3 +1386,33 @@ html.contrast .pf-bar-track{border:1px solid #000}
   .pf h3{font-size:12pt;margin-bottom:.4rem}
   .pf p,.pf-tip,.pf-next p{font-size:9.5pt}
 }
+
+/* 21. новини: вкладки "Новини" / "Життя ліцею" (js/news-tabs.js) */
+.nt-tabs{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:560px;margin:0 0 1.25rem;padding:5px;
+  background:var(--surface);border:1px solid var(--line);border-radius:999px;box-shadow:var(--sh1)}
+.nt-tabs::before{content:"";position:absolute;top:5px;bottom:5px;left:5px;width:calc(50% - 5px);border-radius:999px;background:var(--fill);
+  transform:translateX(var(--x,0%));transition:transform .3s var(--ease)}
+.nt-tabs [role="tab"]{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:.45rem;min-height:46px;padding:.55rem .75rem;
+  border:0;border-radius:999px;background:none;color:var(--ink);font:inherit;font-weight:600;font-size:1rem;white-space:nowrap;cursor:pointer;transition:color .25s}
+.nt-tabs [role="tab"][aria-selected="true"]{color:#fff}
+.nt-tabs [role="tab"]:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.nt-tabs .ic{width:1.1em;height:1.1em}
+.nt-panel{outline:none}
+.nt-lead{margin:0 0 1rem;color:var(--muted)}
+.fb-box{max-width:520px}
+.fb-ph{display:grid;justify-items:start;gap:.85rem;padding:1.4rem;border:1px dashed var(--line);border-radius:var(--r-l);background:var(--surface)}
+.fb-ph>.ic{width:2.2rem;height:2.2rem;padding:.45rem;border-radius:12px;background:#1877F2;color:#fff;stroke:#fff}
+.fb-ph p{margin:0;color:var(--ink-2)}
+.fb-ph b{display:block;color:var(--ink);font-size:1.1rem;margin-bottom:.2rem}
+/* стрічка фейсбука завжди на білому, щоб у темній темі не було темної рамки навколо білого віджета */
+.fb-frame{display:inline-block;max-width:100%;padding:8px;background:#fff;border-radius:var(--r-l);border:1px solid var(--line);overflow:hidden}
+.fb-frame iframe{display:block;max-width:100%;border-radius:12px}
+.fb-alt{margin:.75rem 0 0;font-size:.92rem}
+.sec-links{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem}
+@media (max-width:640px){
+  .nt-tabs{max-width:none}
+  .nt-tabs [role="tab"]{font-size:.95rem;padding:.55rem .4rem}
+}
+@media (max-width:360px){.nt-tabs .ic{display:none}}
+@media (prefers-reduced-motion:reduce){.nt-tabs::before{transition:none}}
+@media print{.nt-tabs,.fb-box,.fb-alt{display:none!important}}
