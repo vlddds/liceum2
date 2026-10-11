@@ -1179,6 +1179,13 @@ html.dark .b-ph{box-shadow:inset 0 0 0 1px var(--line)}
 .bunny svg{display:block;width:100%;height:auto;overflow:visible;transform-origin:50% 100%;transition:transform .12s ease-out;
   filter:drop-shadow(0 6px 6px rgba(10,20,50,.22))}
 .bunny.land svg{transform:scale(1.06,.9)}
+.bunny-flip{display:block}
+/* на телефоні кролика можна тапнути, над ним бульбашка з підказкою */
+.bunny.touch{pointer-events:auto;touch-action:manipulation;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.bunny-say{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:8px;width:max-content;max-width:min(240px,calc(100vw - 16px));
+  padding:.4rem .7rem;border-radius:12px;background:var(--surface);color:var(--ink);border:1px solid var(--line);box-shadow:var(--sh2);
+  font-size:.82rem;font-weight:600;line-height:1.3;text-align:center;opacity:0;transition:opacity .2s;pointer-events:none}
+.bunny.say .bunny-say{opacity:1}
 /* схований кролик, видно тільки вушка */
 .bunny-peek{position:absolute;z-index:5;width:42px;height:22px;padding:0;margin:0;border:0;background:none;cursor:pointer;
   transform-origin:50% 100%;transition:transform .2s var(--ease)}
@@ -1361,8 +1368,10 @@ html.contrast .pf-bar-track{border:1px solid #000}
 .pf-next li>.ic{flex:none;margin-top:.2rem;color:var(--navy)}
 .pf-next p{margin:.2rem 0 0!important;color:var(--ink-2)}
 .pf-disclaimer{margin-bottom:1rem!important}
+.pf-img{margin-top:1rem;text-align:center}
+.pf-img img{display:block;width:100%;max-width:420px;height:auto;margin:.5rem auto 0;border:1px solid var(--line);border-radius:var(--r-m);box-shadow:var(--sh1)}
 @media print{
-  .pf-sec .pf-btns,.pf-intro,.pf .pf-nav,.hero.t-hero,.bunny,.bunny-peek{display:none!important}
+  .pf-sec .pf-btns,.pf-intro,.pf .pf-nav,.hero.t-hero,.bunny,.bunny-peek,.pf-img{display:none!important}
   .pf-sec{padding:0!important}
   .pf{max-width:none}
   .pf-print-title{display:block;font-size:9pt;color:#555;margin:0 0 .3rem!important}

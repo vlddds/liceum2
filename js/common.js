@@ -143,7 +143,7 @@
   function openGame() {
     if (window.L2Game) { window.L2Game.open(); return; }
     var s = document.createElement("script");
-    s.src = "js/game.js?v=20261008-4";
+    s.src = "js/game.js?v=20261011-2";
     s.onload = function () { if (window.L2Game) window.L2Game.open(); };
     document.body.appendChild(s);
   }
@@ -273,9 +273,10 @@
   /* пасхалка з кроликом
      на кожній сторінці він визирає з-за якоїсь картки (щоразу з іншої).
      знайшли, натиснули - вистрибує і бігає за мишкою. ще можна написати bunny в пошуку.
-     Esc - прибрати */
+     Esc - прибрати. на телефоні - натиснути на нього двічі */
   var bunny = (function () {
-    var B = null, BW = 80, BH = 67;
+    var B = null, BW = 80, BH = 67, OFF = "l2bunnyOff";
+    function touch() { return !!(window.matchMedia && matchMedia("(hover: none) and (pointer: coarse)").matches); }
     var SVG = '<svg viewBox="0 0 120 100"><g>' +
         '<ellipse cx="72" cy="22" rx="7" ry="18" transform="rotate(-22 72 22)" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
         '<ellipse cx="72" cy="22" rx="3" ry="12" transform="rotate(-22 72 22)" fill="#ffb3c7"/>' +
@@ -291,18 +292,47 @@
         '<ellipse cx="76" cy="92" rx="9" ry="4.5" fill="#fff" stroke="#8a93a6" stroke-width="2.5"/>' +
       "</g></svg>";
     function place(x, y, rot) {
-      B.el.style.transform = "translate(" + (x - BW / 2) + "px," + (y - BH) + "px) scaleX(" + B.dir + ") rotate(" + rot + "deg)";
+      B.el.style.transform = "translate(" + (x - BW / 2) + "px," + (y - BH) + "px) rotate(" + (rot * B.dir) + "deg)";
+      B.flip.style.transform = "scaleX(" + B.dir + ")";   /* розвертаємо тільки малюнок, щоб бульбашка з текстом не віддзеркалювалась */
+      if (B.sayOn) fitSay(x);
+    }
+    /* бульбашка над кроликом (тільки на телефоні) */
+    function say(text, ms) {
+      if (!B || !B.say) return;
+      B.say.textContent = text; B.sayOn = true; B.el.classList.add("say");
+      fitSay(B.x);
+      clearTimeout(B.sayT);
+      B.sayT = setTimeout(function () { if (B) { B.sayOn = false; B.el.classList.remove("say"); } }, ms || 3500);
+    }
+    function fitSay(x) {   /* щоб бульбашка не вилазила за край екрана */
+      var w = B.say.offsetWidth, left = x - w / 2, shift = 0;
+      if (left < 8) shift = 8 - left; else if (left + w > innerWidth - 8) shift = innerWidth - 8 - left - w;
+      B.say.style.transform = "translateX(calc(-50% + " + shift + "px))";
     }
     function start(x, y, pop) {
       if (B) return;
       var el = document.createElement("div");
-      el.className = "bunny" + (pop && !reduce ? " pop" : ""); el.setAttribute("aria-hidden", "true");
-      el.innerHTML = SVG;
+      var tap = touch();
+      el.className = "bunny" + (pop && !reduce ? " pop" : "") + (tap ? " touch" : ""); el.setAttribute("aria-hidden", "true");
+      el.innerHTML = (tap ? '<span class="bunny-say"></span>' : "") + '<span class="bunny-flip">' + SVG + "</span>";
       document.body.appendChild(el);
-      B = { el: el, dir: 1, leaving: false,
+      B = { el: el, flip: el.querySelector(".bunny-flip"), say: el.querySelector(".bunny-say"), dir: 1, leaving: false, lastTap: 0,
             x: Math.max(BW / 2, Math.min(x, innerWidth - BW / 2)), y: Math.max(BH + 10, Math.min(y, innerHeight - 8)) };
       B.tx = B.x; B.ty = B.y;
       place(B.x, B.y, 0);
+      if (tap) {
+        setTimeout(function () { say("Натисни на мене двічі, і я піду", 4500); }, pop && !reduce ? 550 : 0);
+        /* подвійний дотик - кролик іде і більше не ховається, поки відкрита вкладка */
+        el.addEventListener("pointerup", function () {
+          if (!B || B.leaving) return;
+          var now = Date.now();
+          if (now - B.lastTap < 600) {
+            say("Бувай!", 1500); leave();
+            try { sessionStorage.setItem(OFF, "1"); } catch (e) {}
+          } else say("Ще раз, і я піду", 2000);
+          B.lastTap = now;
+        });
+      }
       if (pop && !reduce) setTimeout(function () { el.classList.remove("pop"); hop(); }, 520); else hop();
     }
     function leave() {
@@ -336,7 +366,10 @@
       });
     }
     document.addEventListener("pointermove", function (e) { target(e.clientX, e.clientY); });
-    document.addEventListener("pointerdown", function (e) { target(e.clientX, e.clientY); });
+    document.addEventListener("pointerdown", function (e) {
+      if (e.target.closest && e.target.closest(".bunny")) return;   /* тап по самому кролику його не зсуває, інакше вдруге не влучиш */
+      target(e.clientX, e.clientY);
+    });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && B) leave(); });
 
     /* схованка: вушка визирають з-за верхнього краю випадкової картки */
@@ -368,6 +401,7 @@
       peek.style.top = (r.top + scrollY - 21) + "px";
     }
     function hide() {
+      try { if (sessionStorage.getItem(OFF)) { hidden = true; return; } } catch (e) {}
       var list = cards();
       if (!list.length) return;
       spot = list[Math.floor(Math.random() * list.length)];

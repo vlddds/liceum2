@@ -296,22 +296,26 @@
     });
     return svg + "</svg>";
   }
-  function result(res, previous) {
+  /* все, що треба показати: топ-типи, код, профіль, сильні сторони, гуртки */
+  function analyze(res) {
     var sc = res.riasec, gd = res.gardner;
     var sorted = ORDER.slice().sort(function (a, b) { return sc[b] - sc[a] || ORDER.indexOf(a) - ORDER.indexOf(b); });
     var cut = sc[sorted[1]], top = sorted.filter(function (t) { return sc[t] >= cut; }).slice(0, 4);   /* топ-2, а якщо є однакові бали - беремо всіх */
-    var code = sorted[0] + sorted[1];
-
     var profs = CFG.profiles.map(function (p) {
       var sum = 0; p.types.forEach(function (t) { sum += sc[t] || 0; });
       return { p: p, avg: sum / p.types.length };
     }).sort(function (a, b) { return b.avg - a.avg; });
     var best = profs[0], alt = profs[1] && best.avg - profs[1].avg < (CFG.closeGap || 3) ? profs[1] : null;
-
-    var gSorted = GARDNER.slice().sort(function (a, b) { return gd[b.id] - gd[a.id]; }), gTop = gSorted.slice(0, 3).map(function (g) { return g.id; });
-
+    var gTop = GARDNER.slice().sort(function (a, b) { return gd[b.id] - gd[a.id]; }).slice(0, 3).map(function (g) { return g.id; });
     var clubs = [];
     top.forEach(function (t) { ((CFG.clubsByType || {})[t] || []).forEach(function (c) { if (CLUBS.indexOf(c) > -1 && clubs.indexOf(c) < 0) clubs.push(c); }); });
+    return { sc: sc, gd: gd, sorted: sorted, top: top, code: sorted[0] + sorted[1], best: best, alt: alt, gTop: gTop, clubs: clubs };
+  }
+  var shown = null;   /* результат, який зараз на екрані (для картинки) */
+  function result(res, previous) {
+    var a = analyze(res), sc = a.sc, gd = a.gd, sorted = a.sorted, top = a.top, code = a.code,
+        best = a.best, alt = a.alt, gTop = a.gTop, clubs = a.clubs;
+    shown = res;
 
     var profBlock = function (x, also) {
       return '<div class="pf-prof' + (also ? " pf-alt" : "") + '"><span class="pf-tag">' + (also ? "Також може підійти" : "Рекомендований профіль") + "</span>" +
@@ -360,9 +364,150 @@
       '<p class="b-note warn pf-disclaimer">' + ICON("alert") + "<span><b>Це не вирок і не медичний чи психологічний діагноз.</b> " +
       "Інтереси змінюються з віком — тест варто пройти ще раз через рік.</span></p>" +
 
-      '<div class="pf-btns pf-res-btns"><button type="button" class="btn primary" data-act="print">' + ICON("doc") + "Роздрукувати / зберегти PDF</button>" +
-      '<button type="button" class="btn" data-act="restart">Пройти ще раз</button></div></div>';
+      '<div class="pf-btns pf-res-btns"><button type="button" class="btn primary" data-act="image">' + ICON("image") + "Зберегти картинкою</button>" +
+      '<button type="button" class="btn" data-act="print">' + ICON("doc") + "Роздрукувати / PDF</button>" +
+      '<button type="button" class="btn" data-act="restart">Пройти ще раз</button></div>' +
+      '<div class="pf-img" id="pf-img" hidden></div></div>';
     show(html, "#pf-h");
+  }
+
+
+  /* картинка з результатом (png). на телефоні друк часто не працює (особливо в браузері телеграму),
+     тому даємо і завантаження файлу, і саму картинку - її можна зберегти довгим натиском */
+  function drawResult(res) {
+    var a = analyze(res), W = 1080, P = 64, c = document.createElement("canvas"), x;
+    c.width = W; c.height = 4200;
+    x = c.getContext("2d");
+    var NAVY = "#14274E", BLUE = "#1F3A78", INK = "#16213A", MUTED = "#556079", SKY = "#DCE7F8", LINE = "#D3DCEC";
+    var SANS = "Onest, system-ui, sans-serif", SERIF = "Literata, Georgia, serif";
+    function font(w, size, fam) { x.font = w + " " + size + "px " + (fam || SANS); }
+    function wrap(text, maxW) {
+      var words = String(text).split(" "), lines = [], line = "";
+      words.forEach(function (w) {
+        var t = line ? line + " " + w : w;
+        if (x.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t;
+      });
+      if (line) lines.push(line);
+      return lines;
+    }
+    function para(text, left, y, maxW, lh) { wrap(text, maxW).forEach(function (l, i) { x.fillText(l, left, y + i * lh); }); return y + wrap(text, maxW).length * lh; }
+    function rrect(l, t, w, h, r) { x.beginPath(); x.moveTo(l + r, t); x.arcTo(l + w, t, l + w, t + h, r); x.arcTo(l + w, t + h, l, t + h, r); x.arcTo(l, t + h, l, t, r); x.arcTo(l, t, l + w, t, r); x.closePath(); }
+    function title(text, y) { font("700", 40, SERIF); x.fillStyle = INK; x.fillText(text, P, y); return y + 26; }
+
+    x.fillStyle = "#fff"; x.fillRect(0, 0, W, c.height);
+    /* шапка */
+    x.fillStyle = NAVY; x.fillRect(0, 0, W, 210);
+    x.fillStyle = "#F4B400"; x.fillRect(0, 206, W, 6);
+    x.fillStyle = "#B9C6E4"; font("500", 28); x.fillText("Ліцей №2 Підгородненської міської ради", P, 70);
+    x.fillStyle = "#fff"; font("700", 58, SERIF); x.fillText("Профорієнтаційний тест", P, 140);
+    x.fillStyle = "#D5DEF2"; font("400", 28); x.fillText(fmtDate(res.date), P, 185);
+
+    /* радар зліва */
+    var cx = 340, cy = 470, R = 150, n = ORDER.length;
+    function pt(i, f) { var ang = -Math.PI / 2 + i * 2 * Math.PI / n; return [cx + Math.cos(ang) * R * f, cy + Math.sin(ang) * R * f]; }
+    x.strokeStyle = LINE; x.lineWidth = 2;
+    [0.25, 0.5, 0.75, 1].forEach(function (f) { x.beginPath(); ORDER.forEach(function (t, i) { var q = pt(i, f); i ? x.lineTo(q[0], q[1]) : x.moveTo(q[0], q[1]); }); x.closePath(); x.stroke(); });
+    ORDER.forEach(function (t, i) { var q = pt(i, 1); x.beginPath(); x.moveTo(cx, cy); x.lineTo(q[0], q[1]); x.stroke(); });
+    var val = function (t) { return Math.max(0.04, (a.sc[t] - 6) / 24); };
+    x.beginPath(); ORDER.forEach(function (t, i) { var q = pt(i, val(t)); i ? x.lineTo(q[0], q[1]) : x.moveTo(q[0], q[1]); }); x.closePath();
+    x.fillStyle = "rgba(31,58,120,.2)"; x.fill(); x.strokeStyle = BLUE; x.lineWidth = 4; x.stroke();
+    ORDER.forEach(function (t, i) {
+      var q = pt(i, val(t)); x.fillStyle = BLUE; x.beginPath(); x.arc(q[0], q[1], 7, 0, Math.PI * 2); x.fill();
+      var v = pt(i, 1), lx, ly, al;
+      if (i === 0) { lx = cx; ly = v[1] - 46; al = "center"; } else if (i === n / 2) { lx = cx; ly = v[1] + 36; al = "center"; }
+      else { al = v[0] > cx ? "left" : "right"; lx = v[0] + (v[0] > cx ? 16 : -16); ly = v[1] - 6; }
+      x.textAlign = al; font("600", 25); x.fillStyle = INK; x.fillText(TYPES[t].nick, lx, ly);
+      font("400", 22); x.fillStyle = MUTED; x.fillText(a.sc[t] + " з 30", lx, ly + 27);
+    });
+    x.textAlign = "left";
+
+    /* код і бали справа */
+    var rx = 660;
+    font("600", 26); x.fillStyle = MUTED; x.fillText("Твій код Голланда", rx, 290);
+    font("700", 96, SERIF); x.fillStyle = NAVY; x.fillText(a.code, rx, 385);
+    var y = 440;
+    a.sorted.forEach(function (t) {
+      var isTop = a.top.indexOf(t) > -1;
+      if (isTop) { x.fillStyle = SKY; rrect(rx - 14, y - 32, W - P - rx + 14, 46, 10); x.fill(); }
+      font("700", 25); x.fillStyle = BLUE; x.fillText(t, rx, y);
+      font(isTop ? "700" : "500", 25); x.fillStyle = INK; x.fillText(TYPES[t].nick, rx + 36, y);
+      x.textAlign = "right"; font("600", 25); x.fillText(a.sc[t] + " / 30", W - P - 6, y); x.textAlign = "left";
+      y += 52;
+    });
+
+    y = Math.max(y, cy + R + 90) + 30;
+    /* найближчі типи */
+    y = title("Тобі найближче", y) + 20;
+    a.top.forEach(function (t) {
+      x.fillStyle = NAVY; rrect(P, y - 4, 58, 58, 14); x.fill();
+      x.fillStyle = "#fff"; font("700", 34, SERIF); x.textAlign = "center"; x.fillText(t, P + 29, y + 38); x.textAlign = "left";
+      font("700", 30, SERIF); x.fillStyle = INK; x.fillText(TYPES[t].nick, P + 82, y + 22);
+      font("500", 23); x.fillStyle = MUTED; x.fillText(TYPES[t].name + " тип", P + 82, y + 52);
+      y += 96;
+      font("400", 25); x.fillStyle = INK;
+      y = para("Професії: " + TYPES[t].jobs.join(", ") + ".", P, y, W - 2 * P, 36) + 26;
+    });
+
+    /* профіль */
+    y = title("Профіль навчання в ліцеї", y + 10) + 22;
+    x.strokeStyle = NAVY; x.lineWidth = 3;
+    font("400", 25);
+    var descLines = wrap(a.best.p.description, W - 2 * P - 56).length;
+    var boxH = 112 + descLines * 36;
+    rrect(P, y - 8, W - 2 * P, boxH, 18); x.stroke();
+    font("700", 20); x.fillStyle = BLUE; x.fillText("РЕКОМЕНДОВАНИЙ ПРОФІЛЬ", P + 28, y + 28);
+    font("700", 30, SERIF); x.fillStyle = INK; x.fillText(a.best.p.name, P + 28, y + 70);
+    font("400", 25); x.fillStyle = INK; para(a.best.p.description, P + 28, y + 112, W - 2 * P - 56, 36);
+    y += boxH + 22;
+    if (a.alt) { font("500", 25); x.fillStyle = MUTED; y = para("Також може підійти: " + a.alt.p.name, P, y + 10, W - 2 * P, 36) + 10; }
+    font("500", 25); x.fillStyle = INK;
+    y = para("Предмети НМТ, які варто розглянути: " + a.best.p.subjects.join(", ") + ".", P, y + 16, W - 2 * P, 36) + 26;
+
+    /* сильні сторони */
+    y = title("Мої сильні сторони", y + 10) + 26;
+    GARDNER.forEach(function (g) {
+      var v = a.gd[g.id], isTop = a.gTop.indexOf(g.id) > -1, bx = P + 360, bw = W - P - bx - 90;
+      font(isTop ? "700" : "400", 24); x.fillStyle = INK; x.fillText(g.name, P, y + 8);
+      x.fillStyle = SKY; rrect(bx, y - 10, bw, 20, 10); x.fill();
+      x.fillStyle = isTop ? NAVY : "#9AA3B5"; rrect(bx, y - 10, Math.max(20, bw * (v - 2) / 8), 20, 10); x.fill();
+      x.textAlign = "right"; font("500", 23); x.fillStyle = MUTED; x.fillText(v + " / 10", W - P, y + 8); x.textAlign = "left";
+      y += 46;
+    });
+
+    /* застереження */
+    y += 30;
+    x.fillStyle = "#FDF4D9"; font("400", 23);
+    var note = "Це не вирок і не медичний чи психологічний діагноз. Інтереси змінюються з віком, тест варто пройти ще раз через рік.";
+    var nl = wrap(note, W - 2 * P - 60).length;
+    rrect(P, y, W - 2 * P, 50 + nl * 33, 16); x.fill();
+    x.fillStyle = "#F4B400"; x.fillRect(P, y, 6, 50 + nl * 33);
+    x.fillStyle = INK; para(note, P + 32, y + 42, W - 2 * P - 60, 33);
+    y += 50 + nl * 33 + 50;
+
+    /* обрізаємо полотно по висоті */
+    var out = document.createElement("canvas");
+    out.width = W; out.height = y;
+    out.getContext("2d").drawImage(c, 0, 0);
+    return out;
+  }
+  function saveImage(res, btn) {
+    btn.classList.add("loading");
+    var fonts = document.fonts && document.fonts.load
+      ? Promise.all([document.fonts.load("700 40px Literata"), document.fonts.load("400 25px Onest"), document.fonts.load("700 25px Onest")]).catch(function () {})
+      : Promise.resolve();
+    fonts.then(function () {
+      var cv = drawResult(res), url = cv.toDataURL("image/png"), name = "proftest-" + analyze(res).code + ".png";
+      /* завантажуємо файл */
+      var link = document.createElement("a");
+      link.href = url; link.download = name;
+      document.body.appendChild(link); link.click(); link.remove();
+      /* і показуємо картинку, щоб можна було зберегти довгим натиском */
+      var box = $("#pf-img");
+      box.innerHTML = '<p class="pf-small">Якщо файл не завантажився, натисни й утримуй картинку та вибери «Зберегти зображення».</p>' +
+        '<img src="' + url + '" alt="Результат профорієнтаційного тесту, код ' + esc(analyze(res).code) + '">';
+      box.hidden = false;
+      btn.classList.remove("loading");
+    });
   }
 
   /* кнопки */
@@ -377,6 +522,7 @@
     else if (act === "next") next();
     else if (act === "back") { if (state.screen > 0) screen(state.screen - 1); else intro(); }
     else if (act === "print") window.print();
+    else if (act === "image" && shown) saveImage(shown, b);
   });
 
   intro();
