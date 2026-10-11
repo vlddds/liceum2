@@ -1428,3 +1428,6 @@ html.contrast .pf-bar-track{border:1px solid #000}
 @media (max-width:360px){.nt-tabs .ic{display:none}}
 @media (prefers-reduced-motion:reduce){.nt-tabs::before{transition:none}}
 @media print{.nt-tabs,.fb-alt{display:none!important}}
+
+.life-body .b-yts{margin-top:.85rem}
+.life-body .yt-t{display:none}

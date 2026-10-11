@@ -79,8 +79,18 @@
   var list = $("#life-list"), posts = [];
   function note(text) { list.innerHTML = '<p class="empty-note">' + text + "</p>"; }
   function paras(t) { return String(t || "").split(/\n+/).filter(Boolean).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join(""); }
+  /* ютуб: посилання можна класти в колонку "Фото" або просто в текст - покажемо як відео */
+  var YT = /https?:\/\/(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?(?:[^\s]*&)?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([\w-]{11})[^\s]*/g;
+  function ytId(u) { YT.lastIndex = 0; var m = YT.exec(u); return m ? m[1] : ""; }
+  function media(p) {
+    var vids = [], imgs = [];
+    (p.photos || []).forEach(function (u) { var id = ytId(u); if (id) vids.push(id); else imgs.push(u); });
+    var text = String(p.text || "").replace(YT, function (all, id) { vids.push(id); return ""; });
+    p._img = imgs; p._text = text;
+    return vids.filter(function (id, i) { return vids.indexOf(id) === i; });
+  }
   function card(p, k) {
-    var ph = p.photos || [], more = ph.length - 4;
+    var vids = media(p), ph = p._img, more = ph.length - 4;
     return '<article class="life-card" style="--i:' + Math.min(k, 6) + '">' +
       (ph.length ? '<div class="life-ph n' + Math.min(ph.length, 4) + '">' + ph.slice(0, 4).map(function (src, i) {
         return '<button type="button" class="gal-item" data-k="' + k + '" data-i="' + i + '" aria-label="Відкрити фото ' + (i + 1) + " з " + ph.length + '">' +
@@ -88,7 +98,9 @@
           (i === 3 && more > 0 ? '<span class="life-more">+' + more + "</span>" : "") + "</button>";
       }).join("") + "</div>" : "") +
       '<div class="life-body">' + (p.date ? '<time class="life-date">' + esc(p.date) + "</time>" : "") +
-      (p.title ? "<h3>" + esc(p.title) + "</h3>" : "") + paras(p.text) + "</div></article>";
+      (p.title ? "<h3>" + esc(p.title) + "</h3>" : "") + paras(p._text) +
+      (vids.length && window.L2B ? window.L2B.render([{ type: "videos", items: vids.map(function (id) { return { title: p.title || "Відео", yt: id }; }) }]) : "") +
+      "</div></article>";
   }
   function render(arr) {
     posts = Array.isArray(arr) ? arr : [];
@@ -99,7 +111,7 @@
     var b = e.target.closest(".gal-item");
     if (!b) return;
     var p = posts[+b.getAttribute("data-k")];
-    L.lightbox(p.photos.map(function (src) { return { src: src, caption: p.title || "" }; }), +b.getAttribute("data-i"));
+    L.lightbox(p._img.map(function (src) { return { src: src, caption: p.title || "" }; }), +b.getAttribute("data-i"));
   });
   function loadLife() {
     if (!FEED || !/script\.google\.com/.test(FEED) || !window.fetch) { note("Тут скоро з'являться фото й новини з життя ліцею."); return; }
