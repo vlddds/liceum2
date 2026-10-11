@@ -82,9 +82,15 @@
   /* ютуб: посилання можна класти в колонку "Фото" або просто в текст - покажемо як відео */
   var YT = /https?:\/\/(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?(?:[^\s]*&)?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([\w-]{11})[^\s]*/g;
   function ytId(u) { YT.lastIndex = 0; var m = YT.exec(u); return m ? m[1] : ""; }
+  /* альбоми Google Фото чи папки Диска як картинки не покажеш - даємо кнопку на альбом */
+  var ALBUM = /^https?:\/\/(photos\.app\.goo\.gl|goo\.gl\/photos|photos\.google\.com|drive\.google\.com\/(drive\/)?(u\/\d+\/)?folders|drive\.google\.com\/drive\/)/i;
   function media(p) {
-    var vids = [], imgs = [];
-    (p.photos || []).forEach(function (u) { var id = ytId(u); if (id) vids.push(id); else imgs.push(u); });
+    var vids = [], imgs = [], albums = [];
+    (p.photos || []).forEach(function (u) {
+      var id = ytId(u);
+      if (id) vids.push(id); else if (ALBUM.test(u)) albums.push(u); else imgs.push(u);
+    });
+    p._albums = albums;
     var text = String(p.text || "").replace(YT, function (all, id) { vids.push(id); return ""; });
     p._img = imgs; p._text = text;
     return vids.filter(function (id, i) { return vids.indexOf(id) === i; });
@@ -100,7 +106,12 @@
           (i === 3 && more > 0 ? '<span class="life-more">+' + more + "</span>" : "") + "</button>";
       }).join("") + "</div>" : "") +
       '<div class="life-body">' + (p.date ? '<time class="life-date">' + esc(p.date) + "</time>" : "") +
-      (p.title ? "<h3>" + esc(p.title) + "</h3>" : "") + paras(p._text) + "</div></article>";
+      (p.title ? "<h3>" + esc(p.title) + "</h3>" : "") + paras(p._text) +
+      (p._albums.length ? '<div class="life-albums">' + p._albums.map(function (u, i) {
+        return '<a class="btn" href="' + esc(u) + '" target="_blank" rel="noopener">' + ICON("image") +
+          (p._albums.length > 1 ? "Фотоальбом " + (i + 1) : "Переглянути фотоальбом") + "</a>";
+      }).join("") + "</div>" : "") +
+      "</div></article>";
   }
   function render(arr) {
     posts = Array.isArray(arr) ? arr : [];

@@ -1435,3 +1435,4 @@ html.contrast .pf-bar-track{border:1px solid #000}
 .life-vids .yt,.life-vids .yt-frame{border-radius:0}
 .life-vids .yt-t{display:none}
 .life-vids+.life-ph{margin-top:3px}
+.life-albums{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.9rem}
