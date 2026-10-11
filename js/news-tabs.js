@@ -92,15 +92,15 @@
   function card(p, k) {
     var vids = media(p), ph = p._img, more = ph.length - 4;
     return '<article class="life-card" style="--i:' + Math.min(k, 6) + '">' +
+      /* відео теж зверху, як фото */
+      (vids.length && window.L2B ? '<div class="life-vids">' + window.L2B.render([{ type: "videos", items: vids.map(function (id) { return { title: p.title || "Відео", yt: id }; }) }]) + "</div>" : "") +
       (ph.length ? '<div class="life-ph n' + Math.min(ph.length, 4) + '">' + ph.slice(0, 4).map(function (src, i) {
         return '<button type="button" class="gal-item" data-k="' + k + '" data-i="' + i + '" aria-label="Відкрити фото ' + (i + 1) + " з " + ph.length + '">' +
           L.photoHTML({ src: src, caption: p.title || "" }, i, true) +
           (i === 3 && more > 0 ? '<span class="life-more">+' + more + "</span>" : "") + "</button>";
       }).join("") + "</div>" : "") +
       '<div class="life-body">' + (p.date ? '<time class="life-date">' + esc(p.date) + "</time>" : "") +
-      (p.title ? "<h3>" + esc(p.title) + "</h3>" : "") + paras(p._text) +
-      (vids.length && window.L2B ? window.L2B.render([{ type: "videos", items: vids.map(function (id) { return { title: p.title || "Відео", yt: id }; }) }]) : "") +
-      "</div></article>";
+      (p.title ? "<h3>" + esc(p.title) + "</h3>" : "") + paras(p._text) + "</div></article>";
   }
   function render(arr) {
     posts = Array.isArray(arr) ? arr : [];
