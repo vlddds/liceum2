@@ -19,7 +19,9 @@
      Дата | Заголовок | Текст (можна з абзацами) | Фото | Показувати (галочка)
    Фото: посилання на файли з Google Диска, кожне з нового рядка (або через пробіл).
    Відео: туди ж (або просто в текст) можна вставити посилання на YouTube - на сайті буде плеєр.
-   Альбом: туди ж можна кинути посилання на альбом Google Фото чи папку Диска - на сайті буде кнопка на альбом.
+   Альбом: туди ж можна кинути посилання на альбом Google Фото чи папку Диска - на сайті будуть усі фото з нього
+   (до 30). Альбом/папка мають бути відкриті за посиланням. Список фото оновлюється раз на 6 годин.
+   Після вставки цього коду: зверху вибрати функцію authorize -> "Виконати" -> дозволити доступ.
    Самі файли чи папка мають бути відкриті "Усі, хто має посилання", інакше фото не покажуться.
    Допис з'являється на сайті, коли стоїть галочка "Показувати", нові зверху (за датою).
 
@@ -110,10 +112,64 @@ function life_() {
     });
 }
 
-/* посилання з Google Диска -> пряма картинка (файл має бути відкритий за посиланням) */
+/* що лежить у колонці "Фото" -> список картинок для сайту:
+   - файл з Диска -> пряма картинка (файл відкритий за посиланням)
+   - папка Диска -> всі картинки з неї
+   - альбом Google Фото -> всі фото з альбому (альбом відкритий за посиланням)
+   - ютуб і інші https-посилання віддаємо як є (сайт сам розбереться)
+   альбоми й папки кешуємо на 6 годин, щоб не відкривати їх щоразу */
 function photos_(cell) {
-  return String(cell || "").split(/[\s,]+/).filter(Boolean).slice(0, 12).map(function (u) {
+  var out = [];
+  String(cell || "").split(/[\s,]+/).filter(Boolean).forEach(function (u) {
+    if (out.length >= 40) return;
+    var folder = u.match(/drive\.google\.com\/(?:drive\/)?(?:u\/\d+\/)?folders\/([\w-]{20,})/);
+    if (folder) { out = out.concat(cached_("dir:" + folder[1], function () { return driveFolder_(folder[1]); }, u)); return; }
+    if (/^https?:\/\/(photos\.app\.goo\.gl|goo\.gl\/photos|photos\.google\.com\/(u\/\d+\/)?share)/i.test(u)) {
+      out = out.concat(cached_("alb:" + u, function () { return photosAlbum_(u); }, u)); return;
+    }
     var m = u.match(/\/d\/([\w-]{20,})/) || u.match(/[?&]id=([\w-]{20,})/);
-    return m ? "https://drive.google.com/thumbnail?id=" + m[1] + "&sz=w1600" : (/^https:\/\//.test(u) ? u : "");
-  }).filter(Boolean);
+    if (m) out.push("https://drive.google.com/thumbnail?id=" + m[1] + "&sz=w1600");
+    else if (/^https:\/\//.test(u)) out.push(u);
+  });
+  return out.slice(0, 40);
+}
+
+/* беремо з кешу або рахуємо; якщо не вийшло - віддаємо саме посилання (на сайті буде кнопка на альбом) */
+function cached_(key, fn, fallback) {
+  var cache = CacheService.getScriptCache(), k = key.slice(0, 240), hit = cache.get(k);
+  if (hit) return JSON.parse(hit);
+  var list = [];
+  try { list = fn() || []; } catch (e) { list = []; }
+  if (!list.length) return [fallback];
+  try { cache.put(k, JSON.stringify(list), 21600); } catch (e) {}
+  return list;
+}
+
+/* усі картинки з папки Диска (за назвою файлу) */
+function driveFolder_(id) {
+  var files = DriveApp.getFolderById(id).getFiles(), list = [];
+  while (files.hasNext() && list.length < 30) {
+    var f = files.next();
+    if (/^image\//.test(f.getMimeType())) list.push({ name: f.getName(), id: f.getId() });
+  }
+  list.sort(function (a, b) { return a.name < b.name ? -1 : 1; });
+  return list.map(function (f) { return "https://drive.google.com/thumbnail?id=" + f.id + "&sz=w1600"; });
+}
+
+/* фото з публічного альбому Google Фото: беремо їх зі сторінки альбому.
+   офіційного способу Google не дає, тож якщо колись зламається - на сайті буде кнопка на альбом */
+function photosAlbum_(url) {
+  var html = UrlFetchApp.fetch(url, { followRedirects: true, muteHttpExceptions: true }).getContentText();
+  var seen = {}, list = [], re = /"(https:\/\/lh3\.googleusercontent\.com\/pw\/[\w-]{40,})"/g, m;
+  while ((m = re.exec(html)) && list.length < 30) {
+    if (!seen[m[1]]) { seen[m[1]] = 1; list.push(m[1] + "=w1600"); }
+  }
+  return list;
+}
+
+/* щоб дати скрипту доступ до Диска й інтернету: вибрати цю функцію зверху і натиснути "Виконати" */
+function authorize() {
+  DriveApp.getRootFolder();
+  UrlFetchApp.fetch("https://www.google.com", { muteHttpExceptions: true });
+  CacheService.getScriptCache().put("ok", "1", 60);
 }

@@ -220,12 +220,12 @@
       if (p.name) INDEX.push({ title: p.name, kw: [p.role, p.post, g.title, "вчитель педагог"].filter(Boolean).join(" "), group: "Педагогічний колектив", url: "teachers.html#" + g.id });
     });
   });
-  [["calendar.html", "Календар подій", "канікули свята дати семестр"], ["schedule.html", "Розклад уроків", "дзвінки уроки клас"],
+  [["calendar.html", "Календар подій", "канікули свята дати семестр"], ["schedule.html", "Розклад уроків", "дзвінки уроки клас"], ["profile.html", "Перехід на профільне навчання", "профільна школа профіль 10 клас 2027 академічний ліцей робоча група засідання опитування stem реформа"],
    ["albums.html", "Фотоальбоми", "фото галерея"], ["menu.html", "Меню їдальні", "меню обід їдальня харчування страви"], ["faq.html", "Часті питання", "питання відповіді допомога"],
    ["news.html#life", "Життя ліцею", "фейсбук facebook фото свята конкурси досягнення події стрічка"]].forEach(function (x) {
     if (!seen[x[0]]) INDEX.push({ title: x[1], kw: x[2], group: "Корисне", url: x[0] });
   });
-  /* профтест прихований, туди можна потрапити тільки через пошук */
+  /* профтест: посилання є тільки на сторінці профільного навчання і тут */
   INDEX.push({ title: "Профорієнтаційний тест", group: "Учням", url: "proforientation.html",
     kw: "профорієнтація професія професії тест вибір професії профіль профільна освіта академічний ліцей " +
         "голланд інтереси інтелекти гарднер ким стати кар'єра" });
@@ -273,8 +273,8 @@
       current = search(q);
       status.textContent = current.length ? "Знайдено результатів: " + current.length : "Нічого не знайдено";
     }
-    if (!current.length && norm(q) === "bunny") {
-      list.innerHTML = '<li class="none">🐰 Ви знайшли кролика! На сайті сховано ще одну пасхалку — пошукайте.</li>';
+    if (!current.length && PET.test(norm(q))) {
+      list.innerHTML = '<li class="none">🐱 Ви знайшли кішку! Натисніть на неї — і буде лазер. На сайті сховано ще одну пасхалку — пошукайте.</li>';
     } else if (!current.length) {
       list.innerHTML = '<li class="none">Нічого не знайдено. Спробуйте інше слово або <a href="' + mailto + '">напишіть нам</a>.</li>';
     } else {
@@ -292,10 +292,10 @@
     bunnyCheck();
   });
 
-  /* пасхалка: пишеш bunny і вилазить кролик (сам кролик в common.js), ще раз bunny - ховається */
-  var bunnyShown = false;
+  /* пасхалка: пишеш "кіт" (або bunny, як раніше) і вилазить кішка (сама кішка в common.js), стерли - ховається */
+  var bunnyShown = false, PET = /^(bunny|cat|кіт|кішка|киця|котик)$/;
   function bunnyCheck() {
-    var isBunny = norm(input.value.trim()) === "bunny";
+    var isBunny = PET.test(norm(input.value.trim()));
     if (isBunny && !bunnyShown) {
       var r = input.getBoundingClientRect();
       window.L2.bunny.toggle(r.left + 60, r.bottom + 90);

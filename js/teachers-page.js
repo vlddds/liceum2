@@ -87,7 +87,7 @@
       '<span class="t-body"><b' + (named ? "" : ' class="is-ph"') + ">" + esc(named ? p.name : PH_NAME) + "</b>" +
       '<span class="t-role">' + esc(p.role || "") + "</span>" +
       (withGroup ? '<span class="t-grp">' + esc(p._g.title) + "</span>" : "") +
-      (p.post || p.category ? '<span class="t-badge">' + esc(p.post || p.category) + "</span>" : "") +
+      (p.post ? '<span class="t-badge">' + esc(p.post) + "</span>" : "") +   /* категорія - тільки у вікні педагога */
       "</span></button></li>";
   }
   function show(arr, withGroup, animate) {

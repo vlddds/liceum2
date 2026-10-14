@@ -152,6 +152,7 @@
   $("#main").innerHTML =
     '<section class="hero t-hero on-dark" aria-labelledby="h1"><div class="hero-bg" aria-hidden="true"><span class="num">?</span></div>' +
     '<div class="wrap hero-in"><nav class="crumbs" aria-label="Ви тут"><a href="index.html">Головна</a><span aria-hidden="true">/</span>' +
+    '<a href="profile.html">Перехід на профільне навчання</a><span aria-hidden="true">/</span>' +
     '<span aria-current="page">Профорієнтаційний тест</span></nav>' +
     '<h1 id="h1">Профорієнтаційний тест</h1><p class="hero-sub">Дізнайся, що тобі цікаво, у чому твої сильні сторони і який профіль ліцею може підійти.</p></div></section>' +
     '<section class="sec alt pf-sec" aria-label="Тест"><div class="wrap"><div class="pf" id="pf" tabindex="-1"></div></div></section>';
