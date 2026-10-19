@@ -1653,7 +1653,7 @@ html.contrast .pr-banner{background:#000;border:2px solid #000}
 .pt-choice:hover{border-color:var(--navy-2)}
 .pt-choice:has(input:checked){border-color:var(--fill);background:var(--sky);font-weight:600}
 .pt-choice:has(input:focus-visible){outline:3px solid var(--sun);outline-offset:2px}
-.pt-row .pt-choice{justify-content:center}
+.pt-row .pt-choice{justify-content:center;padding-inline:.4rem;white-space:nowrap}
 html.contrast .pt-choice:has(input:checked){outline:3px solid #000}
 /* "не вивчаю" під шкалою */
 .pf-na{position:relative;display:flex;justify-content:center;max-width:440px;margin:.6rem auto 0;cursor:pointer}
@@ -1705,6 +1705,19 @@ html.contrast .pt-cl.top{border-color:#000;box-shadow:none;outline:3px solid #00
 .pt-also{margin:.5rem 0 0!important}
 .pt-other{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem}
 .pt-other p{margin:0!important;flex:1 1 260px}
+
+/* тест кластера: розділи за предметами (js/cluster-quiz.js) */
+.pt-grade-note{margin:.6rem 0 0!important}
+.pt-secs{list-style:none;margin:0 0 1rem;padding:0;display:grid;gap:.75rem}
+.pt-sec-card{display:flex;align-items:center;gap:1rem;padding:1rem 1.1rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);box-shadow:var(--sh1)}
+.pt-sec-card>div{flex:1;min-width:0}
+.pt-sec-card b{display:block;font-size:1.05rem}
+.pt-sec-card small{display:block;color:var(--muted);font-size:.88rem}
+.pt-sec-card.done{border-color:var(--ok)}
+.pt-sec-card.done .ico{background:rgba(30,123,69,.12);color:var(--ok)}
+@media (max-width:480px){.pt-sec-card{flex-wrap:wrap}.pt-sec-card .btn{flex:1 1 100%}}
+.pt-task-q code,.pt-opt code{font-family:ui-monospace,Consolas,monospace;font-size:.92em}
+.pt-task-q code{display:block;margin-top:.6rem;padding:.6rem .8rem;border-radius:var(--r-s);background:var(--paper);border:1px solid var(--line);font-weight:500;white-space:normal}
 
 /* телефон: компактніше */
 @media (max-width:480px){

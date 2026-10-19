@@ -1,4 +1,5 @@
-/* Тест на вибір профілю (profile-test.html). Продовження профтесту Голланда.
+/* Тест на вибір профілю (profile-test.html), повний режим. Продовження профтесту Голланда.
+   З ?cluster=... сторінку бере на себе cluster-quiz.js (завдання НМТ за предметами).
    Профілі й кластери - clusters.js, завдання НМТ - nmt-tasks.js, спільні шматки - quiz-kit.js.
    Режими: повний (без параметра) і кластер (?cluster=stem|lang|social).
    ?debug=1 - видно чернетки завдань НМТ, а &today=2026-10-15 підміняє сьогоднішню дату.
@@ -15,6 +16,7 @@
   var qs = new URLSearchParams(location.search);
   var CL = null;
   C.clusters.forEach(function (c) { if (c.id === qs.get("cluster")) CL = c; });
+  if (CL) return;   /* тест кластера (лише завдання НМТ за предметами) - в cluster-quiz.js */
   var MODE = CL ? CL.id : "full", P = CL ? CL.profiles : ORDER;
   var DEBUG = qs.get("debug") === "1";
   function today() {
