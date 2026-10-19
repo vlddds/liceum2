@@ -1,10 +1,11 @@
-/* Профтест. Профілі й гуртки лежать в proforientation-config.js.
+/* Профтест. Профілі беруться з clusters.js (через proforientation-config.js), гуртки - з proforientation-config.js.
+   Спільні шматки (збереження, шкала, seed) - в quiz-kit.js.
    Все рахується прямо в браузері, нікуди нічого не відправляється, тільки localStorage. */
 (function () {
   "use strict";
 
-  var L = window.L2, CFG = window.PROF_CONFIG;
-  if (!L || !CFG) { if (window.console) console.error("Не завантажено js/common.js або js/proforientation-config.js"); return; }
+  var L = window.L2, CFG = window.PROF_CONFIG, Q = window.QUIZ;
+  if (!L || !CFG || !Q) { if (window.console) console.error("Не завантажено js/common.js, js/quiz-kit.js або js/proforientation-config.js"); return; }
   var $ = L.$, $$ = L.$$, esc = L.esc, ICON = L.ICON, restart = L.restart, reduce = L.reduce;
   var CLUBS = ((window.SITE_DATA || {}).clubs || []).map(function (c) { return c.name; });
 
@@ -97,24 +98,11 @@
     { id: "nature", name: "Природничий", items: ["Мені цікаво спостерігати за природою.", "Я легко розрізняю рослини, тварин, мінерали."],
       tip: "Екологічні проєкти, біологія та дослідження довкілля — твоє природне середовище." }
   ];
-  var SCALE = ["Зовсім не про мене", "Скоріше ні", "Частково", "Скоріше так", "Точно про мене"];
   var PER_SCREEN = 6, KEY = "l2prof-progress", KEY_RES = "l2prof-result";
 
   /* порядок тверджень: перемішаний, але однаковий у всіх (фіксований seed),
      і два однакові типи ніколи не стоять поруч */
-  function rng(seed) {   /* mulberry32 */
-    return function () {
-      seed = (seed + 0x6D2B79F5) | 0;
-      var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-  }
-  function shuffle(arr, rand) {
-    var a = arr.slice();
-    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(rand() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; }
-    return a;
-  }
+  var rng = Q.rng, shuffle = Q.shuffle;
   /* groups: { ключ: [твердження...] }, всі однакової довжини. кожен раунд бере по одному
      твердженню кожного ключа в перемішаному порядку, і перше в раунді не таке, як останнє в попередньому */
   function interleave(groups, seed) {
@@ -140,9 +128,7 @@
   });
 
   /* зберігаємо тільки в цьому браузері */
-  function load(k) { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (e) { return null; } }
-  function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
-  function drop(k) { try { localStorage.removeItem(k); } catch (e) {} }
+  var load = Q.load, save = Q.save, drop = Q.drop, fmtDate = Q.fmtDate;
 
   var state = load(KEY) || { answers: {}, screen: 0 };
   if (!state.answers) state = { answers: {}, screen: 0 };
@@ -165,9 +151,6 @@
     if (window.pageYOffset > top) window.scrollTo({ top: top, behavior: reduce ? "auto" : "smooth" });
     var f = focusSel && $(focusSel, box);
     if (f) f.focus({ preventScroll: true });
-  }
-  function fmtDate(iso) {
-    try { return new Date(iso).toLocaleDateString("uk-UA", { day: "numeric", month: "long", year: "numeric" }); } catch (e) { return ""; }
   }
 
   /* вступ */
@@ -206,14 +189,8 @@
         : "Тепер про те, що тобі вдається. Оціни, наскільки кожне твердження про тебе.") + "</p>" : "") +
       '<div class="pf-progress"><div class="pf-bar" role="progressbar" aria-label="Пройдено" aria-valuemin="0" aria-valuemax="' + ALL.length +
       '" aria-valuenow="0"><i></i></div><p class="pf-step" id="pf-step" aria-live="polite"></p></div></div>' +
-      '<div class="pf-qs">' + s.items.map(function (q, k) {
-        var v = state.answers[q.id];
-        return '<fieldset class="pf-q" data-id="' + q.id + '"><legend><span class="pf-num">' + (ALL.indexOf(q) + 1) + "</span>" + esc(q.text) + "</legend>" +
-          '<div class="pf-scale">' + SCALE.map(function (label, i) {
-            var val = i + 1;
-            return '<label class="pf-opt"><input type="radio" name="q-' + q.id + '" value="' + val + '"' + (v === val ? " checked" : "") + ">" +
-              '<span class="pf-dot" aria-hidden="true">' + val + '</span><span class="sr">' + label + "</span></label>";
-          }).join("") + '</div><div class="pf-ends" aria-hidden="true"><span>' + SCALE[0] + "</span><span>" + SCALE[4] + "</span></div></fieldset>";
+      '<div class="pf-qs">' + s.items.map(function (q) {
+        return Q.scale({ id: q.id, text: q.text, value: state.answers[q.id], num: ALL.indexOf(q) + 1 });
       }).join("") + "</div>" +
       '<p class="pf-warn" id="pf-warn" role="alert" hidden></p>' +
       '<div class="pf-nav"><button type="button" class="btn" data-act="back">' + ICON("chev") + "Назад</button>" +
@@ -354,8 +331,12 @@
           (isTop ? '<p class="pf-tip">' + esc(g.tip) + "</p>" : "") + "</li>";
       }).join("") + "</ul></div>" +
 
+      '<div class="pf-card pf-step2"><div><h3>Крок 2: обери профіль</h3><p>Тест на вибір профілю врахує твої інтереси, оцінки й плани ' +
+        "і порівняє всі 7 профілів ліцею.</p></div>" +
+        '<a class="btn primary" href="profile-test.html">Крок 2: обери профіль' + ICON("chev") + "</a></div>" +
+
       '<div class="pf-card"><h3>Що далі</h3><ul class="pf-next">' +
-      "<li>" + ICON("book") + "<div><b>Предмети НМТ, які варто розглянути</b><p>" + esc(best.p.subjects.join(", ")) +
+      "<li>" + ICON("book") + "<div><b>Предмети НМТ на вибір, які варто розглянути</b><p>" + esc(best.p.subjects.join(", ")) +
         (alt ? " — або, для профілю «" + esc(alt.p.name) + "»: " + esc(alt.p.subjects.join(", ")) : "") + ".</p></div></li>" +
       (clubs.length ? "<li>" + ICON("star") + "<div><b>Гуртки ліцею, які варто спробувати</b><p>" + clubs.map(esc).join(", ") +
         '. <a href="index.html#clubs">Усі гуртки та секції</a></p></div></li>' : "") +
@@ -462,7 +443,7 @@
     y += boxH + 22;
     if (a.alt) { font("500", 25); x.fillStyle = MUTED; y = para("Також може підійти: " + a.alt.p.name, P, y + 10, W - 2 * P, 36) + 10; }
     font("500", 25); x.fillStyle = INK;
-    y = para("Предмети НМТ, які варто розглянути: " + a.best.p.subjects.join(", ") + ".", P, y + 16, W - 2 * P, 36) + 26;
+    y = para("Предмети НМТ на вибір, які варто розглянути: " + a.best.p.subjects.join(", ") + ".", P, y + 16, W - 2 * P, 36) + 26;
 
     /* сильні сторони */
     y = title("Мої сильні сторони", y + 10) + 26;

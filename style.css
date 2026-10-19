@@ -16,7 +16,8 @@
                             19. меню їдальні
                             20. профтест
                             21. вкладки на сторінці новин
-                            22. профільне навчання */
+                            22. профільне навчання
+                            23. тест на вибір профілю */
 
 /* 1. змінні та база */
 :root{
@@ -1613,4 +1614,107 @@ html.contrast :is(.pr-chart,.pr-card,.pr-stats li,.pr-big li,.pr-road li,.pr-ch 
   .pr-bt i,.pr-time li::before{transform:none!important}
   .js .pr-road li{opacity:1!important;transform:none!important}
   .pr-test-sec{display:none}
+}
+
+/* 23. тест на вибір профілю (profile-test.html, js/profile-test.js) і кнопки в блоці "Три кластери".
+   основа - стилі профтесту (розділ 20, класи pf-*) */
+/* блок "Три кластери": картки однакової висоти, кнопка внизу */
+.pr-clusters .pr-prof{display:flex;flex-direction:column}
+.pr-clusters .pr-deep{margin-bottom:1.1rem}
+.pr-prof-btn{margin-top:auto;align-self:flex-start}
+.pr-prof-btn .ic{transition:transform .2s var(--ease)}
+.pr-prof-btn:hover .ic{transform:translateX(3px)}
+@media (max-width:600px){.pr-prof-btn{align-self:stretch}}
+.pr-banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem 1.5rem;margin-top:1.25rem;padding:1.25rem 1.5rem;
+  border-radius:var(--r-l);background:var(--fill);color:#fff;box-shadow:var(--sh1)}
+.pr-banner b{display:block;font:650 1.3rem var(--serif)}
+.pr-banner span{color:#D5DEF2}
+.pr-banner-act{display:flex;flex-direction:column;align-items:flex-start;gap:.5rem}
+.pr-banner .btn{border-color:var(--sun);background:var(--sun);color:#2A1E00}
+.pr-banner .btn:hover{background:#FFC93C;border-color:#FFC93C}
+.pr-banner-link{color:#fff;font-size:.9rem}
+html.contrast .pr-banner{background:#000;border:2px solid #000}
+@media (max-width:600px){.pr-banner{padding:1.1rem}.pr-banner-act,.pr-banner .btn{width:100%}}
+
+/* крок 2 на результаті профтесту */
+.pf-step2{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;border:2px solid var(--fill)}
+.pf-step2>div{flex:1 1 280px}
+.pf-step2 p{margin:0!important}
+
+/* вступ, вибір класу, плани */
+.pt-hint,.pt-remind{display:flex;gap:.6rem;align-items:flex-start;margin:1rem 0 0!important;padding:.75rem .9rem;border-radius:var(--r-m);background:var(--sky)}
+.pt-hint .ic,.pt-remind .ic{flex:none;margin-top:.15rem;color:var(--navy)}
+.pt-group legend small{font-weight:500;color:var(--muted);font-size:.85rem;margin-left:.3rem}
+.pt-choices{display:grid;gap:.5rem}
+.pt-row{grid-template-columns:repeat(3,1fr)}
+.pt-choice{position:relative;display:flex;align-items:center;min-height:48px;padding:.6rem .9rem;border:2px solid var(--line);border-radius:var(--r-m);cursor:pointer;
+  background:var(--surface);transition:border-color .15s,background .15s}
+.pt-choice input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.pt-choice:hover{border-color:var(--navy-2)}
+.pt-choice:has(input:checked){border-color:var(--fill);background:var(--sky);font-weight:600}
+.pt-choice:has(input:focus-visible){outline:3px solid var(--sun);outline-offset:2px}
+.pt-row .pt-choice{justify-content:center}
+html.contrast .pt-choice:has(input:checked){outline:3px solid #000}
+/* "не вивчаю" під шкалою */
+.pf-na{position:relative;display:flex;justify-content:center;max-width:440px;margin:.6rem auto 0;cursor:pointer}
+.pf-na input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.pf-na span{padding:.35rem .9rem;border:1px dashed var(--line);border-radius:999px;font-size:.88rem;color:var(--muted)}
+.pf-na input:checked+span{border-style:solid;border-color:var(--fill);background:var(--sky);color:var(--ink);font-weight:600}
+.pf-na input:focus-visible+span{outline:3px solid var(--sun);outline-offset:2px}
+
+/* завдання НМТ */
+.pt-task-q{font-family:var(--sans)!important;font-size:1.1rem!important;font-weight:600;line-height:1.45!important}
+.pt-task-img{display:block;max-width:100%;height:auto;margin:0 auto 1rem;border-radius:var(--r-s)}
+.pt-opts{border:0;margin:0;padding:0;min-width:0;display:grid;gap:.5rem}
+.pt-opt{position:relative;display:flex;gap:.75rem;align-items:center;min-height:48px;padding:.6rem .9rem;border:2px solid var(--line);border-radius:var(--r-m);cursor:pointer;background:var(--surface)}
+.pt-opt input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.pt-opt b{flex:none;display:grid;place-items:center;width:2rem;height:2rem;border-radius:8px;background:var(--sky);color:var(--navy)}
+.pt-opt:has(input:focus-visible){outline:3px solid var(--sun);outline-offset:2px}
+.pt-opts:disabled .pt-opt{cursor:default}
+.pt-opt.ok{border-color:var(--ok);background:rgba(30,123,69,.1)}
+.pt-opt.ok b{background:var(--ok);color:#fff}
+.pt-opt.bad{border-color:var(--bad);background:rgba(179,38,30,.08)}
+.pt-opt.bad b{background:var(--bad);color:#fff}
+.pt-expl p{margin:1rem 0 0!important;padding:.75rem .9rem;border-radius:var(--r-m);background:var(--paper)}
+.pt-src{margin:.75rem 0 0!important;font-size:.8rem;color:var(--muted)}
+
+/* результат */
+.pt-clusters{display:grid;gap:.75rem;grid-template-columns:repeat(3,minmax(0,1fr))}
+.pt-cl{position:relative;display:flex;flex-direction:column;align-items:center;gap:.5rem;text-align:center;padding:1rem .75rem;border:2px solid var(--line);border-radius:var(--r-m)}
+.pt-cl.top{border-color:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 22%,transparent)}
+.pt-cl b{font-size:.95rem;line-height:1.25}
+.pt-cl-tag{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--navy-2)}
+.pt-ring{width:96px;height:96px;display:block}
+.pt-ring-bg{fill:none;stroke:var(--sky);stroke-width:5}
+.pt-ring-v{fill:none;stroke:var(--c,var(--fill));stroke-width:5;stroke-linecap:round}
+.pt-ring text{fill:var(--ink);font:700 9px var(--sans)}
+html.contrast .pt-ring-v{stroke:#000}
+html.contrast .pt-cl.top{border-color:#000;box-shadow:none;outline:3px solid #000}
+@media (max-width:560px){
+  .pt-clusters{grid-template-columns:1fr}
+  .pt-cl{flex-direction:row;text-align:left;gap:.75rem;padding:.7rem .9rem}
+  .pt-cl b{flex:1}
+  .pt-ring{width:64px;height:64px;order:3}
+  .pt-cl-tag{position:absolute;top:.35rem;right:.75rem}
+}
+.pt-bars{margin-bottom:1rem}
+.pt-bars .pf-bar-row{grid-template-columns:minmax(0,15rem) 1fr auto}
+@media (max-width:560px){.pt-bars .pf-bar-row{grid-template-columns:1fr auto}}
+.pt-best p{margin:.4rem 0 0!important}
+.pt-kv{font-size:.95rem;color:var(--ink-2)}
+.pt-also{margin:.5rem 0 0!important}
+.pt-other{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem}
+.pt-other p{margin:0!important;flex:1 1 260px}
+
+/* телефон: компактніше */
+@media (max-width:480px){
+  .pt-sec .wrap{width:calc(100% - 24px)}
+  .pt .pf-card,.pt .pf-q{padding:16px}
+  .pt .pf-btns .btn{flex:1 1 100%}
+}
+@media print{
+  .pf-step2,.pt-other,.pt-hint{display:none!important}
+  .pt-ring{width:70px;height:70px}
+  .pt-cl{padding:.4rem;border:1px solid #bbb}
+  .pt-bars .pf-bar-track i{background:#333!important;opacity:1}
 }
