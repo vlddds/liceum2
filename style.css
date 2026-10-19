@@ -1618,14 +1618,14 @@ html.contrast :is(.pr-chart,.pr-card,.pr-stats li,.pr-big li,.pr-road li,.pr-ch 
 
 /* 23. тест на вибір профілю (profile-test.html, js/profile-test.js) і кнопки в блоці "Три кластери".
    основа - стилі профтесту (розділ 20, класи pf-*) */
-/* блок "Три кластери": картки однакової висоти, кнопка внизу */
+/* блок "Три кластери": банер з повним тестом зверху, картки однакової висоти, кнопка внизу */
 .pr-clusters .pr-prof{display:flex;flex-direction:column}
 .pr-clusters .pr-deep{margin-bottom:1.1rem}
 .pr-prof-btn{margin-top:auto;align-self:flex-start}
 .pr-prof-btn .ic{transition:transform .2s var(--ease)}
 .pr-prof-btn:hover .ic{transform:translateX(3px)}
 @media (max-width:600px){.pr-prof-btn{align-self:stretch}}
-.pr-banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem 1.5rem;margin-top:1.25rem;padding:1.25rem 1.5rem;
+.pr-banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem 1.5rem;margin:0 0 1.25rem;padding:1.25rem 1.5rem;
   border-radius:var(--r-l);background:var(--fill);color:#fff;box-shadow:var(--sh1)}
 .pr-banner b{display:block;font:650 1.3rem var(--serif)}
 .pr-banner span{color:#D5DEF2}

@@ -45,20 +45,20 @@
   }
   function src(t) { return t ? '<p class="pr-src">Джерело: ' + esc(t) + "</p>" : ""; }
 
-  /* блок "Три кластери": картки з кнопкою тесту, банер, факти. дані - clusters.js.
+  /* блок "Три кластери": банер з повним тестом, картки з кнопкою тесту, факти. дані - clusters.js.
      якщо блок знадобиться ще на якійсь сторінці - винести цю функцію в окремий файл */
   function clustersBlock() {
     var C = window.CLUSTERS;
     if (!C) return "";
-    return '<div class="pr-grid3 pr-clusters">' + C.clusters.map(function (c) {
+    return '<div class="pr-banner"><div><b>Не знаєш, який кластер обрати?</b><span>Тест на 10 хвилин підкаже кластер і профіль</span></div>' +
+      '<div class="pr-banner-act"><a class="btn primary" href="profile-test.html">Пройти повний тест' + ICON("chev") + "</a>" +
+      '<a class="pr-banner-link" href="proforientation.html">Спершу дізнатися свої інтереси (тест Голланда)</a></div></div>' +
+      '<div class="pr-grid3 pr-clusters">' + C.clusters.map(function (c) {
         return '<div class="pr-card pr-prof"><span class="ico">' + ICON(c.icon) + "</span><h3>" + esc(c.name) + '</h3><ul class="pr-check">' +
           c.profiles.map(function (id) { return "<li>" + ICON("check") + "<span>" + esc(C.profiles[id].name) + "</span></li>"; }).join("") +
           '</ul><p class="pr-deep"><b>Поглиблено:</b> ' + esc(c.deep) + "</p>" +
           '<a class="btn pr-prof-btn" href="profile-test.html?cluster=' + c.id + '" aria-label="Пройти тест кластера ' + esc(c.name) + '">Пройти тест' + ICON("chev") + "</a></div>";
       }).join("") + "</div>" +
-      '<div class="pr-banner"><div><b>Не знаєш, який кластер обрати?</b><span>Тест на 10 хвилин підкаже кластер і профіль</span></div>' +
-      '<div class="pr-banner-act"><a class="btn primary" href="profile-test.html">Пройти повний тест' + ICON("chev") + "</a>" +
-      '<a class="pr-banner-link" href="proforientation.html">Спершу дізнатися свої інтереси (тест Голланда)</a></div></div>' +
       '<ul class="pr-facts">' + C.facts.map(function (x) { return "<li><b>" + esc(x[0]) + "</b><span>" + esc(x[1]) + "</span></li>"; }).join("") + "</ul>" +
       '<p class="pr-note">' + esc(C.note) + "</p>";
   }
