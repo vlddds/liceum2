@@ -3,7 +3,6 @@
 
 # наші робочі файли, на гітхаб не викладаємо
 *.txt
-!robots.txt
+*.md
 tools/
 img/teachers/IMG_*
-NMT-TASKS.md
