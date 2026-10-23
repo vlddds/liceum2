@@ -258,6 +258,14 @@ window.SITE_DATA = (function () {
      поки src порожній, буде заглушка. краще горизонтальні фото десь 1600x1000 */
   var photos = [
     { src: "img/gallery/01-building.jpg", caption: "Будівля ліцею" },
+    { src: "img/gallery/13-peace-day.jpg", caption: "Міжнародний день миру: «Мир — це…»" },
+    { src: "img/gallery/14-concert.jpg", caption: "Святковий концерт: виступи танцювальних колективів" },
+    { src: "img/gallery/15-university-tour.jpg", caption: "Профорієнтаційна екскурсія старшокласників до університету" },
+    { src: "img/gallery/16-pajama-day.jpg", caption: "День піжам у старших класах" },
+    { src: "img/gallery/17-flag-day.jpg", caption: "Біля державного прапора на подвір'ї ліцею" },
+    { src: "img/gallery/18-saved-team.jpg", caption: "Педагоги ліцею на заході проєкту savED та UNICEF" },
+    { src: "img/gallery/19-saved-seminar.jpg", caption: "Семінар для педагогів у межах проєкту savED" },
+    { src: "img/gallery/20-saved-event.jpg", caption: "Учасниці заходу «Відновлюємо життя в громадах»" },
     { src: "img/gallery/02-lesson.jpg", caption: "Урок у початковій школі" },
     { src: "img/gallery/03-holiday.jpg", caption: "Свято в початковій школі" },
     { src: "img/gallery/04-laughter-day.jpg", caption: "День сміху" },
