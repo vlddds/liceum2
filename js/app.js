@@ -134,7 +134,7 @@
     group("Архіви", pages.archives);
 
   var ORDER_TABS = ["Учням", "Батькам", "Вчителям"];
-  var tabsEl = $("#tabs"), panelEl = $("#tabpanel"), listEl = $("#tablist"), moreEl = $("#tiles-more"), cur = 0, SHOW = 6;
+  var tabsEl = $("#tabs"), panelEl = $("#tabpanel"), listEl = $("#tablist"), prevEl = $("#tiles-prev"), nextEl = $("#tiles-next"), cur = 0;
   var names = Object.keys(D.audience).sort(function (a, b) {
     var x = ORDER_TABS.indexOf(a), y = ORDER_TABS.indexOf(b);
     return (x < 0 ? 99 : x) - (y < 0 ? 99 : y);
@@ -143,18 +143,23 @@
     return '<li style="--i:' + k + '"><a ' + ext(p.url) + '><span class="h-num" aria-hidden="true">' + (k < 9 ? "0" : "") + (k + 1) + "</span>" +
       '<span class="h-tile-t"><b>' + esc(p.title) + "</b><small>" + esc(p.group || "") + "</small></span></a></li>";
   }
-  function setMore(open) {
-    var n = listEl.children.length;
-    listEl.classList.toggle("all", open);
-    moreEl.hidden = n <= SHOW;
-    moreEl.setAttribute("aria-expanded", open ? "true" : "false");
-    moreEl.textContent = open ? "Згорнути" : "Показати всі (" + n + ")";
+  /* плитки в один ряд, стрілки гортають на ширину видимих плиток */
+  function paintArrows() {
+    var max = listEl.scrollWidth - listEl.clientWidth;
+    prevEl.disabled = listEl.scrollLeft <= 2;
+    nextEl.disabled = listEl.scrollLeft >= max - 2;
+    prevEl.parentNode.hidden = max <= 2;   /* все влазить - стрілки не потрібні */
   }
-  moreEl.addEventListener("click", function () {
-    var open = !listEl.classList.contains("all");
-    setMore(open);
-    if (open) { var f = listEl.children[SHOW]; if (f) f.querySelector("a").focus({ preventScroll: true }); }
-  });
+  function slide(dir) {
+    var li = listEl.children[0], step = li ? li.getBoundingClientRect().width + parseFloat(getComputedStyle(listEl).columnGap || 16) : 200;
+    var per = Math.max(1, Math.floor((listEl.clientWidth + 2) / step));
+    listEl.scrollBy({ left: dir * per * step, behavior: reduce ? "auto" : "smooth" });
+  }
+  prevEl.addEventListener("click", function () { slide(-1); });
+  nextEl.addEventListener("click", function () { slide(1); });
+  var arrowRaf = 0;
+  listEl.addEventListener("scroll", function () { cancelAnimationFrame(arrowRaf); arrowRaf = requestAnimationFrame(paintArrows); }, { passive: true });
+  window.addEventListener("resize", paintArrows);
   var pill = document.createElement("span");
   pill.className = "tab-pill"; pill.setAttribute("aria-hidden", "true");
   tabsEl.appendChild(pill);
@@ -176,8 +181,8 @@
     panelEl.setAttribute("aria-labelledby", "tab-" + i);
     var found = D.audience[names[i]].map(find).filter(Boolean);
     listEl.innerHTML = found.map(tile).join("");
-    listEl.scrollTop = 0;
-    setMore(false);
+    listEl.scrollLeft = 0;
+    paintArrows();
     if (animate && !reduce) restart(listEl, "swap");
     movePill();
   }
