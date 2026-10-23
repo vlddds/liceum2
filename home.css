@@ -62,17 +62,17 @@
 .h-chips a:hover{background:rgba(255,255,255,.1);border-color:#fff}
 .h-chips .ico{display:none}
 
-.h-hero-side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.h-hero-side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:1fr auto;gap:24px}
 /* карусель у першому екрані */
-.h-gal{grid-column:span 2;position:relative;border-radius:32px;overflow:hidden;aspect-ratio:16/9;align-self:start;background:var(--navy-soft)}
-/* розмір задає рамка 16:9, а не фото: горизонтальні кадри заповнюють її рівно, вертикальні - цілком на розмитому фоні */
+.h-gal{grid-column:span 2;position:relative;border-radius:32px;overflow:hidden;min-height:clamp(200px,52vw,440px);background:var(--navy-soft)}
+/* висоту задає перший екран (карусель тягнеться до низу синьої картки), а не фото: кадр завжди видно цілком, по боках - розмите фото */
 .h-gal .gal{position:absolute;inset:0;height:auto}
 .h-gal .gal-track{height:100%;padding:0;gap:0;scroll-padding-inline:0}
 .h-gal .gal-slide{flex:0 0 100%;height:100%}
 .h-gal .gal-item{aspect-ratio:auto;height:100%;border-radius:0;box-shadow:none}
 .h-gal .gal-item:hover{transform:none;box-shadow:none}
 .h-gal .gal-cap{padding:48px 20px 20px;max-width:100%;font-size:14px}
-.h-gal .gal-item.tall img{position:relative;object-fit:contain}
+.h-gal .gal-item img{position:relative;object-fit:contain}
 .h-gal .gal-blur{position:absolute;inset:-24px;background-size:cover;background-position:center;filter:blur(18px) brightness(.7)}
 .h-gal-nav{position:absolute;top:20px;right:20px;display:flex;gap:8px;z-index:2}
 .h-gal .gal-btn{width:44px;height:44px;border:0;background:rgba(255,255,255,.92);color:#14274E}

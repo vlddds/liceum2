@@ -290,13 +290,11 @@
   if (!photos.length) { $("#hero-gal").hidden = true; $("#gallery").hidden = true; return; }
 
   var photoHTML = L.photoHTML;
-  /* вертикальні (портретні) кадри не обрізаємо: показуємо цілком, а по боках - те саме фото розмите */
-  function isTall(p) { var s = p.src && (window.IMG_SIZES || {})[p.src]; return s && s[0] < s[1]; }
+  /* фото в каруселі не обрізаємо: кадр показується цілком, а вільне місце - те саме фото розмите */
   track.innerHTML = photos.map(function (p, i) {
-    var tall = isTall(p);
     return '<li class="gal-slide" aria-roledescription="слайд" aria-label="' + (i + 1) + " з " + photos.length + '">' +
-      '<button type="button" class="gal-item' + (tall ? " tall" : "") + '" data-k="' + i + '" aria-label="Відкрити фото: ' + esc(p.caption || "фото " + (i + 1)) + '">' +
-      (tall ? '<span class="gal-blur" style="background-image:url(' + esc(p.src) + ')" aria-hidden="true"></span>' : "") +
+      '<button type="button" class="gal-item" data-k="' + i + '" aria-label="Відкрити фото: ' + esc(p.caption || "фото " + (i + 1)) + '">' +
+      (p.src ? '<span class="gal-blur" style="background-image:url(' + esc(p.src) + ')" aria-hidden="true"></span>' : "") +
       photoHTML(p, i, i === 0 ? "high" : true) + (p.caption ? '<span class="gal-cap">' + esc(p.caption) + "</span>" : "") + "</button></li>";
   }).join("");
   dots.innerHTML = photos.map(function (p, i) {
