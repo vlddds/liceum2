@@ -17,6 +17,7 @@
   <url><loc>https://SITE-DOMAIN/services.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://SITE-DOMAIN/faq.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://SITE-DOMAIN/safety.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://SITE-DOMAIN/forms.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://SITE-DOMAIN/albums.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://SITE-DOMAIN/archive.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
 </urlset>
