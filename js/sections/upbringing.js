@@ -161,10 +161,11 @@ window.SECTION = (function () {
           ] },
           { type: "heading", text: "Укриття ліцею" },
           { type: "facts", items: [
-            { label: "Розташування укриття", value: "уточнюється (додайте опис у js/sections/upbringing.js)" },
+            { label: "Розташування укриття", value: "підвал головного корпусу, вхід з внутрішнього та заднього подвір'я" },
             { label: "Місткість", value: "уточнюється" }
           ] },
           { type: "links", items: [
+            { title: "Безпека та укриття", url: "safety.html", text: "Усе про тривогу в ліцеї: укриття, уроки, як забрати дитину" },
             { title: "Карта укриттів", url: "https://www.google.com/maps/search/укриття+Підгородне", text: "Найближчі укриття в Підгородному" }
           ] }
         ] },
