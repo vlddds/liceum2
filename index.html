@@ -25,9 +25,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20261023-9">
-<link rel="stylesheet" href="theme.css?v=20261023-9">
-<link rel="stylesheet" href="home.css?v=20261023-10">
+<link rel="stylesheet" href="style.css?v=20261023-11">
+<link rel="stylesheet" href="theme.css?v=20261023-11">
+<link rel="stylesheet" href="home.css?v=20261023-12">
 </head>
 <body class="home">
 
@@ -185,10 +185,10 @@
         <div class="tabs" id="tabs" role="tablist" aria-label="Для кого"></div>
       </div>
       <div id="tabpanel" role="tabpanel">
-        <ul class="h-tiles" id="tablist"></ul>
-        <div class="h-tiles-nav">
-          <button class="gal-btn prev" id="tiles-prev" type="button" aria-label="Попередні сторінки" aria-controls="tablist"><svg class="ic" aria-hidden="true"><use href="#i-chev"/></svg></button>
-          <button class="gal-btn" id="tiles-next" type="button" aria-label="Наступні сторінки" aria-controls="tablist"><svg class="ic" aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="h-rail">
+          <button class="h-rail-btn prev" id="tiles-prev" type="button" aria-label="Попередні сторінки" aria-controls="tablist"><svg class="ic" aria-hidden="true"><use href="#i-chev"/></svg></button>
+          <ul class="h-tiles" id="tablist"></ul>
+          <button class="h-rail-btn next" id="tiles-next" type="button" aria-label="Наступні сторінки" aria-controls="tablist"><svg class="ic" aria-hidden="true"><use href="#i-chev"/></svg></button>
         </div>
       </div>
     </div>
@@ -234,7 +234,11 @@
         <p>Позакласні заняття для різних вікових груп. Щоб записатися, зверніться до керівника гуртка або класного керівника.</p>
         <div class="club-filters" id="club-filters" role="group" aria-label="Категорії гуртків"></div>
       </div>
-      <ul class="clubs" id="clubs-list"></ul>
+      <div class="h-rail">
+        <button class="h-rail-btn prev" id="clubs-prev" type="button" aria-label="Попередні гуртки" aria-controls="clubs-list"><svg class="ic" aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <ul class="clubs" id="clubs-list"></ul>
+        <button class="h-rail-btn next" id="clubs-next" type="button" aria-label="Наступні гуртки" aria-controls="clubs-list"><svg class="ic" aria-hidden="true"><use href="#i-chev"/></svg></button>
+      </div>
     </div>
   </section>
 
@@ -474,22 +478,22 @@
 
 <button class="totop" id="totop" type="button" aria-label="Нагору"><svg class="ic"><use href="#i-up"/></svg></button>
 
-<script src="js/data.js?v=20261023-9" defer></script>
-<script src="js/img-sizes.js?v=20261023-9" defer></script>
-<script src="js/common.js?v=20261023-9" defer></script>
+<script src="js/data.js?v=20261023-11" defer></script>
+<script src="js/img-sizes.js?v=20261023-11" defer></script>
+<script src="js/common.js?v=20261023-11" defer></script>
 <!-- для пошуку по сайту -->
-<script src="js/teachers.js?v=20261023-9" defer></script>
-<script src="js/sections/education.js?v=20261023-9" defer></script>
-<script src="js/sections/public.js?v=20261023-9" defer></script>
-<script src="js/sections/upbringing.js?v=20261023-9" defer></script>
-<script src="js/sections/services.js?v=20261023-9" defer></script>
-<script src="js/sections/news.js?v=20261023-9" defer></script>
-<script src="js/sections/faq.js?v=20261023-9" defer></script>
-<script src="js/sections/albums.js?v=20261023-9" defer></script>
-<script src="js/clusters.js?v=20261023-9" defer></script>
-<script src="js/schedule.js?v=20261023-9" defer></script>
-<script src="js/menu.js?v=20261023-9" defer></script>
-<script src="js/home.js?v=20261023-9" defer></script>
-<script src="js/app.js?v=20261023-9" defer></script>
+<script src="js/teachers.js?v=20261023-11" defer></script>
+<script src="js/sections/education.js?v=20261023-11" defer></script>
+<script src="js/sections/public.js?v=20261023-11" defer></script>
+<script src="js/sections/upbringing.js?v=20261023-11" defer></script>
+<script src="js/sections/services.js?v=20261023-11" defer></script>
+<script src="js/sections/news.js?v=20261023-11" defer></script>
+<script src="js/sections/faq.js?v=20261023-11" defer></script>
+<script src="js/sections/albums.js?v=20261023-11" defer></script>
+<script src="js/clusters.js?v=20261023-11" defer></script>
+<script src="js/schedule.js?v=20261023-11" defer></script>
+<script src="js/menu.js?v=20261023-11" defer></script>
+<script src="js/home.js?v=20261023-11" defer></script>
+<script src="js/app.js?v=20261023-11" defer></script>
 </body>
 </html>

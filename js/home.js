@@ -113,7 +113,9 @@
     clubList.innerHTML = list.length ? list.map(clubCard).join("")
       : '<li class="empty-note">Інформація про гуртки з\'явиться згодом.</li>';
     if (animate && !reduce) restart(clubList, "swap");
+    if (clubRail) clubRail.reset();
   }
+  var clubRail = null;
   filters.addEventListener("click", function (e) {
     var b = e.target.closest(".chip");
     if (!b || b.getAttribute("aria-pressed") === "true") return;
@@ -122,6 +124,7 @@
     renderClubs(true);
   });
   renderClubs(false);
+  clubRail = L.rail(clubList, $("#clubs-prev"), $("#clubs-next"));   /* гуртки в один ряд, стрілки по боках */
 
   /* відгуки (тільки перевірені) */
   var reviews = D.reviews || [], rvList = $("#rv-list"), rvMore = $("#rv-more"), PAGE = 6, shown = PAGE;

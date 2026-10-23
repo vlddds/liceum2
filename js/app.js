@@ -143,23 +143,7 @@
     return '<li style="--i:' + k + '"><a ' + ext(p.url) + '><span class="h-num" aria-hidden="true">' + (k < 9 ? "0" : "") + (k + 1) + "</span>" +
       '<span class="h-tile-t"><b>' + esc(p.title) + "</b><small>" + esc(p.group || "") + "</small></span></a></li>";
   }
-  /* плитки в один ряд, стрілки гортають на ширину видимих плиток */
-  function paintArrows() {
-    var max = listEl.scrollWidth - listEl.clientWidth;
-    prevEl.disabled = listEl.scrollLeft <= 2;
-    nextEl.disabled = listEl.scrollLeft >= max - 2;
-    prevEl.parentNode.hidden = max <= 2;   /* все влазить - стрілки не потрібні */
-  }
-  function slide(dir) {
-    var li = listEl.children[0], step = li ? li.getBoundingClientRect().width + parseFloat(getComputedStyle(listEl).columnGap || 16) : 200;
-    var per = Math.max(1, Math.floor((listEl.clientWidth + 2) / step));
-    listEl.scrollBy({ left: dir * per * step, behavior: reduce ? "auto" : "smooth" });
-  }
-  prevEl.addEventListener("click", function () { slide(-1); });
-  nextEl.addEventListener("click", function () { slide(1); });
-  var arrowRaf = 0;
-  listEl.addEventListener("scroll", function () { cancelAnimationFrame(arrowRaf); arrowRaf = requestAnimationFrame(paintArrows); }, { passive: true });
-  window.addEventListener("resize", paintArrows);
+  var tilesRail = window.L2.rail(listEl, prevEl, nextEl);   /* плитки в один ряд, стрілки по боках */
   var pill = document.createElement("span");
   pill.className = "tab-pill"; pill.setAttribute("aria-hidden", "true");
   tabsEl.appendChild(pill);
@@ -181,8 +165,7 @@
     panelEl.setAttribute("aria-labelledby", "tab-" + i);
     var found = D.audience[names[i]].map(find).filter(Boolean);
     listEl.innerHTML = found.map(tile).join("");
-    listEl.scrollLeft = 0;
-    paintArrows();
+    tilesRail.reset();
     if (animate && !reduce) restart(listEl, "swap");
     movePill();
   }

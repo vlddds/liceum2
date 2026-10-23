@@ -151,7 +151,7 @@
   function openGame() {
     if (window.L2Game) { window.L2Game.open(); return; }
     var s = document.createElement("script");
-    s.src = "js/game.js?v=20261023-9";
+    s.src = "js/game.js?v=20261023-11";
     s.onload = function () { if (window.L2Game) window.L2Game.open(); };
     document.body.appendChild(s);
   }
@@ -676,7 +676,30 @@
     return { start: start, leave: leave, toggle: function (x, y) { if (C) leave(); else start(x, y); } };
   })();
 
+  /* ряд карток з прокруткою і стрілками по боках (головна: "Що потрібно", гуртки).
+     стрілки гортають на ширину видимих карток, на краях ховаються */
+  function rail(list, prev, next) {
+    function paint() {
+      var max = list.scrollWidth - list.clientWidth;
+      prev.disabled = list.scrollLeft <= 2;
+      next.disabled = list.scrollLeft >= max - 2;
+    }
+    function slide(dir) {
+      var li = list.children[0], gap = parseFloat(getComputedStyle(list).columnGap) || 16;
+      var step = li ? li.getBoundingClientRect().width + gap : 240;
+      var per = Math.max(1, Math.floor((list.clientWidth + gap) / step));
+      list.scrollBy({ left: dir * per * step, behavior: reduce ? "auto" : "smooth" });
+    }
+    prev.addEventListener("click", function () { slide(-1); });
+    next.addEventListener("click", function () { slide(1); });
+    var raf = 0;
+    list.addEventListener("scroll", function () { cancelAnimationFrame(raf); raf = requestAnimationFrame(paint); }, { passive: true });
+    window.addEventListener("resize", paint);
+    paint();
+    return { reset: function () { list.scrollLeft = 0; paint(); } };
+  }
+
   window.L2 = { $: $, $$: $$, esc: esc, ICON: ICON, restart: restart, plural: plural,
     reduce: reduce, mailto: mailto, openGame: openGame,
-    photoHTML: photoHTML, imgSize: imgSize, lightbox: lightbox, postForm: postForm, lightboxOpen: function () { return !!(lb && lb.open); }, bunny: cat };
+    photoHTML: photoHTML, imgSize: imgSize, lightbox: lightbox, postForm: postForm, rail: rail, lightboxOpen: function () { return !!(lb && lb.open); }, bunny: cat };
 })();
