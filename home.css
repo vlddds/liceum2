@@ -62,7 +62,7 @@
 .h-chips a:hover{background:rgba(255,255,255,.1);border-color:#fff}
 .h-chips .ico{display:none}
 
-.h-hero-side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:1fr auto;gap:24px}
+.h-hero-side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:1fr auto auto;gap:24px}
 /* карусель у першому екрані */
 .h-gal{grid-column:span 2;position:relative;border-radius:32px;overflow:hidden;min-height:clamp(200px,52vw,440px);background:var(--navy-soft)}
 /* висоту задає перший екран (карусель тягнеться до низу синьої картки), а не фото: кадр завжди видно цілком, по боках - розмите фото */
@@ -103,6 +103,17 @@
 .h-menu-dish{font-size:14px;font-weight:600;line-height:1.4}
 .h-menu-dish:empty{display:none}
 .h-menu-go{font-weight:800;font-size:14px;text-decoration:underline;text-underline-offset:3px}
+/* лічильник до канікул: смужка на всю ширину під віджетами */
+.h-count{grid-column:span 2;display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:16px 24px}
+.h-count[hidden]{display:none}
+.h-count-ic{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:var(--tint);color:var(--ink);flex:none}
+.h-count-ic .ic{width:22px;height:22px}
+.h-count-main{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 220px}
+.h-count-t{font-size:13px;font-weight:700;color:var(--muted)}
+.h-count-big{font-family:var(--f-head);font-weight:700;font-size:clamp(20px,2vw,26px);line-height:1.15;color:var(--ink)}
+.h-count-sub{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:14px;color:var(--muted)}
+.h-count-sub b{color:var(--ink)}
+.h-count-tag{font-size:12px;font-weight:800;background:var(--accent);color:var(--navy-deep);border-radius:var(--r-pill);padding:3px 10px}
 
 /* 4. що потрібно саме вам */
 .home .tabs{display:flex;gap:6px;background:var(--surface);border:1px solid var(--line);padding:6px;border-radius:14px;margin:0;overflow-x:auto;scrollbar-width:none}
@@ -344,6 +355,8 @@ html.contrast .h-cl-social{background:#fff;border:2px solid #000}
 html.contrast .h-cl-social .h-cl-list li{border:2px solid #000}
 html.contrast :is(.h-panel,.h-now,.h-tiles a,.h-alltiles a,.home .feature,.home .nl article,.home .club,.h-public,.h-find,.h-msg,.home .rv,.h-facts li,.h-clubs-intro,.h-pubchips a,.home .tabs,.home details.grp){border:2px solid #000;background:#fff}
 html.contrast .h-menu{background:#FFE600;color:#000!important;border:2px solid #000}
+html.contrast .h-count{border:2px solid #000}
+html.contrast .h-count-tag{background:#FFE600;color:#000;border:1px solid #000}
 html.contrast .h-num,html.contrast .club-grades,html.contrast .home .club .ico,html.contrast .h-ico{background:#fff;border:2px solid #000}
 html.contrast .h-help .phone,html.contrast .h-help .tile{background:#000;border:2px solid #fff}
 html.contrast .h-help .tile .ico{background:#000;border:1px solid #fff}
@@ -387,6 +400,8 @@ html.contrast .h-gal{border:2px solid #000}
   .h-now-big{font-size:20px}
   .h-now-t,.h-now-links a,.h-menu-dish{font-size:13px}
   .h-menu b{font-size:16px}
+  .h-count{border-radius:22px;padding:14px 16px;gap:10px 14px}
+  .h-count-ic{width:36px;height:36px;border-radius:12px}
   .h-menu-ic{width:24px;height:24px}
   .h-sec{padding:20px 0}
   .h-head{margin-bottom:16px}
