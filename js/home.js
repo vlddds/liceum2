@@ -1,4 +1,5 @@
-/* головна: гуртки, відгуки, фотокарусель (дані з data.js).
+/* головна: урок/перерва, меню на сьогодні, кластери, гуртки, відгуки, фотокарусель і фото внизу.
+   дані: data.js, schedule.js (дзвінки), menu.js, clusters.js.
    підключати після common.js і перед app.js, бо app.js додає анімацію появи */
 (function () {
   "use strict";
@@ -13,6 +14,68 @@
     for (var i = 1; i <= 5; i++) s += '<svg class="ic' + (i <= n ? "" : " off") + '" aria-hidden="true"><use href="#i-star"/></svg>';
     return s;
   }
+
+  /* що зараз: урок, перерва, до початку, уроки закінчились, вихідний. дзвінки - з schedule.js */
+  (function () {
+    var box = $("#now"), S = window.SCHEDULE, b = S && S.bells && S.bells.length ? S.bells : null;
+    if (!box) return;
+    function mins(t) { var p = String(t).split(":"); return +p[0] * 60 + +p[1]; }
+    function hm(n) { return n + " " + plural(n, "хвилина", "хвилини", "хвилин"); }
+    function view(dot, label, big, text, pct) {
+      return '<span class="h-now-l"><i class="h-dot ' + dot + '" aria-hidden="true"></i>' + label + "</span>" +
+        '<b class="h-now-big">' + big + "</b><span class=\"h-now-t\">" + text + "</span>" +
+        (pct != null ? '<span class="h-bar" aria-hidden="true"><i style="width:' + pct + '%"></i></span>' : "") +
+        '<span class="h-now-links"><a href="schedule.html">Розклад уроків →</a><a href="schedule.html#sch-bells">Дзвінки →</a></span>';
+    }
+    function tick() {
+      var now = new Date(), wd = (now.getDay() + 6) % 7, m = now.getHours() * 60 + now.getMinutes(), html = "";
+      if (!b) html = view("off", "Розклад дзвінків", "Дзвінки", "Розклад дзвінків ще не додано.", null);
+      else if (wd > 4) html = view("off", "Сьогодні вихідний", "Вихідний", "Гарного відпочинку! Уроки — з понеділка, перший о " + b[0][0] + ".", null);
+      else if (m < mins(b[0][0])) html = view("wait", "До початку уроків", hm(mins(b[0][0]) - m), "Перший урок о " + b[0][0] + ".", null);
+      else if (m >= mins(b[b.length - 1][1])) html = view("off", "Уроки закінчились", "На сьогодні все", "Останній дзвінок був о " + b[b.length - 1][1] + ".", null);
+      else for (var i = 0; i < b.length; i++) {
+        var st = mins(b[i][0]), en = mins(b[i][1]);
+        if (m >= st && m < en) { html = view("on", "Зараз іде урок", (i + 1) + "-й урок", "До перерви — " + hm(en - m), Math.round((m - st) / (en - st) * 100)); break; }
+        if (i + 1 < b.length && m >= en && m < mins(b[i + 1][0])) {
+          var nx = mins(b[i + 1][0]);
+          html = view("wait", "Зараз перерва", "Перерва", (i + 2) + "-й урок о " + b[i + 1][0] + " — через " + hm(nx - m), Math.round((m - en) / (nx - en) * 100));
+          break;
+        }
+      }
+      box.innerHTML = html;
+    }
+    tick();
+    setInterval(tick, 30000);
+  })();
+
+  /* меню на сьогодні: головна страва дня з menu.js (у вихідні - на понеділок) */
+  (function () {
+    var M = window.MENU, el = $("#menu-dish");
+    if (!el || !M || !M.weeks || !M.weeks.length) return;
+    var now = new Date(), wd = (now.getDay() + 6) % 7, wi = 0;
+    if (M.weeks.length > 1 && M.cycleStart) {   /* так само, як на сторінці меню */
+      var p = M.cycleStart.split("-"), start = new Date(+p[0], +p[1] - 1, +p[2]);
+      var weeks = Math.floor((now - start) / (7 * 864e5)) + (wd > 4 ? 1 : 0);
+      wi = ((weeks % M.weeks.length) + M.weeks.length) % M.weeks.length;
+    }
+    var day = M.weeks[wi].days[wd > 4 ? 0 : wd] || [];
+    var main = day.filter(function (x) { return /курк|куряч|шніцел|м'яс|котлет|тефтел|гуляш|риб|минтай|хек|фріттат|омлет|запіканк|сирник/i.test(x[0]); })[0] || day[0];
+    if (main) el.textContent = (wd > 4 ? "У понеділок: " : "Сьогодні: ") + main[0];
+  })();
+
+  /* три кластери (js/clusters.js) */
+  (function () {
+    var C = window.CLUSTERS, list = $("#cl-list"), facts = $("#cl-facts");
+    if (!C || !list) { var sec = $("#clusters"); if (sec) sec.hidden = true; return; }
+    list.innerHTML = C.clusters.map(function (c, i) {
+      var n = c.profiles.length;
+      return '<div class="h-cl h-cl-' + esc(c.id) + '"><div class="h-cl-top"><h3>' + esc(c.name) + "</h3><span>" + n + " " + plural(n, "профіль", "профілі", "профілів") + "</span></div>" +
+        '<ul class="h-cl-list">' + c.profiles.map(function (id) { return "<li>" + esc(C.profiles[id].name) + "</li>"; }).join("") + "</ul>" +
+        '<p class="h-cl-deep"><b>Поглиблено:</b> ' + esc(c.deep) + "</p>" +
+        '<a class="h-cl-btn" href="profile-test.html?cluster=' + esc(c.id) + '" aria-label="Тест кластера ' + esc(c.name) + '">Тест кластера →</a></div>';
+    }).join("");
+    facts.innerHTML = (C.facts || []).map(function (f) { return "<li><b>" + esc(f[0]) + "</b><span>" + esc(f[1]) + "</span></li>"; }).join("");
+  })();
 
   /* гуртки */
   var clubs = D.clubs || [], filters = $("#club-filters"), clubList = $("#clubs-list"), curCat = "";
@@ -34,13 +97,12 @@
     return b ? '<span class="fx-bits" aria-hidden="true">' + b.map(function (x) { return "<i>" + x + "</i>"; }).join("") + "</span>" : "";
   }
   function clubCard(c, i) {
-    var meta = [["user", "Керівник", c.leader], ["users", "Класи", c.grades], ["clock", "Розклад", c.time], ["pin", "Де проходить", c.place]]
+    var meta = [["user", "Керівник", c.leader], ["clock", "Розклад", c.time], ["pin", "Де проходить", c.place]]
       .filter(function (m) { return m[2]; });
     return '<li class="club' + (c.fx ? " fx-" + esc(c.fx) : "") + '" style="--i:' + i + '">' +
-      '<div class="club-top"><span class="ico">' + ICON(c.icon || "star") +
-      fxBits(c.fx) +
-      "</span><div><h3>" + esc(c.name) + "</h3>" +
-      (c.cat ? '<span class="club-cat">' + esc(c.cat) + "</span>" : "") + "</div></div>" +
+      '<div class="club-top">' + (c.grades ? '<span class="club-grades">' + esc(c.grades) + "</span>" : "") +
+      '<span class="ico">' + ICON(c.icon || "star") + fxBits(c.fx) + "</span></div>" +
+      "<h3>" + esc(c.name) + "</h3>" +
       (c.desc ? "<p>" + esc(c.desc) + "</p>" : "") +
       '<dl class="club-meta">' + meta.map(function (m) {
         return '<div title="' + m[1] + '"><dt>' + ICON(m[0]) + '<span class="sr">' + m[1] + "</span></dt><dd>" + esc(m[2]) + "</dd></div>";
@@ -146,7 +208,7 @@
   renderReviews();
 
   /* форма відгуку */
-  var rvDlg = $("#rv-dlg"), rvForm = $("#rv-form"), rvSent = $("#rv-sent"), rvText = $("#rv-text");
+  var rvForm = $("#rv-form"), rvSent = $("#rv-sent"), rvText = $("#rv-text");
   var WHO = ["Батьки", "Учень / учениця", "Випускник", "Вчитель", "Інше"];
   $("#rv-who").innerHTML = WHO.map(function (w, i) {
     return '<label class="chip"><input type="radio" name="who" value="' + esc(w) + '"' + (i ? "" : " checked") + "><span>" + esc(w) + "</span></label>";
@@ -178,15 +240,7 @@
     $$(".field", rvForm).forEach(function (f) { f.classList.remove("valid", "invalid"); $(".err", f).textContent = ""; });
     rvForm.hidden = false; rvSent.hidden = true;
   }
-  $("#rv-open").addEventListener("click", function () {
-    if (rvSent.hidden === false) rvReset();
-    rvDlg.showModal(); rvDlg.scrollTop = 0; $("#rv-name").focus();
-  });
-  function rvClose() { rvDlg.close(); }
-  $("#rv-x").addEventListener("click", rvClose);
-  $("#rv-done").addEventListener("click", function () { rvClose(); rvReset(); });
-  rvDlg.addEventListener("click", function (e) { if (e.target === rvDlg) rvClose(); });
-  rvDlg.addEventListener("close", function () { $("#rv-open").focus(); });
+  $("#rv-done").addEventListener("click", function () { rvReset(); $("#rv-name").focus(); });
 
   rvForm.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -199,7 +253,7 @@
     var data = { type: "review", name: RV.name.el.value.trim(), who: who ? who.value : "",
       rating: rate ? +rate.value : "", text: rvText.value.trim() };
     function done(viaMail) {
-      btn.classList.remove("loading"); lbl.textContent = "Надіслати";
+      btn.classList.remove("loading"); lbl.textContent = "Надіслати відгук";
       $("#rv-sent-text").textContent = viaMail
         ? "Відкрилась ваша поштова програма: залишилось лише надіслати лист."
         : "Нам важлива ваша думка.";
@@ -230,7 +284,7 @@
 
   /* фотокарусель і перегляд на весь екран */
   var photos = D.photos || [], track = $("#gal-track"), dots = $("#gal-dots"), gal = $("#gal");
-  if (!photos.length) { $("#gallery").hidden = true; return; }
+  if (!photos.length) { $("#hero-gal").hidden = true; $("#gallery").hidden = true; return; }
 
   var photoHTML = L.photoHTML;
   track.innerHTML = photos.map(function (p, i) {
@@ -293,6 +347,19 @@
       go(atEnd ? 0 : cur + 1);
     }, 5000);
   }
+
+  /* "Життя ліцею у фото": перші 7 фото сіткою, клік - на весь екран (гортаються всі) */
+  $("#h-photos").innerHTML = photos.slice(0, 7).map(function (p, i) {
+    return '<li><button type="button" class="gal-item" data-k="' + i + '" aria-label="Відкрити фото на весь екран: ' + esc(p.caption || "фото " + (i + 1)) + '">' +
+      photoHTML(p, i, true) + (p.caption ? '<span class="gal-cap">' + esc(p.caption) + "</span>" : "") + "</button></li>";
+  }).join("");
+  $("#h-photos").addEventListener("click", function (e) {
+    var b = e.target.closest(".gal-item");
+    if (!b) return;
+    L.lightbox(photos, +b.getAttribute("data-k"), function (at) {
+      var x = $('#h-photos .gal-item[data-k="' + at + '"]') || b; x.focus({ preventScroll: true });
+    });
+  });
 
   /* на весь екран, а після закриття карусель стає на те саме фото */
   track.addEventListener("click", function (e) {

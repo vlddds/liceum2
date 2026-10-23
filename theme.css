@@ -1,0 +1,127 @@
+/* Нова дизайн-система (редизайн 2026): токени, шапка й підвал для всіх сторінок.
+   Підключається після style.css. Головна - ще й home.css.
+   Старі змінні з style.css (--sun, --sky, --paper...) тут прив'язані до нових, щоб внутрішні сторінки
+   виглядали в тій самій гамі, поки їх не переробили. */
+
+/* 1. токени */
+:root{
+  /* кольори */
+  --navy:#14274E; --navy-deep:#0C1A36; --navy-soft:#1C3466;
+  --accent:#F6B800; --accent-soft:#F9CD3F; --accent-text:#8A6A00;
+  --bg:#F4F6FA; --surface:#FFFFFF; --tint:#E3EAF6; --line:#DCE2EC; --input-line:#C5CEDD;
+  --muted:#4A5670; --on-dark-muted:#C9D3E6;
+  --ink:#14274E; --ink-2:#33415C;
+  --brand:#14274E; --brand-soft:#1C3466; --brand-line:#3A5084;   /* темно-сині плашки: в темній темі лишаються синіми */
+  --ok-text:#1F7A4D; --ok-dot:#1F9D5C;
+  /* шрифти */
+  --f-head:"Unbounded", "Manrope", system-ui, sans-serif;
+  --f-text:"Manrope", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  /* радіуси й сітка */
+  --r-sec:34px; --r-card:24px; --r-card-s:22px; --r-ctl:12px; --r-pill:999px;
+  --container:1280px; --gut:32px;
+  /* старі назви з style.css */
+  --sun:var(--accent); --sky:var(--tint); --paper:#EBF0F8; --band:var(--navy-deep); --fill:var(--navy);
+  --header-bg:rgba(255,255,255,.97);
+}
+@media (max-width:480px){:root{--gut:16px}}
+html.dark{
+  --bg:#0B1222; --surface:#131D33; --tint:#1B2945; --line:#24324F; --input-line:#33456B;
+  --ink:#E6ECF7; --ink-2:#C9D3E6; --muted:#A9B4CA; --accent-text:#F6C93A; --on-dark-muted:#C9D3E6;
+  --navy-deep:#070D1A; --brand:#1A3266; --brand-soft:#24407A; --brand-line:#4A64A0;
+  --ok-text:#5FD497; --ok-dot:#4CC27E;
+  --paper:#0F182B; --band:#070D1A; --fill:#2F5BC4; --header-bg:rgba(11,18,34,.94);
+}
+html.contrast{
+  --bg:#fff; --surface:#fff; --tint:#fff; --line:#000; --input-line:#000;
+  --ink:#000; --ink-2:#000; --muted:#000; --accent:#FFE600; --accent-soft:#FFE600; --accent-text:#000; --on-dark-muted:#fff;
+  --navy-deep:#000; --brand:#000; --brand-soft:#000; --brand-line:#fff; --ok-text:#000; --ok-dot:#000;
+  --paper:#fff; --band:#000; --fill:#000; --header-bg:#fff;
+}
+
+/* 2. контейнер для нових частин (шапка, підвал, головна) */
+.util .wrap,.site-header .wrap,.site-foot .wrap,.home .wrap{width:min(var(--container),100% - 2*var(--gut))}
+
+/* 3. верхня смужка */
+.util{background:var(--navy-deep);color:var(--on-dark-muted);font-family:var(--f-text);font-size:13px}
+.util .wrap{min-height:44px;padding:6px 0;gap:10px 24px}
+.util-l{gap:8px 20px}
+.util a{color:#fff;text-decoration:none}
+.util a:hover{text-decoration:underline}
+.util #u-addr{color:var(--on-dark-muted)}
+.util-r{gap:8px}
+.util button{color:#fff;border:1px solid #33456B;border-radius:var(--r-pill);padding:6px 12px;font-size:13px;font-weight:600;line-height:1.2}
+.util button:hover{background:rgba(255,255,255,.1)}
+.util button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--navy-deep)}
+.util button .ic{width:1.05em;height:1.05em}
+html.contrast .util{background:#000}
+html.contrast .util button{border:2px solid #fff}
+@media (max-width:700px){.util-l{display:none}.util .wrap{justify-content:center}.util button{padding:6px 10px}}
+@media (max-width:420px){.util button .lbl-long{display:none}}
+
+/* 4. шапка */
+.site-header{background:var(--header-bg);border-bottom:1px solid var(--line);font-family:var(--f-text)}
+.site-header .bar{min-height:88px;gap:16px}
+.brand{gap:14px}
+.brand .mark{width:52px;height:52px;border-radius:14px}
+.brand b{font-family:var(--f-head);font-weight:700;font-size:18px;color:var(--ink);line-height:1.15}
+.brand small{font-size:12px;color:var(--muted)}
+.site-header .nav{margin-left:auto}
+.site-header .nav a,.site-header .nav-btn{font-weight:600;font-size:14px;color:var(--ink);padding:10px 10px;border-radius:10px}
+.site-header .nav a:hover,.site-header .nav-btn:hover{background:var(--tint)}
+.site-header .nav-grp.here>.nav-btn{background:var(--brand);color:#fff}
+.site-header .nav a.active{background:var(--brand);color:#fff}
+.site-header .nav .nav-sub{border-radius:16px}
+.site-header .nav .nav-sub a{font-weight:600}
+.site-header .nav .nav-sub a[aria-current="page"]{background:var(--tint);color:var(--ink)}
+.nav .nav-cta{display:none}
+.bar-act{display:flex;align-items:center;gap:10px;flex:none}
+.hd-search{display:grid;place-items:center;width:44px;height:44px;border-radius:var(--r-ctl);border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none;transition:border-color .2s,background .2s}
+.hd-search:hover{border-color:var(--ink)}
+.hd-search .ic{width:20px;height:20px}
+.hd-cta{display:inline-flex;align-items:center;text-decoration:none;background:var(--accent);color:var(--navy-deep);font-weight:800;font-size:14px;padding:12px 16px;border-radius:var(--r-ctl);white-space:nowrap;transition:background .2s,transform .15s}
+.hd-cta:hover{background:var(--accent-soft)}
+.site-header .menu-btn{margin-left:0;width:44px;height:44px;place-items:center;border-radius:var(--r-ctl);border:1px solid var(--line);color:var(--ink);background:var(--surface)}
+html.contrast .site-header{border-bottom:2px solid #000}
+html.contrast .hd-search,html.contrast .site-header .menu-btn{border:2px solid #000}
+html.contrast .hd-cta{border:2px solid #000}
+@media (max-width:1180px){.site-header .nav a,.site-header .nav-btn{padding:10px 8px;font-size:13.5px}}
+@media (max-width:1080px){
+  .site-header .menu-btn{display:grid}
+  /* бургер: панель на весь екран під шапкою */
+  .site-header .nav{position:fixed;inset:var(--hd-h,132px) 0 0 0;max-height:none;margin:0;padding:16px var(--gut) 32px;overflow:auto;
+    background:var(--surface);border:0;box-shadow:none;z-index:49}
+  .site-header.open{backdrop-filter:none;background:var(--surface)}   /* з blur фіксована панель рахувалась би від шапки, а не від екрана */
+  .site-header.open .nav{display:block}
+  .site-header .nav a,.site-header .nav-btn{font-size:17px;padding:14px 8px;border-radius:12px}
+  .site-header .nav>ul>li{border-bottom:1px solid var(--line)}
+  .site-header .nav-grp.here>.nav-btn{background:none;color:var(--ink);font-weight:800}
+  .nav .nav-cta{display:block;border-bottom:0!important;margin-top:16px}
+  .nav .nav-cta a{justify-content:center;background:var(--accent);color:var(--navy-deep)!important;font-weight:800}
+  .site-header .nav .nav-cta a:hover{background:var(--accent-soft)}
+  html.hd-open{overflow:hidden}
+}
+@media (max-width:640px){.hd-cta{display:none}.site-header .bar{min-height:72px}.brand .mark{width:44px;height:44px}.brand small{font-size:11px}}
+@media (max-width:380px){.brand small{display:none}}
+
+/* 5. підвал */
+.site-foot{background:var(--navy-deep);color:var(--on-dark-muted);padding:56px 0 32px;font-family:var(--f-text);font-size:14px}
+.site-foot .foot{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px}
+.site-foot h2{font-family:var(--f-text);font-weight:800;font-size:14px;color:#fff;margin:0 0 12px;letter-spacing:0}
+.site-foot ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.site-foot ul.two{grid-template-columns:1fr}
+.site-foot a{color:var(--on-dark-muted);text-decoration:none}
+.site-foot a:hover{color:#fff;text-decoration:underline}
+.foot-brand{display:flex;flex-direction:column;gap:10px}
+.foot-brand p{margin:0;line-height:1.6}
+.foot-brand a{color:#fff}
+.foot-mark{display:grid;place-items:center;width:48px;height:48px;border-radius:13px;background:var(--brand);color:#fff;font-family:var(--f-head);font-weight:800;font-size:24px;border-bottom:5px solid var(--accent);box-sizing:border-box}
+.foot-name{font-family:var(--f-head);font-weight:700;font-size:20px;color:#fff}
+.foot-bottom{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;align-items:center;margin-top:40px;padding-top:24px;border-top:1px solid #22355C;font-size:13px}
+.foot-bottom .copy{margin:0;padding:0;border:0}
+.foot-links{display:flex;gap:18px;flex-wrap:wrap}
+.foot-print{font:inherit;color:var(--on-dark-muted);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
+.foot-print:hover{color:#fff}
+.site-foot :focus-visible{outline-color:var(--accent)}
+html.contrast .site-foot{background:#000;color:#fff}
+html.contrast .site-foot a,html.contrast .foot-print{color:#fff;text-decoration:underline}
+@media print{.site-foot{display:none!important}}

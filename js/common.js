@@ -26,13 +26,17 @@
   /* логотип, верхня смужка, підвал */
   $("#logo").innerHTML = CONFIG.logoUrl
     ? '<img class="mark" src="' + esc(CONFIG.logoUrl) + '" alt="" width="48" height="48" fetchpriority="high">'
-    : '<svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#14274E"/><rect y="33" width="48" height="3" fill="#F4B400"/><text x="24" y="29" text-anchor="middle" font-family="Literata,Georgia,serif" font-weight="700" font-size="26" fill="#fff">2</text></svg>';
+    : '<svg class="mark" viewBox="0 0 52 52" aria-hidden="true"><defs><clipPath id="mk"><rect width="52" height="52" rx="14"/></clipPath></defs>' +
+      '<g clip-path="url(#mk)"><rect width="52" height="52" fill="#14274E"/><rect y="47" width="52" height="5" fill="#F6B800"/></g>' +
+      '<text x="26" y="35" text-anchor="middle" font-family="Unbounded,Manrope,sans-serif" font-weight="800" font-size="26" fill="#fff">2</text></svg>';
   $("#u-mail").href = mailto; $("#u-mail span").textContent = CONFIG.email;
   $("#u-addr span").textContent = "вул. Державна, 2, м. Підгородне";
   $("#u-fb").href = CONFIG.facebook;
   $("#f-addr").textContent = CONFIG.address;
   $("#f-mail").href = mailto; $("#f-mail").textContent = CONFIG.email;
   $("#year").textContent = new Date().getFullYear();
+  if ($("#f-fb")) $("#f-fb").href = CONFIG.facebook;
+  if ($(".foot-print")) $(".foot-print").addEventListener("click", function () { window.print(); });
   $("#f-links").innerHTML = D.useful.map(function (l) {
     return '<li><a href="' + esc(l[1]) + '">' + esc(l[0]) + "</a></li>";
   }).join("");
@@ -59,7 +63,7 @@
         return '<li><a href="' + navHref(it[0]) + '"' + (it[0] === page ? ' aria-current="page"' : "") + ">" + it[1] + "</a></li>";
       }).join("") + "</ul></li>";
   }).join("") +
-    '<li class="nav-search"><a href="' + navHref("index.html#search") + '">' + ICON("search") + "Пошук</a></li></ul>";
+    '<li class="nav-cta"><a href="profile-test.html">Тест на профіль</a></li></ul>';   /* пошук і тест - кнопками справа в шапці, тест ще й тут для телефона */
   function closeGroups(except) {
     $$("#nav .nav-grp.open").forEach(function (li) {
       if (li !== except) { li.classList.remove("open"); $(".nav-btn", li).setAttribute("aria-expanded", "false"); }
@@ -78,11 +82,15 @@
     var li = e.target.closest && e.target.closest(".nav-grp.open");
     closeGroups();
     if (li) $(".nav-btn", li).focus();
+    else if (header.classList.contains("open")) { menuBtn.click(); menuBtn.focus(); }   /* мобільне меню на весь екран */
   });
 
   var header = $(".site-header"), menuBtn = $("#menu-btn"), totop = $("#totop"), progress = $("#progress");
   menuBtn.addEventListener("click", function () {
     var open = header.classList.toggle("open");
+    /* на телефоні меню - панель на весь екран під шапкою */
+    root.style.setProperty("--hd-h", Math.max(0, header.getBoundingClientRect().bottom) + "px");
+    root.classList.toggle("hd-open", open);
     menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
     $("#menu-ic").innerHTML = '<use href="#i-' + (open ? "close" : "menu") + '"/>';
   });
@@ -143,7 +151,7 @@
   function openGame() {
     if (window.L2Game) { window.L2Game.open(); return; }
     var s = document.createElement("script");
-    s.src = "js/game.js?v=20261019-10";
+    s.src = "js/game.js?v=20261023-3";
     s.onload = function () { if (window.L2Game) window.L2Game.open(); };
     document.body.appendChild(s);
   }

@@ -14,8 +14,9 @@
 <script>(function(d){d.classList.add("js");try{var p=JSON.parse(localStorage.getItem("l2prefs")||"{}");if(p.large)d.classList.add("large");if(p.contrast)d.classList.add("contrast");else if(p.theme==="dark")d.classList.add("dark")}catch(e){}})(document.documentElement)</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500..700&family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20261019-10">
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500..700&family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=20261023-3">
+<link rel="stylesheet" href="theme.css?v=20261023-3">
 </head>
 <body>
 
@@ -72,13 +73,13 @@
 <div class="util on-dark">
   <div class="wrap">
     <div class="util-l">
-      <a id="u-mail" href="#"><svg class="ic"><use href="#i-mail"/></svg><span></span></a>
       <a id="u-addr" href="index.html#contacts"><svg class="ic"><use href="#i-pin"/></svg><span></span></a>
+      <a id="u-mail" href="#"><svg class="ic"><use href="#i-mail"/></svg><span></span></a>
+      <a id="u-fb" href="#"><svg class="ic"><use href="#i-fb"/></svg>Facebook</a>
     </div>
     <div class="util-r">
-      <a id="u-fb" href="#"><svg class="ic"><use href="#i-fb"/></svg>Facebook</a>
-      <button type="button" id="btn-large" aria-pressed="false">Більший текст</button>
-      <button type="button" id="btn-contrast" aria-pressed="false">Контраст</button>
+      <button type="button" id="btn-large" aria-pressed="false"><span aria-hidden="true">А+</span> <span class="lbl-long">Більший текст</span><span class="sr">Більший текст</span></button>
+      <button type="button" id="btn-contrast" aria-pressed="false"><span aria-hidden="true">◐</span> <span class="lbl-long">Контраст</span><span class="sr">Контраст</span></button>
       <button type="button" id="btn-dark" aria-pressed="false" aria-label="Темна тема"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg><span class="lbl">Темна тема</span></button>
     </div>
   </div>
@@ -90,54 +91,68 @@
       <span id="logo"></span>
       <span><b>Ліцей №2</b><small>Підгородненської міської ради</small><small>Дніпропетровської області</small></span>
     </a>
-    <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Меню">
-      <svg class="ic" id="menu-ic"><use href="#i-menu"/></svg>
-    </button>
     <nav class="nav" id="nav" aria-label="Основне меню">
       <ul>
         <li><a href="about.html">Про ліцей</a></li>
         <li><a href="news.html">Новини</a></li>
         <li><a href="index.html#paths">Батькам і учням</a></li>
-        <li><a href="index.html#help">Допомога</a></li>
-        <li><a href="public.html">Публічна інформація</a></li>
-        <li><a href="index.html#all">Усі розділи</a></li>
         <li><a href="index.html#contacts">Контакти</a></li>
-        <li class="nav-search"><a href="index.html#search"><svg class="ic"><use href="#i-search"/></svg>Пошук</a></li>
       </ul>
     </nav>
+    <div class="bar-act">
+      <a class="hd-search" href="index.html#search" aria-label="Пошук по сайту" title="Пошук (клавіша /)"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg></a>
+      <a class="hd-cta" href="profile-test.html">Тест на профіль</a>
+      <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Меню">
+        <svg class="ic" id="menu-ic"><use href="#i-menu"/></svg>
+      </button>
+    </div>
   </div>
   <div class="progress" id="progress" aria-hidden="true"></div>
 </header>
 
 <main id="main"></main>
 
-<footer class="on-dark">
+<footer class="site-foot on-dark">
   <div class="wrap">
     <div class="foot">
-      <div>
-        <h2>Ліцей №2 Підгородненської міської ради</h2>
-        <p id="f-addr" style="margin:0 0 .5rem"></p>
-        <p style="margin:0"><a id="f-mail" href="#"></a></p>
+      <div class="foot-brand">
+        <span class="foot-mark" aria-hidden="true">2</span>
+        <b class="foot-name">Ліцей №2</b>
+        <p>Підгородненської міської ради Дніпропетровської області</p>
+        <p id="f-addr"></p>
+        <p><a id="f-mail" href="#"></a></p>
       </div>
       <div>
-        <h2>Розділи</h2>
+        <h2>Навчання</h2>
+        <ul>
+          <li><a href="schedule.html">Розклад уроків</a></li>
+          <li><a href="education.html">Освітній процес</a></li>
+          <li><a href="teachers.html">Педагогічний колектив</a></li>
+          <li><a href="profile.html">Профілі та кластери</a></li>
+          <li><a href="upbringing.html">Виховна робота</a></li>
+          <li><a href="index.html#clubs">Гуртки та секції</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Життя ліцею</h2>
         <ul>
           <li><a href="news.html">Новини</a></li>
           <li><a href="calendar.html">Календар подій</a></li>
-          <li><a href="schedule.html">Розклад уроків</a></li>
-          <li><a href="menu.html">Меню їдальні</a></li>
-          <li><a href="faq.html">Часті питання</a></li>
           <li><a href="albums.html">Фотоальбоми</a></li>
-          <li><a href="index.html#paths">Батькам і учням</a></li>
-          <li><a href="about.html">Все про заклад</a></li>
-          <li><a href="teachers.html">Педагогічний колектив</a></li>
-          <li><a href="index.html#clubs">Гуртки та секції</a></li>
+          <li><a href="index.html#gallery">Фото ліцею</a></li>
           <li><a href="index.html#reviews">Відгуки</a></li>
           <li><a href="archive.html">Архів</a></li>
-          <li><a href="education.html">Освітній процес</a></li>
-          <li><a href="upbringing.html">Виховна робота</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Інформація</h2>
+        <ul>
+          <li><a href="about.html">Все про заклад</a></li>
+          <li><a href="menu.html">Меню їдальні</a></li>
+          <li><a href="faq.html">Часті питання</a></li>
           <li><a href="services.html">Сервіси та служби</a></li>
           <li><a href="public.html">Публічна інформація</a></li>
+          <li><a href="index.html#paths">Батькам і учням</a></li>
           <li><a href="index.html#contacts">Контакти</a></li>
         </ul>
       </div>
@@ -146,18 +161,21 @@
         <ul class="two" id="f-links"></ul>
       </div>
     </div>
-    <p class="copy">© <span id="year"></span> Ліцей №2 Підгородненської міської ради</p>
+    <div class="foot-bottom">
+      <p class="copy">© <span id="year"></span> Ліцей №2 Підгородненської міської ради</p>
+      <span class="foot-links"><a id="f-fb" href="#">Ми у Facebook</a><button type="button" class="foot-print">Друк сторінки</button></span>
+    </div>
   </div>
 </footer>
 
 <button class="totop" id="totop" type="button" aria-label="Нагору"><svg class="ic"><use href="#i-up"/></svg></button>
 
-<script src="js/data.js?v=20261019-10" defer></script>
-<script src="js/img-sizes.js?v=20261019-10" defer></script>
-<script src="js/common.js?v=20261019-10" defer></script>
-<script src="js/clusters.js?v=20261019-10" defer></script>
-<script src="js/quiz-kit.js?v=20261019-10" defer></script>
-<script src="js/proforientation-config.js?v=20261019-10" defer></script>
-<script src="js/proforientation.js?v=20261019-10" defer></script>
+<script src="js/data.js?v=20261023-3" defer></script>
+<script src="js/img-sizes.js?v=20261023-3" defer></script>
+<script src="js/common.js?v=20261023-3" defer></script>
+<script src="js/clusters.js?v=20261023-3" defer></script>
+<script src="js/quiz-kit.js?v=20261023-3" defer></script>
+<script src="js/proforientation-config.js?v=20261023-3" defer></script>
+<script src="js/proforientation.js?v=20261023-3" defer></script>
 </body>
 </html>

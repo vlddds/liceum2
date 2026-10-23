@@ -39,31 +39,6 @@
     return null;
   }
 
-  var ICON_RULES = [
-    [/особистого прийому|самоврядув|колектив|адміністрац|кадров|структур/i, "users"],
-    [/прийом|вступ|зарахув|територі|ліцензований/i, "userplus"],
-    [/режим|розклад|дзвінк|планування/i, "clock"],
-    [/харчув/i, "utensils"],
-    [/довіри/i, "phone"],
-    [/психолог|булінг|медичн/i, "heart"],
-    [/безпек|мінна/i, "shield"],
-    [/підручник|бібліотек|медіатек|методичн|навчальн|програм|мова|нова українська/i, "book"],
-    [/секці|гурт|олімпіад|конкурс/i, "star"],
-    [/нмт|зно|дпа|моніторинг|якості/i, "award"],
-    [/кошторис|фінансов/i, "coins"],
-    [/вакан|професі/i, "briefcase"],
-    [/історія|матеріально|доступн/i, "building"]
-  ];
-  function iconFor(title) {
-    for (var i = 0; i < ICON_RULES.length; i++) if (ICON_RULES[i][0].test(title)) return ICON_RULES[i][1];
-    return "doc";
-  }
-  function row(p, i) {
-    return '<li style="--i:' + i + '"><a ' + ext(p.url) + '><span class="t"><span class="ico">' + ICON(iconFor(p.title)) +
-      "</span><span>" + esc(p.title) + "</span></span>" + ICON("chev") + "</a></li>";
-  }
-
-
   if (CONFIG.notice && CONFIG.notice.text) {
     $("#notice").hidden = false;
     $("#notice-text").textContent = CONFIG.notice.text;
@@ -75,7 +50,7 @@
   }
 
   /* шапка, підвал і меню - в common.js */
-  if (CONFIG.heroPhoto) {
+  if (CONFIG.heroPhoto && $(".hero-bg")) {
     var hb = $(".hero-bg");
     hb.classList.add("has-photo");
     hb.style.setProperty("--photo", 'url("' + encodeURI(CONFIG.heroPhoto) + '")');
@@ -88,6 +63,7 @@
   $("#c-route").href = "https://www.google.com/maps/search/?api=1&query=" + CONFIG.lat + "," + CONFIG.lng;
   $("#map").src = "https://maps.google.com/maps?q=" + CONFIG.lat + "," + CONFIG.lng + "&z=16&output=embed";
   $("#news-all").href = "news.html";
+  if ($("#msg-mail")) { $("#msg-mail").href = mailto; $("#msg-mail").textContent = "або напишіть на " + CONFIG.email; }
 
   $("#also").innerHTML = [["Графік особистого прийому громадян адміністрацією закладу", "Графік особистого прийому"],
     ["Режим роботи", "Режим роботи"]].map(function (x) {
@@ -99,26 +75,46 @@
     return '<li style="--i:' + i + '"><a ' + ext(p.url) + '><span class="ico">' + ICON(q[2]) + "</span><span>" + esc(q[1]) + "</span></a></li>";
   }).join("");
 
+  /* велика картка - "Важливо" з data.js (feature), поруч - короткі новини */
   var F = D.feature;
   $("#feature").innerHTML =
-    '<span class="tag">' + esc(F.tag) + "</span><h3>" + esc(F.title) + "</h3><p>" + esc(F.text) + "</p>" +
+    '<div class="ph feature-ph" aria-hidden="true">' + ICON("shield") + "</div>" +
+    '<div class="feature-body"><span class="h-meta">' + esc(F.tag) + "</span><h3>" + esc(F.title) + "</h3><p>" + esc(F.text) + "</p>" +
     '<ul class="checks">' + F.points.map(function (t, i) { return '<li style="--i:' + i + '">' + ICON("check") + "<span>" + esc(t) + "</span></li>"; }).join("") + "</ul>" +
-    "<p>" + esc(F.note) + "</p>" +
-    '<a class="btn primary" ' + ext(F.ctaUrl) + ">" + esc(F.ctaLabel) + "</a>";
+    '<p class="feature-note">' + esc(F.note) + "</p>" +
+    '<a class="h-btn" ' + ext(F.ctaUrl) + ">" + esc(F.ctaLabel) + " →</a></div>";
 
   $("#newslist").innerHTML = D.news.map(function (n) {
     var url = n.url || (n.page ? (find(n.page) || {}).url : "");
-    return "<article>" + (n.date ? "<time>" + esc(n.date) + "</time>" : "") +
+    return '<article><div class="ph news-ph" aria-hidden="true">' + ICON("doc") + "</div><div>" +
+      '<span class="h-meta">' + esc([n.date, "Новини"].filter(Boolean).join(" · ")) + "</span>" +
       "<h3>" + esc(n.title) + "</h3><p>" + esc(n.text) + "</p>" +
-      (url ? '<a class="rd" ' + ext(url) + ">" + esc(n.label || "Читати далі") + "</a>" : "") + "</article>";
+      (url ? '<a class="rd" ' + ext(url) + ">" + esc(n.label || "Читати") + " →</a>" : "") + "</div></article>";
   }).join("");
 
   $("#tiles").innerHTML = D.helpTiles.map(function (t) {
     var p = find(t[0]); if (!p) return "";
-    return '<a class="tile" ' + ext(p.url) + '><span class="ico">' + ICON(t[2]) + "</span><b>" + esc(t[0]) + '</b><span class="d">' + esc(t[1]) + "</span></a>";
+    return '<a class="tile" ' + ext(p.url) + '><span class="ico">' + ICON(t[2]) + '</span><span><b>' + esc(t[0]) + '</b><span class="d">' + esc(t[1]) + "</span></span>" + ICON("chev") + "</a>";
   }).join("");
 
-  $("#publist").innerHTML = pages.trans.map(row).join("");
+  var PUB_SHORT = { statute: "Установчі документи", structure: "Структура й управління", staff: "Кадровий склад", programs: "Освітні програми",
+    "annual-plan": "Річний план", "annual-report": "Річний звіт", quality: "Якість освіти", capacity: "Кількість учнів",
+    equipment: "Матеріальна база", admission: "Правила прийому", territory: "Територія обслуговування", vacancies: "Вакансії",
+    budget: "Кошторис", finance: "Фінансовий звіт" };
+  $("#publist").innerHTML = pages.trans.map(function (p) {
+    var k = (p.url.split("#")[1] || ""), short = PUB_SHORT[k] || p.title;
+    return '<li><a ' + ext(p.url) + (short !== p.title ? ' title="' + esc(p.title) + '"' : "") + ">" + esc(short) + "</a></li>";
+  }).join("");
+
+  /* усі розділи: плитки головних сторінок, а під ними - всі сторінки за групами */
+  $("#all-tiles").innerHTML = [["about.html", "Все про заклад"], ["news.html", "Новини"], ["calendar.html", "Календар подій"],
+    ["schedule.html", "Розклад уроків і дзвінків"], ["menu.html", "Меню їдальні"], ["teachers.html", "Педагогічний колектив"],
+    ["education.html", "Освітній процес"], ["profile.html", "Профільне навчання"], ["upbringing.html", "Виховна робота"],
+    ["services.html", "Сервіси та служби"], ["faq.html", "Часті питання"], ["albums.html", "Фотоальбоми"],
+    ["archive.html", "Архів новин"], ["public.html", "Публічна інформація"], ["profile-test.html", "Тест на вибір профілю"],
+    ["proforientation.html", "Профорієнтаційний тест"]].map(function (x) {
+    return '<li><a href="' + x[0] + '"><span>' + esc(x[1]) + "</span>" + ICON("chev") + "</a></li>";
+  }).join("");
 
   function group(title, items, subItems, afterTitle) {
     var li = items.map(function (p) {
@@ -137,7 +133,28 @@
     group("Сервіси та служби", pages.services) +
     group("Архіви", pages.archives);
 
-  var tabsEl = $("#tabs"), panelEl = $("#tabpanel"), listEl = $("#tablist"), names = Object.keys(D.audience), cur = 0;
+  var ORDER_TABS = ["Учням", "Батькам", "Вчителям"];
+  var tabsEl = $("#tabs"), panelEl = $("#tabpanel"), listEl = $("#tablist"), moreEl = $("#tiles-more"), cur = 0, SHOW = 6;
+  var names = Object.keys(D.audience).sort(function (a, b) {
+    var x = ORDER_TABS.indexOf(a), y = ORDER_TABS.indexOf(b);
+    return (x < 0 ? 99 : x) - (y < 0 ? 99 : y);
+  });
+  function tile(p, k) {
+    return '<li style="--i:' + k + '"><a ' + ext(p.url) + '><span class="h-num" aria-hidden="true">' + (k < 9 ? "0" : "") + (k + 1) + "</span>" +
+      '<span class="h-tile-t"><b>' + esc(p.title) + "</b><small>" + esc(p.group || "") + "</small></span></a></li>";
+  }
+  function setMore(open) {
+    var n = listEl.children.length;
+    listEl.classList.toggle("all", open);
+    moreEl.hidden = n <= SHOW;
+    moreEl.setAttribute("aria-expanded", open ? "true" : "false");
+    moreEl.textContent = open ? "Згорнути" : "Показати всі (" + n + ")";
+  }
+  moreEl.addEventListener("click", function () {
+    var open = !listEl.classList.contains("all");
+    setMore(open);
+    if (open) { var f = listEl.children[SHOW]; if (f) f.querySelector("a").focus({ preventScroll: true }); }
+  });
   var pill = document.createElement("span");
   pill.className = "tab-pill"; pill.setAttribute("aria-hidden", "true");
   tabsEl.appendChild(pill);
@@ -157,7 +174,10 @@
       b.tabIndex = k === i ? 0 : -1;
     });
     panelEl.setAttribute("aria-labelledby", "tab-" + i);
-    listEl.innerHTML = D.audience[names[i]].map(function (t, k) { var p = find(t); return p ? row(p, k) : ""; }).join("");
+    var found = D.audience[names[i]].map(find).filter(Boolean);
+    listEl.innerHTML = found.map(tile).join("");
+    listEl.scrollTop = 0;
+    setMore(false);
     if (animate && !reduce) restart(listEl, "swap");
     movePill();
   }
@@ -461,12 +481,11 @@
       el.style.setProperty("--d", (Math.min(i, max || 6) * (step || 0.07)).toFixed(2) + "s");
     });
   }
-  mark(".sec-head"); mark(".tabs"); mark("#tabpanel");
+  mark(".h-sec .h-head"); mark("#tabpanel"); mark(".h-cl", 0.08); mark(".h-facts li", 0.06);
   mark(".feature"); mark("#newslist article", 0.1);
-  mark(".phone", 0.1); mark(".tile", 0.08);
-  mark("#publist li", 0.04, 8); mark("details.grp", 0.08);
-  mark(".contact > div"); mark(".map-frame");
-  mark(".club-filters"); mark(".club", 0.06, 6); mark(".rv-top"); mark(".rv", 0.08); mark(".gal");
+  mark(".h-clubs-intro"); mark(".club", 0.06, 6);
+  mark(".h-help"); mark(".h-public"); mark(".h-alltiles li", 0.03, 10); mark("details.grp", 0.06);
+  mark(".rv", 0.08); mark(".h-rv-card"); mark(".h-find"); mark(".h-msg"); mark(".h-photos li", 0.06);
   var revealEls = $$("[data-reveal]");
   if ("IntersectionObserver" in window && !reduce) {
     var ro = new IntersectionObserver(function (entries) {
