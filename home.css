@@ -57,8 +57,9 @@
 .home .search .go{background:#14274E;color:#fff;border-radius:var(--r-ctl);font-weight:800;padding:12px 18px}
 .home .search .go:hover{filter:none;background:#0C1A36}
 .home .results{color:var(--ink)}
-.h-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-.h-chips a{display:inline-flex;align-items:center;text-decoration:none;color:#fff;font-size:13px;font-weight:600;border:1px solid var(--brand-line);border-radius:var(--r-pill);padding:7px 12px;transition:background .2s,border-color .2s}
+/* швидкі розділи рівною сіткою 3×2 (на телефоні 2×3), а не врозкид */
+.h-chips{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.h-chips a{display:flex;align-items:center;justify-content:center;text-align:center;height:100%;box-sizing:border-box;text-decoration:none;color:#fff;font-size:13px;font-weight:600;border:1px solid var(--brand-line);border-radius:var(--r-pill);padding:7px 12px;transition:background .2s,border-color .2s}
 .h-chips a:hover{background:rgba(255,255,255,.1);border-color:#fff}
 .h-chips .ico{display:none}
 /* кнопка на телеграм-бот ідей під пошуком */
@@ -414,6 +415,8 @@ html.contrast .h-gal{border:2px solid #000}
   .h-now-big{font-size:20px}
   .h-now-t,.h-now-links a,.h-menu-dish{font-size:13px}
   .h-menu b{font-size:16px}
+  .h-chips{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .h-chips a{padding:7px 6px}
   .h-idea{gap:10px;padding:10px 12px 10px 10px;border-radius:16px}
   .h-idea-ic{width:36px;height:36px;border-radius:10px}
   .h-idea-t b{font-size:14px}
