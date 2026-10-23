@@ -64,15 +64,16 @@
 
 .h-hero-side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
 /* карусель у першому екрані */
-.h-gal{grid-column:span 2;position:relative;border-radius:32px;overflow:hidden;aspect-ratio:16/10;min-height:290px;background:var(--navy-soft)}
-/* розмір задає рамка 16:10, а не фото - вертикальні кадри обрізаються, а не розтягують карусель */
+.h-gal{grid-column:span 2;position:relative;border-radius:32px;overflow:hidden;aspect-ratio:16/9;align-self:start;background:var(--navy-soft)}
+/* розмір задає рамка 16:9, а не фото: горизонтальні кадри заповнюють її рівно, вертикальні - цілком на розмитому фоні */
 .h-gal .gal{position:absolute;inset:0;height:auto}
 .h-gal .gal-track{height:100%;padding:0;gap:0;scroll-padding-inline:0}
 .h-gal .gal-slide{flex:0 0 100%;height:100%}
 .h-gal .gal-item{aspect-ratio:auto;height:100%;border-radius:0;box-shadow:none}
 .h-gal .gal-item:hover{transform:none;box-shadow:none}
 .h-gal .gal-cap{padding:48px 20px 20px;max-width:100%;font-size:14px}
-.h-gal .gal-item img{object-position:50% 30%}   /* вертикальні кадри обрізаються ближче до облич */
+.h-gal .gal-item.tall img{position:relative;object-fit:contain}
+.h-gal .gal-blur{position:absolute;inset:-24px;background-size:cover;background-position:center;filter:blur(18px) brightness(.7)}
 .h-gal-nav{position:absolute;top:20px;right:20px;display:flex;gap:8px;z-index:2}
 .h-gal .gal-btn{width:44px;height:44px;border:0;background:rgba(255,255,255,.92);color:#14274E}
 .h-gal .gal-btn:hover:not(:disabled){background:#fff;color:#14274E}
@@ -376,7 +377,7 @@ html.contrast .h-gal{border:2px solid #000}
   .h-hero-main{padding:24px;border-radius:28px;gap:24px}
   .h-hero-main h1{font-size:44px}
   .h-hero-main .hero-sub{font-size:16px}
-  .h-gal{border-radius:24px;min-height:220px}
+  .h-gal{border-radius:24px}
   .h-gal-nav{top:12px;right:12px}
   .h-gal .gal-dots{left:12px;top:22px;max-width:calc(100% - 124px);gap:5px}
   .h-gal .gal-dots button{width:6px;height:6px}
