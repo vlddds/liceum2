@@ -269,11 +269,10 @@ window.SECTION = (function () {
       { id: "career", title: "Як обрати професію? Пам'ятка для 9 та 11 класів", short: "Профорієнтація", icon: "briefcase",
         blocks: [
           { type: "text", text: "Вибір професії — це важливий крок у житті! Щоб допомогти тобі визначитися, пропонуємо тести, корисні ресурси та відео. Скористайся ними, щоб знайти справу, яка тобі до душі!" },
-          { type: "heading", text: "Онлайн-тести для профорієнтації" },
-          { type: "links", items: [
-            { title: "Тест Голланда (Холланда)", url: "https://www.eztests.xyz/tests/professional_holland/", text: "Визначає твій професійний тип" },
-            { title: "Тест 16Personalities", url: "https://www.16personalities.com/uk/bezkoshtovnyy-test-na-vyznachennya-osobystosti", text: "Сильні сторони та інтереси" },
-            { title: "Психологічний профорієнтаційний тест для IT-фахівців", url: "https://prof.ithillel.ua/" }
+          { type: "heading", text: "Тести ліцею" },
+          { type: "cards", items: [
+            { icon: "briefcase", title: "Профорієнтаційний тест", text: "Інтереси за Голландом і сильні сторони за Гарднером: які професії тобі підходять", url: "proforientation.html" },
+            { icon: "award", title: "Тест на вибір профілю", text: "Для 9–11 класів: який кластер і профіль обрати в ліцеї", url: "profile-test.html" }
           ] },
           { type: "heading", text: "Корисні сайти для вибору професії" },
           { type: "links", items: [
