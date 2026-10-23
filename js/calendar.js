@@ -21,7 +21,7 @@ window.CALENDAR = (function () {
     { date: "2026-10-01", title: "День захисників і захисниць України", type: "holiday" },
     { date: "2026-10-02", title: "Святкування Дня вчителя в ліцеї", type: "school" },
     { date: "2026-10-04", title: "День працівників освіти", type: "holiday" },
-    { date: "2026-10-27", end: "2026-11-02", title: "Осінні канікули", type: "vacation" },
+    { date: "2026-10-26", end: "2026-11-01", title: "Осінні канікули", type: "vacation" },
     { date: "2026-11-09", title: "День української писемності та мови", type: "holiday" },
     { date: "2026-11-21", title: "День Гідності та Свободи", type: "memorial" },
     { date: "2026-11-28", title: "День пам'яті жертв голодоморів", type: "memorial" },
