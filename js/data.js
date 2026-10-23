@@ -38,6 +38,8 @@ window.SITE_DATA = (function () {
   ];
 
   var useful = [
+    ["Telegram-канал учнівського самоврядування", "https://t.me/+lATu7agkm2A5OTky"],
+    ["Бот ідей учнів @l2communitybot", "https://t.me/l2communitybot"],
     ["Підгородненська міська рада", "https://pidgorodne.otg.dp.gov.ua/"],
     ["МОН України", "https://mon.gov.ua/ua"],
     ["Освіта.ua", "http://osvita.ua/"],
@@ -260,8 +262,8 @@ window.SITE_DATA = (function () {
   var photos = [
     { src: "img/gallery/01-building.jpg", caption: "Будівля ліцею" },
     { src: "img/gallery/13-peace-day.jpg", caption: "Міжнародний день миру: «Мир — це…»" },
-    { src: "img/gallery/14-concert.jpg", caption: "Святковий концерт: виступи танцювальних колективів" },
-    { src: "img/gallery/15-university-tour.jpg", caption: "Профорієнтаційна екскурсія старшокласників до університету" },
+    { src: "img/gallery/14-concert.jpg", caption: "Святковий концерт до Дня вчителя: виступи танцювальних колективів" },
+    { src: "img/gallery/15-university-tour.jpg", caption: "Профорієнтаційна екскурсія старшокласників до ДІІТ" },
     { src: "img/gallery/16-pajama-day.jpg", caption: "День піжам у старших класах" },
     { src: "img/gallery/17-flag-day.jpg", caption: "Біля державного прапора на подвір'ї ліцею" },
     { src: "img/gallery/18-saved-team.jpg", caption: "Педагоги ліцею на заході проєкту savED та UNICEF" },
