@@ -20,6 +20,7 @@
   <url><loc>https://SITE-DOMAIN/forms.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://SITE-DOMAIN/grade5.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
   <url><loc>https://SITE-DOMAIN/spaces.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://SITE-DOMAIN/blog.html</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://SITE-DOMAIN/albums.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://SITE-DOMAIN/archive.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
 </urlset>
