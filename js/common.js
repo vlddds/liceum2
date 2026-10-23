@@ -46,7 +46,7 @@
      нова сторінка: дописати ["файл.html", "Назва"] в потрібну групу */
   var NAV = [
     { title: "Про ліцей", items: [["about.html", "Все про заклад"], ["teachers.html", "Педагогічний колектив"],
-      ["public.html", "Публічна інформація"], ["albums.html", "Фотоальбоми"]] },
+      ["public.html", "Публічна інформація"], ["albums.html", "Фотоальбоми"], ["spaces.html", "Наші простори"]] },
     { title: "Новини", items: [["news.html", "Новини"], ["news.html#life", "Життя ліцею"], ["calendar.html", "Календар подій"], ["archive.html", "Архів"]] },
     { title: "Навчання", items: [["schedule.html", "Розклад уроків"], ["education.html", "Освітній процес"],
       ["profile.html", "Перехід на профільне навчання"], ["upbringing.html", "Виховна робота"], ["index.html#clubs", "Гуртки"]] },

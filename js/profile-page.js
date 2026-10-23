@@ -57,7 +57,8 @@
         return '<div class="pr-card pr-prof"><span class="ico">' + ICON(c.icon) + "</span><h3>" + esc(c.name) + '</h3><ul class="pr-check">' +
           c.profiles.map(function (id) { return "<li>" + ICON("check") + "<span>" + esc(C.profiles[id].name) + "</span></li>"; }).join("") +
           '</ul><p class="pr-deep"><b>Поглиблено:</b> ' + esc(c.deep) + "</p>" +
-          '<a class="btn pr-prof-btn" href="profile-test.html?cluster=' + c.id + '" aria-label="Тест з предметів кластера ' + esc(c.name) + ' у форматі НМТ">Тест з предметів' + ICON("chev") + "</a></div>";
+          '<a class="btn pr-prof-btn" href="profile-test.html?cluster=' + c.id + '" aria-label="Тест з предметів кластера ' + esc(c.name) + ' у форматі НМТ">Тест з предметів' + ICON("chev") + "</a>" +
+          '<a class="pr-sp-link" href="spaces.html?tag=' + c.id + '" aria-label="Подивитися кабінети кластера ' + esc(c.name) + '">Подивитися кабінети →</a></div>';
       }).join("") + "</div>" +
       '<ul class="pr-facts">' + C.facts.map(function (x) { return "<li><b>" + esc(x[0]) + "</b><span>" + esc(x[1]) + "</span></li>"; }).join("") + "</ul>" +
       '<p class="pr-note">' + esc(C.note) + "</p>";

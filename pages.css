@@ -144,6 +144,30 @@ mark.ph{background:rgba(246,184,0,.18);color:inherit;border-bottom:1px dashed va
 .fm-count{margin:0;color:var(--muted);font-size:14px}
 .fm-count:empty{display:none}
 
+/* профільне навчання: посилання на кабінети під кнопкою тесту */
+.pr-sp-link{margin-top:12px;font-weight:700;font-size:14px;color:var(--ink);text-underline-offset:3px}
+
+/* наші простори (spaces-page.js) */
+.sp-filter{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.sp-count{margin:0 0 16px;color:var(--muted);font-size:14px;font-weight:600}
+.sp-count:empty{display:none}
+.sp-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:20px}
+.sp-card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:28px;overflow:hidden}
+.sp-card[hidden]{display:none}
+.sp-pic{position:relative;display:block;width:100%;aspect-ratio:4/3;border-radius:0;box-shadow:none}
+.sp-pic.gal-item:hover{transform:none;box-shadow:none}
+.sp-ph{display:grid;place-items:center;align-content:center;gap:8px;color:#fff;background-color:var(--navy-soft);
+  background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 14px,transparent 14px 28px)}
+.sp-ph .ic{width:34px;height:34px;opacity:.8}
+.sp-ph small{font-size:13px;font-weight:700;color:var(--on-dark-muted)}
+.sp-n{position:absolute;right:12px;bottom:12px;display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:var(--r-pill);background:rgba(12,26,54,.75);color:#fff;font-size:13px;font-weight:700}
+.sp-n .ic{width:16px;height:16px}
+.sp-txt{display:flex;flex-direction:column;gap:10px;padding:20px 22px 22px;flex:1}
+.sp-txt h2{margin:0;font-family:var(--f-text);font-weight:800;font-size:18px;letter-spacing:0}
+.sp-txt p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.sp-tags{list-style:none;margin:auto 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.sp-tags li{font-size:12px;font-weight:700;padding:4px 10px;border-radius:var(--r-pill);background:var(--tint);color:var(--ink)}
+
 /* 6. темна тема: сині картки лишаються синіми, світлі - темними */
 html.dark .t-hero .hero-bg{background:var(--brand)}
 html.dark .b-links a,html.dark .b-people li,html.dark .b-facts div,html.dark .b-news article,html.dark .b-phones .phone,html.dark .b-button{background:var(--bg)}
@@ -157,6 +181,9 @@ html.contrast .btn{border:2px solid #000}
 html.contrast .b-stats li,html.contrast .pr-test,html.contrast .pr-banner{background:#000}
 html.contrast .ip-card,html.contrast .ip-help{border:2px solid #000;background:#fff}
 html.contrast .fm-row{border:2px solid #000}
+html.contrast .sp-card{border:2px solid #000}
+html.contrast .sp-tags li{background:#fff;border:1px solid #000}
+html.contrast .sp-ph{background:#000}
 html.contrast .fm-type{background:#fff;border:2px solid #000}
 html.contrast .fm-act .btn:disabled{background:#fff;color:#000;border:2px dashed #000}
 html.contrast mark.ph{background:#FFE600;color:#000}
@@ -178,6 +205,9 @@ html.contrast mark.ph{background:#FFE600;color:#000}
   .fm-type{width:46px;height:50px}
   .fm-act{grid-column:1 / -1}
   .fm-act .btn{width:100%;justify-content:center}
+  .sp-grid{gap:14px}
+  .sp-card{border-radius:22px}
+  .sp-txt{padding:16px}
 }
 
 /* 9. друк */

@@ -100,7 +100,8 @@
       return '<div class="h-cl h-cl-' + esc(c.id) + '"><div class="h-cl-top"><h3>' + esc(c.name) + "</h3><span>" + n + " " + plural(n, "профіль", "профілі", "профілів") + "</span></div>" +
         '<ul class="h-cl-list">' + c.profiles.map(function (id) { return "<li>" + esc(C.profiles[id].name) + "</li>"; }).join("") + "</ul>" +
         '<p class="h-cl-deep"><b>Поглиблено:</b> ' + esc(c.deep) + "</p>" +
-        '<a class="h-cl-btn" href="profile-test.html?cluster=' + esc(c.id) + '" aria-label="Тест кластера ' + esc(c.name) + '">Тест кластера →</a></div>';
+        '<a class="h-cl-btn" href="profile-test.html?cluster=' + esc(c.id) + '" aria-label="Тест кластера ' + esc(c.name) + '">Тест кластера →</a>' +
+        '<a class="h-cl-sp" href="spaces.html?tag=' + esc(c.id) + '" aria-label="Подивитися кабінети кластера ' + esc(c.name) + '">Подивитися кабінети →</a></div>';
     }).join("");
     facts.innerHTML = (C.facts || []).map(function (f) { return "<li><b>" + esc(f[0]) + "</b><span>" + esc(f[1]) + "</span></li>"; }).join("");
   })();

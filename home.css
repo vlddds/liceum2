@@ -162,6 +162,7 @@
 .h-cl-btn{margin-top:auto;text-decoration:none;font-weight:800;font-size:15px;padding:12px 16px;border-radius:12px;text-align:center;border:1.5px solid currentColor;transition:background .2s}
 .h-cl-stem{background:var(--brand);color:#fff}
 .h-cl-stem .h-cl-list li{background:var(--brand-soft)}
+.h-cl-sp{align-self:center;font-weight:700;font-size:14px;color:inherit!important;text-underline-offset:3px}
 .h-cl-stem .h-cl-btn{color:#fff!important}
 .h-cl-stem .h-cl-btn:hover{background:rgba(255,255,255,.12)}
 .h-cl-lang{background:var(--accent);color:var(--navy-deep)}
@@ -431,7 +432,7 @@ html.contrast .h-gal{border:2px solid #000}
 
 /* 16. друк */
 @media print{
-  .h-hero-side,.h-chips,.h-hero-search,.h-gal,.h-rv-card,.h-msg,.h-photos,.home .tabs,.h-cl-btn,.home .map-frame{display:none!important}
+  .h-hero-side,.h-chips,.h-hero-search,.h-gal,.h-rv-card,.h-msg,.h-photos,.home .tabs,.h-cl-btn,.h-cl-sp,.home .map-frame{display:none!important}
   .home{background:#fff}
   .h-hero-main{background:#fff!important;color:#000!important;min-height:0;padding:0}
   .h-hero-main h1,.h-hero-main h1 span,.h-hero-main .hero-sub{color:#000!important}
