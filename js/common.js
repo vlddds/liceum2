@@ -47,7 +47,7 @@
   var NAV = [
     { title: "Про ліцей", items: [["about.html", "Все про заклад"], ["teachers.html", "Педагогічний колектив"],
       ["public.html", "Публічна інформація"], ["albums.html", "Фотоальбоми"], ["spaces.html", "Наші простори"]] },
-    { title: "Новини", items: [["news.html", "Новини"], ["news.html#life", "Життя ліцею"], ["calendar.html", "Календар подій"], ["blog.html", "Учнівський блог"], ["archive.html", "Архів"]] },
+    { title: "Новини", items: [["news.html", "Новини"], ["news.html#life", "Життя ліцею"], ["calendar.html", "Календар подій"], ["blog.html", "Шкільна газета"], ["archive.html", "Архів"]] },
     { title: "Навчання", items: [["schedule.html", "Розклад уроків"], ["education.html", "Освітній процес"],
       ["profile.html", "Перехід на профільне навчання"], ["upbringing.html", "Виховна робота"], ["index.html#clubs", "Гуртки"]] },
     { title: "Учням і батькам", items: [["menu.html", "Меню їдальні"], ["services.html", "Сервіси та служби"], ["faq.html", "Часті питання"], ["safety.html", "Безпека та укриття"], ["forms.html", "Бланки та заяви"], ["grade5.html", "Перший раз у 5 клас"]] },

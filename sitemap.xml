@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Карта сайту для Google. Після запуску замініть SITE-DOMAIN на адресу сайту.
+<!-- Карта сайту для Google. З'явиться свій домен - замініть vlddds.github.io/liceum2 на нього.
      Нову сторінку додавайте окремим блоком <url>. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://SITE-DOMAIN/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://SITE-DOMAIN/news.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://SITE-DOMAIN/about.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://SITE-DOMAIN/teachers.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://SITE-DOMAIN/education.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://SITE-DOMAIN/schedule.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://SITE-DOMAIN/profile.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://SITE-DOMAIN/profile-test.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://SITE-DOMAIN/menu.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://SITE-DOMAIN/calendar.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://SITE-DOMAIN/public.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://SITE-DOMAIN/upbringing.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://SITE-DOMAIN/services.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://SITE-DOMAIN/faq.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://SITE-DOMAIN/safety.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://SITE-DOMAIN/forms.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://SITE-DOMAIN/grade5.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://SITE-DOMAIN/spaces.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://SITE-DOMAIN/blog.html</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://SITE-DOMAIN/albums.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://SITE-DOMAIN/archive.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/news.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/about.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/teachers.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/education.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/schedule.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/profile.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/profile-test.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/menu.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/calendar.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/public.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/upbringing.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/services.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/faq.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/safety.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/forms.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/grade5.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/spaces.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/blog.html</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/albums.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://vlddds.github.io/liceum2/archive.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
 </urlset>
