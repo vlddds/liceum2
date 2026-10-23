@@ -50,7 +50,7 @@
     { title: "Новини", items: [["news.html", "Новини"], ["news.html#life", "Життя ліцею"], ["calendar.html", "Календар подій"], ["archive.html", "Архів"]] },
     { title: "Навчання", items: [["schedule.html", "Розклад уроків"], ["education.html", "Освітній процес"],
       ["profile.html", "Перехід на профільне навчання"], ["upbringing.html", "Виховна робота"], ["index.html#clubs", "Гуртки"]] },
-    { title: "Учням і батькам", items: [["menu.html", "Меню їдальні"], ["services.html", "Сервіси та служби"], ["faq.html", "Часті питання"]] },
+    { title: "Учням і батькам", items: [["menu.html", "Меню їдальні"], ["services.html", "Сервіси та служби"], ["faq.html", "Часті питання"], ["safety.html", "Безпека та укриття"]] },
     { title: "Контакти", href: "index.html#contacts" }
   ];
   var page = location.pathname.split("/").pop() || "index.html";

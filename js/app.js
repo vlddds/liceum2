@@ -32,6 +32,9 @@
   var pages = {};
   Object.keys(D.pages).forEach(function (k) { pages[k] = D.pages[k].map(toPage); });
   var INDEX = [].concat(pages.about, pages.teachers, pages.edu, pages.trans, pages.upb, pages.services, pages.archives);
+  /* окремі сторінки, яких нема в D.pages: теж у пошук (і для плиток, що шукають сторінку за назвою) */
+  INDEX.push({ title: "Безпека та укриття", group: "Батькам", url: "safety.html",
+    kw: "безпека тривога повітряна тривога укриття сховище бомбосховище евакуація забрати дитину черговий адміністратор 112 116 111" });
 
   function find(title) {
     for (var i = 0; i < INDEX.length; i++) if (INDEX[i].title === title) return INDEX[i];
@@ -112,7 +115,7 @@
     ["education.html", "Освітній процес"], ["profile.html", "Профільне навчання"], ["upbringing.html", "Виховна робота"],
     ["services.html", "Сервіси та служби"], ["faq.html", "Часті питання"], ["albums.html", "Фотоальбоми"],
     ["archive.html", "Архів новин"], ["public.html", "Публічна інформація"], ["profile-test.html", "Тест на вибір профілю"],
-    ["proforientation.html", "Профорієнтаційний тест"]].map(function (x) {
+    ["proforientation.html", "Профорієнтаційний тест"], ["safety.html", "Безпека та укриття"]].map(function (x) {
     return '<li><a href="' + x[0] + '"><span>' + esc(x[1]) + "</span>" + ICON("chev") + "</a></li>";
   }).join("");
 
