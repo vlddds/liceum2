@@ -1,0 +1,138 @@
+/* Внутрішні сторінки в новому дизайні (редизайн 2026). Підключається після style.css і theme.css
+   на всіх сторінках, крім головної. Токени - theme.css, тут тільки те, що відрізняється від style.css.
+   Що де: 1 заголовки · 2 плашка сторінки · 3 секції й кнопки · 4 акордеони, картки, блоки
+          5 окремі сторінки · 6 темна тема · 7 контраст · 8 телефон · 9 друк */
+
+/* 1. заголовки: великі - Unbounded, заголовки карток - Manrope (через --serif у theme.css) */
+body{background:var(--bg);color:var(--ink)}
+h1,h2,.content h1{font-family:var(--f-head);letter-spacing:-.01em}
+h2{font-weight:700;font-size:clamp(22px,2.6vw,30px);line-height:1.15}
+.sec-head h2{max-width:28ch}
+.lead{color:var(--muted);font-size:16px}
+.content h2{font-size:clamp(20px,2.2vw,26px)}
+.content h3,.content h4{font-weight:800}
+.content a,.f-link,.acc-go,.b-lk-h{color:var(--ink)}
+.content a:hover{color:var(--navy-soft)}
+html.dark .content a:hover{color:var(--accent)}
+
+/* 2. плашка сторінки: синя картка з великим знаком, як перший екран головної */
+.hero.t-hero{position:relative;background:transparent;color:#fff;padding:32px 0 8px}
+.t-hero .hero-bg{inset:32px max(var(--gut),(100% - var(--container)) / 2) 8px;border-radius:32px;background:var(--brand);background-image:none;overflow:hidden}
+.t-hero .hero-bg.has-photo{background-size:cover}
+.t-hero .hero-bg .num{right:-24px;top:auto;bottom:-.18em;transform:none;font-family:var(--f-head);font-weight:800;font-size:clamp(150px,20vw,280px);
+  color:var(--brand-soft);-webkit-text-stroke:0;letter-spacing:-.04em;animation:none!important;white-space:nowrap}
+.t-hero .hero-in{padding:clamp(28px,4vw,52px) clamp(24px,4vw,52px)}
+.t-hero h1{overflow-wrap:break-word;hyphens:auto;font-family:var(--f-head);font-weight:800;font-size:clamp(30px,4.6vw,58px);line-height:1.04;letter-spacing:-.02em;max-width:22ch;color:#fff}
+.t-hero .hero-sub{color:var(--on-dark-muted);font-size:clamp(16px,1.6vw,19px);line-height:1.55;max-width:62ch}
+.t-hero .crumbs{color:var(--on-dark-muted);font-size:13px;font-weight:600;margin-bottom:18px}
+.t-hero .crumbs a{color:#fff;text-decoration:underline;text-decoration-color:rgba(255,255,255,.35);text-underline-offset:3px}
+.t-hero .crumbs a:hover{text-decoration-color:#fff}
+.jump{margin-top:22px;gap:8px}
+.jump a{color:#fff;font-size:13px;font-weight:600;background:transparent;border:1px solid var(--brand-line);padding:7px 12px}
+.jump a:hover{background:var(--accent);border-color:var(--accent);color:var(--navy-deep)}
+
+/* 3. секції й кнопки */
+.sec{padding:clamp(32px,5vw,56px) 0}
+.sec.alt,.sec.sky{background:transparent}
+.sp-sec,.pf-sec{padding-top:clamp(24px,4vw,40px)}
+.btn{border-radius:var(--r-ctl);font-weight:800;border-width:1.5px;border-color:var(--ink);color:var(--ink);background:var(--surface)}
+.btn:hover{background:var(--tint)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.primary:hover{background:var(--navy-deep);border-color:var(--navy-deep);box-shadow:none}
+.chip{border-radius:var(--r-pill);font-weight:700}
+.chip[aria-pressed=true],.chip:has(input:checked){background:var(--brand);border-color:var(--brand);color:#fff}
+.chip[aria-pressed=true] span{color:var(--accent)}
+.t-find input,.sch-pick select,.field input,.field textarea{border-color:var(--input-line);border-radius:var(--r-ctl)}
+
+/* 4. акордеони, картки, блоки */
+.acc{gap:12px}
+.acc-item{border-radius:24px}
+.acc-item.open{border-color:var(--ink);box-shadow:none}
+.acc-head{padding:18px 22px}
+.acc-head .ico{border-radius:12px;background:var(--tint);color:var(--ink)}
+.acc-head:hover .ico,.acc-item.open .acc-head .ico{background:var(--brand);color:#fff}
+.acc-t{font-weight:800;font-size:clamp(16px,1.8vw,19px)}
+.acc-sub{font-weight:800}
+.acc-item.link:hover{border-color:var(--ink);box-shadow:none}
+.b-note{border-radius:16px;background:var(--tint);border-left-color:var(--brand)}
+.b-note.warn{background:rgba(246,184,0,.16);border-left-color:var(--accent)}
+.b-note.warn .ic{color:var(--accent-text)}
+.b-links a,.b-people li,.b-facts div,.b-news article,.b-phones .phone,.b-button{border-radius:18px;background:var(--bg)}
+.b-links a:hover,.b-people li:hover,.b-phones .phone:hover{border-color:var(--ink);box-shadow:none}
+.b-stats li{border-radius:20px;background:var(--brand);background-image:none}
+.b-stats b{font-family:var(--f-head);font-weight:800;color:var(--accent)}
+.b-stats span{color:var(--on-dark-muted)}
+.b-table{border-radius:18px}
+.b-table thead th{background:var(--bg);color:var(--muted)}
+.b-news h4{font-weight:800}
+.b-ph,.yt,.yt-frame{border-radius:16px}
+.phone strong{font-family:var(--f-head);font-weight:800;color:var(--ink)}
+.faq{border-radius:18px;background:var(--surface)}
+.faq[open]{border-color:var(--ink)}
+.side{border-radius:20px;background:var(--surface)}
+.side a[aria-current]{color:var(--ink)}
+.empty-note{border-radius:18px}
+
+/* 5. окремі сторінки */
+/* темні плашки зі старою сіткою й сяйвом - тепер рівний синій, як на головній */
+.h-age,.sg-leader,.sch-now{background:var(--brand);background-image:none;border-radius:24px}
+.h-age b,.h-age strong{font-family:var(--f-head)}
+/* заглушки фото - смугастий візерунок з макета */
+.t-ph,.gal-ph{background-color:var(--navy-soft);background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 14px,transparent 14px 28px);background-size:auto}
+
+/* педколектив */
+.t-card{border-radius:22px;box-shadow:none}
+.t-card:hover{box-shadow:none;border-color:var(--ink)}
+.t-badge{border-radius:var(--r-pill)}
+/* календар, розклад, меню, новини */
+.cal-box{border-radius:28px}
+.cal-head h2{font-family:var(--f-head)}
+.sch-now{border-radius:22px}
+.rv-sum b,.pf-code b,.pr-num,.pr-badge,.pr-facts b,.pr-time b,.pr-sw-l{font-family:var(--f-head)}
+.nt-tabs::before{background:var(--brand)}
+/* меню: обраний день - синя плашка бренду (у темній темі --fill надто світлий для жовтого тексту) */
+.mn-week li.cur{background:var(--brand)}
+/* SWOT: велика літера-декор, але читабельна */
+.pr-sw-l{color:var(--ink);opacity:.55}   /* колір кластера лишається в смузі зверху картки */
+/* профтест і тест профілю */
+.pf-card{border-radius:28px;box-shadow:none}
+.pf h2,.pf h3{font-family:var(--f-head);font-weight:700}
+.pf h4{font-family:var(--f-text);font-weight:800}
+.pf-q{border-radius:22px}
+.pf-opt input:checked+.pf-dot{background:var(--brand);border-color:var(--brand)}
+.pf-bar i{background:var(--brand)}
+/* профільне навчання */
+.pr-card,.pr-chart,.pr-stats li,.pr-big li{border-radius:24px;box-shadow:none}
+.pr-test{background:var(--brand);background-image:none;border-radius:28px}
+.pr-banner{background:var(--brand)}
+.pr-card h3,.pr-chart figcaption{font-family:var(--f-text);font-weight:800}
+
+/* 6. темна тема: сині картки лишаються синіми, світлі - темними */
+html.dark .t-hero .hero-bg{background:var(--brand)}
+html.dark .b-links a,html.dark .b-people li,html.dark .b-facts div,html.dark .b-news article,html.dark .b-phones .phone,html.dark .b-button{background:var(--bg)}
+
+/* 7. контраст: чорно-біле, рамки 2px */
+html.contrast .t-hero .hero-bg{background:#000}
+html.contrast .t-hero .hero-bg .num{color:#222}
+html.contrast .jump a{border:2px solid #fff}
+html.contrast :is(.acc-item,.t-card,.faq,.cal-box,.pf-card,.pf-q,.side,.pr-card,.pr-chart,.b-table){border:2px solid #000}
+html.contrast .btn{border:2px solid #000}
+html.contrast .b-stats li,html.contrast .pr-test,html.contrast .pr-banner{background:#000}
+
+/* 8. телефон */
+@media (max-width:480px){
+  .hero.t-hero{padding:16px 0 4px}
+  .t-hero .hero-bg{inset:16px var(--gut) 4px;border-radius:24px}
+  .t-hero .hero-in{padding:24px 20px}
+  .t-hero h1{font-size:clamp(22px,6.2vw,30px)}
+  .t-hero .hero-bg .num{font-size:130px}
+  .acc-head{padding:14px 16px}
+  .sec{padding:24px 0}
+}
+
+/* 9. друк */
+@media print{
+  .t-hero .hero-bg{display:none}
+  .t-hero .hero-in{padding:0}
+  .t-hero h1,.t-hero .hero-sub,.t-hero .crumbs,.t-hero .crumbs a{color:#000!important}
+}

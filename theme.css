@@ -20,8 +20,12 @@
   --r-sec:34px; --r-card:24px; --r-card-s:22px; --r-ctl:12px; --r-pill:999px;
   --container:1280px; --gut:32px;
   /* старі назви з style.css */
-  --sun:var(--accent); --sky:var(--tint); --paper:#EBF0F8; --band:var(--navy-deep); --fill:var(--navy);
+  --sun:var(--accent); --sky:var(--tint); --paper:#F4F6FA; --band:var(--navy-deep); --fill:var(--navy);
   --header-bg:rgba(255,255,255,.97);
+  /* шрифти й радіуси, якими користується style.css: текст і заголовки карток - Manrope, великі заголовки - Unbounded (pages.css) */
+  --serif:var(--f-text); --sans:var(--f-text);
+  --r-s:12px; --r-m:18px; --r-l:28px;
+  --sh1:0 1px 2px rgba(20,39,78,.04),0 4px 14px rgba(20,39,78,.05); --sh2:0 2px 6px rgba(20,39,78,.06),0 14px 34px rgba(20,39,78,.12);
 }
 @media (max-width:480px){:root{--gut:16px}}
 html.dark{
@@ -38,8 +42,8 @@ html.contrast{
   --paper:#fff; --band:#000; --fill:#000; --header-bg:#fff;
 }
 
-/* 2. контейнер для нових частин (шапка, підвал, головна) */
-.util .wrap,.site-header .wrap,.site-foot .wrap,.home .wrap{width:min(var(--container),100% - 2*var(--gut))}
+/* 2. контейнер */
+.wrap{width:min(var(--container),100% - 2*var(--gut))}
 
 /* 3. верхня смужка */
 .util{background:var(--navy-deep);color:var(--on-dark-muted);font-family:var(--f-text);font-size:13px}
