@@ -61,6 +61,17 @@
 .h-chips a{display:inline-flex;align-items:center;text-decoration:none;color:#fff;font-size:13px;font-weight:600;border:1px solid var(--brand-line);border-radius:var(--r-pill);padding:7px 12px;transition:background .2s,border-color .2s}
 .h-chips a:hover{background:rgba(255,255,255,.1);border-color:#fff}
 .h-chips .ico{display:none}
+/* кнопка на телеграм-бот ідей під пошуком */
+.h-idea{display:flex;align-items:center;gap:14px;max-width:560px;padding:12px 16px 12px 12px;border-radius:18px;text-decoration:none;color:#fff;
+  background:rgba(255,255,255,.06);border:1px solid var(--brand-line);transition:background .2s,border-color .2s}
+.h-idea:hover{background:rgba(255,255,255,.12);border-color:var(--accent)}
+.h-idea-ic{display:grid;place-items:center;flex:none;width:42px;height:42px;border-radius:12px;background:var(--accent);color:var(--navy-deep)}
+.h-idea-ic .ic{width:20px;height:20px}
+.h-idea-t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.h-idea-t b{font-weight:800;font-size:15px}
+.h-idea-t small{font-size:13px;color:var(--on-dark-muted);overflow-wrap:anywhere}
+.h-idea-go{margin-left:auto;flex:none;width:18px;height:18px;transition:transform .2s}
+.h-idea:hover .h-idea-go{transform:translateX(3px)}
 
 .h-hero-side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:1fr auto auto;gap:24px}
 /* карусель у першому екрані */
@@ -356,6 +367,8 @@ html.contrast .h-cl-social{background:#fff;border:2px solid #000}
 html.contrast .h-cl-social .h-cl-list li{border:2px solid #000}
 html.contrast :is(.h-panel,.h-now,.h-tiles a,.h-alltiles a,.home .feature,.home .nl article,.home .club,.h-public,.h-find,.h-msg,.home .rv,.h-facts li,.h-clubs-intro,.h-pubchips a,.home .tabs,.home details.grp){border:2px solid #000;background:#fff}
 html.contrast .h-menu{background:#FFE600;color:#000!important;border:2px solid #000}
+html.contrast .h-idea{background:#000;border:2px solid #fff}
+html.contrast .h-idea-ic{background:#FFE600;color:#000}
 html.contrast .h-count{border:2px solid #000}
 html.contrast .h-count-tag{background:#FFE600;color:#000;border:1px solid #000}
 html.contrast .h-num,html.contrast .club-grades,html.contrast .home .club .ico,html.contrast .h-ico{background:#fff;border:2px solid #000}
@@ -401,6 +414,11 @@ html.contrast .h-gal{border:2px solid #000}
   .h-now-big{font-size:20px}
   .h-now-t,.h-now-links a,.h-menu-dish{font-size:13px}
   .h-menu b{font-size:16px}
+  .h-idea{gap:10px;padding:10px 12px 10px 10px;border-radius:16px}
+  .h-idea-ic{width:36px;height:36px;border-radius:10px}
+  .h-idea-t b{font-size:14px}
+  .h-idea-t small{font-size:12px}
+  .h-idea-go{display:none}
   .h-count{border-radius:22px;padding:14px 16px;gap:10px 14px}
   .h-count-ic{width:36px;height:36px;border-radius:12px}
   .h-menu-ic{width:24px;height:24px}
@@ -432,7 +450,7 @@ html.contrast .h-gal{border:2px solid #000}
 
 /* 16. друк */
 @media print{
-  .h-hero-side,.h-chips,.h-hero-search,.h-gal,.h-rv-card,.h-msg,.h-photos,.home .tabs,.h-cl-btn,.h-cl-sp,.home .map-frame{display:none!important}
+  .h-hero-side,.h-chips,.h-hero-search,.h-idea,.h-gal,.h-rv-card,.h-msg,.h-photos,.home .tabs,.h-cl-btn,.h-cl-sp,.home .map-frame{display:none!important}
   .home{background:#fff}
   .h-hero-main{background:#fff!important;color:#000!important;min-height:0;padding:0}
   .h-hero-main h1,.h-hero-main h1 span,.h-hero-main .hero-sub{color:#000!important}
