@@ -49,17 +49,19 @@
   })();
 
   /* лічильник до канікул (data/countdowns.js): найближча подія для всіх,
-     подія для 11-х (НМТ) - другим рядком. нема майбутніх подій - блок прихований */
+     подія для 11-х (НМТ) - другим рядком. у події з end (канікули) між датами - «Зараз · до …».
+     нема майбутніх подій - блок прихований */
   (function () {
     var box = $("#countdown"), list = window.COUNTDOWNS;
     if (!box || !Array.isArray(list)) return;
     var MONTHS = ["січня", "лютого", "березня", "квітня", "травня", "червня", "липня", "серпня", "вересня", "жовтня", "листопада", "грудня"];
     var t = new Date(), today = new Date(t.getFullYear(), t.getMonth(), t.getDate());
+    function day(s) { var p = String(s || "").split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
     function next(aud) {
       return list.map(function (e) {
-        var p = String(e.date || "").split("-"), d = new Date(+p[0], +p[1] - 1, +p[2]);
-        return { e: e, d: d, n: Math.round((d - today) / 864e5) };
-      }).filter(function (x) { return x.e.title && !isNaN(x.n) && x.n >= 0 && (x.e.audience || "all") === aud; })
+        var d = day(e.date), end = e.end ? day(e.end) : d;
+        return { e: e, d: d, end: end, n: Math.round((d - today) / 864e5), left: Math.round((end - today) / 864e5) };
+      }).filter(function (x) { return x.e.title && !isNaN(x.n) && x.left >= 0 && (x.e.audience || "all") === aud; })
         .sort(function (a, b) { return a.n - b.n; })[0];
     }
     function days(n) { return n + " " + plural(n, "день", "дні", "днів"); }
@@ -67,7 +69,9 @@
     if (!main) { main = grad; grad = null; }
     if (!main) return;
     var html = '<span class="h-count-ic">' + ICON("calendar") + "</span>";
-    if (main.n === 0) html += '<span class="h-count-main"><b class="h-count-big">Сьогодні: ' + esc(main.e.title) + ' <span aria-hidden="true">🎉</span></b></span>';
+    if (main.n <= 0 && main.e.end) html += '<span class="h-count-main"><span class="h-count-t">Зараз · до ' + main.end.getDate() + " " + MONTHS[main.end.getMonth()] + "</span>" +
+      '<b class="h-count-big">' + esc(main.e.title) + ' <span aria-hidden="true">🎉</span></b></span>';
+    else if (main.n === 0) html += '<span class="h-count-main"><b class="h-count-big">Сьогодні: ' + esc(main.e.title) + ' <span aria-hidden="true">🎉</span></b></span>';
     else html += '<span class="h-count-main"><span class="h-count-t">До події «' + esc(main.e.title) + "» · " + main.d.getDate() + " " + MONTHS[main.d.getMonth()] + "</span>" +
       '<b class="h-count-big">' + days(main.n) + "</b></span>";
     if (grad) html += '<span class="h-count-sub"><span class="h-count-tag">11 клас</span>' +
