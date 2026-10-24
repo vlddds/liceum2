@@ -1,6 +1,24 @@
 {
   "issues": [
     {
+      "id": "2026-11-1",
+      "driveFileId": "1BNZrqiKe4G7DTGqHXkUTqQUELm7S4qhn",
+      "driveModified": "2026-10-24T08:07:29.000Z",
+      "coverFile": "1PiUmTzpWNIwwwhu9CHxCkenfMM92ymt6@2026-10-24T08:07:17.000Z",
+      "number": 1,
+      "title": "Троє що будують інтернет",
+      "date": "2026-11-01",
+      "schoolYear": "2026/2027",
+      "pdf": "https://drive.google.com/file/d/1BNZrqiKe4G7DTGqHXkUTqQUELm7S4qhn/view",
+      "download": "https://drive.google.com/uc?export=download&id=1BNZrqiKe4G7DTGqHXkUTqQUELm7S4qhn",
+      "base": "gazeta/2026-11-1/",
+      "cover": "gazeta/2026-11-1/cover.jpg",
+      "pages": 8,
+      "ratio": 0.7067,
+      "size": 668996,
+      "publishedAt": "2026-10-24T08:27:42.308Z"
+    },
+    {
       "id": "test",
       "draft": true,
       "number": 0,
@@ -35,5 +53,5 @@
     }
   ],
   "rejected": [],
-  "heartbeat": "2026-10-24T07:50:15.420Z"
+  "heartbeat": "2026-10-24T08:27:42.308Z"
 }
