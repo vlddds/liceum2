@@ -270,7 +270,17 @@
       out.push({ i: i, s: score });
     });
     out.sort(function (a, b) { return b.s - a.s; });
-    return out.slice(0, 8).map(function (x) { return x.i; });
+    var found = out.slice(0, 8).map(function (x) { return x.i; });
+    /* сторінки шкільної газети (до 3 штук), коли текст випусків уже завантажився */
+    var gz = [];
+    (gzPages || []).some(function (p) {
+      if (!p.t) p.t = norm(p.text);
+      if (tokens.every(function (t) { return p.t.indexOf(t) > -1; })) {
+        gz.push({ title: "№" + p.issue.number + " «" + p.issue.title + "», с. " + p.page, group: "Шкільна газета", url: window.L2G.readUrl(p.issue, p.page) });
+      }
+      return gz.length >= 3;
+    });
+    return gz.length ? found.slice(0, 8 - gz.length).concat(gz) : found;
   }
   function hl(title, tokens) {
     if (!tokens.length) return esc(title);
@@ -307,9 +317,19 @@
     list.hidden = false; input.setAttribute("aria-expanded", "true"); active = -1;
   }
   function syncText() { sform.classList.toggle("has-text", input.value.length > 0); }
+  /* текст шкільної газети для пошуку: вантажимо раз, коли людина почала шукати */
+  var gzPages = null, gzAsked = false;
+  function loadGazeta() {
+    if (gzAsked || !window.L2G) return;
+    gzAsked = true;
+    window.L2G.loadIndex().then(function (pages) {
+      gzPages = pages;
+      if (input.value.trim() && !list.hidden) render();
+    });
+  }
 
   input.addEventListener("input", function () {
-    syncText(); render();
+    syncText(); render(); loadGazeta();
     if (!reduce) restart(sicon, "bump");
     bunnyCheck();
   });
@@ -324,7 +344,7 @@
     }
     bunnyShown = isBunny;
   }
-  input.addEventListener("focus", function () { stopTyping(); render(); });
+  input.addEventListener("focus", function () { stopTyping(); render(); loadGazeta(); });
   input.addEventListener("blur", function () { if (!input.value) startTyping(); });
   input.addEventListener("keydown", function (e) {
     if (e.key === "ArrowDown") { e.preventDefault(); if (current.length) setActive((active + 1) % current.length); }

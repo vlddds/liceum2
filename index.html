@@ -27,7 +27,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css?v=20261023-11">
 <link rel="stylesheet" href="theme.css?v=20261023-11">
-<link rel="stylesheet" href="home.css?v=20261023-23">
+<link rel="stylesheet" href="home.css?v=20261024-1">
 </head>
 <body class="home">
 
@@ -230,6 +230,21 @@
         <article class="feature" id="feature"></article>
         <div class="nl" id="newslist"></div>
       </div>
+    </div>
+  </section>
+
+  <!-- свіжий номер шкільної газети: з'являється, лише коли є хоч один випуск (js/home.js) -->
+  <section class="h-sec" id="gz-home" aria-labelledby="h-gz" hidden>
+    <div class="wrap">
+      <a class="h-gz" id="gz-home-a" href="blog.html">
+        <span class="h-gz-cover"><img id="gz-home-img" src="data:," alt="" loading="lazy" decoding="async"></span>
+        <span class="h-gz-txt">
+          <span class="h-gz-tag">Свіжий номер газети</span>
+          <b class="h-gz-t" id="h-gz"></b>
+          <span class="h-gz-meta" id="gz-home-meta"></span>
+          <span class="h-gz-go">Читати →</span>
+        </span>
+      </a>
     </div>
   </section>
 
@@ -507,7 +522,9 @@
 <script src="js/schedule.js?v=20261023-11" defer></script>
 <script src="js/menu.js?v=20261023-11" defer></script>
 <script src="data/countdowns.js?v=20261023-4" defer></script>
-<script src="js/home.js?v=20261023-20" defer></script>
-<script src="js/app.js?v=20261023-20" defer></script>
+<script src="data/gazeta-config.js?v=20261024-1" defer></script>
+<script src="js/gazeta-common.js?v=20261024-1" defer></script>
+<script src="js/home.js?v=20261024-1" defer></script>
+<script src="js/app.js?v=20261024-1" defer></script>
 </body>
 </html>

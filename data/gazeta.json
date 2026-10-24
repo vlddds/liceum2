@@ -1,0 +1,17 @@
+{
+  "issues": [
+    {
+      "id": "test",
+      "draft": true,
+      "number": 0,
+      "title": "Тестовий випуск",
+      "date": "2026-10-01",
+      "schoolYear": "2026/2027",
+      "localPdf": "gazeta/test/issue.pdf",
+      "pdf": "gazeta/test/issue.pdf",
+      "cover": "gazeta/test/cover.jpg",
+      "pages": 8,
+      "publishedAt": "2026-10-24T00:00:00.000Z"
+    }
+  ]
+}

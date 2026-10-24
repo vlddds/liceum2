@@ -80,6 +80,21 @@
     box.hidden = false;
   })();
 
+  /* свіжий номер шкільної газети (data/gazeta.json через js/gazeta-common.js) */
+  (function () {
+    var G = window.L2G, sec = $("#gz-home");
+    if (!G || !sec) return;
+    G.load().then(function (issues) {
+      var x = issues[0];
+      if (!x) return;
+      $("#gz-home-a").href = G.readUrl(x);
+      $("#gz-home-img").src = x.cover;
+      $("#h-gz").textContent = "№" + x.number + " — " + x.title;
+      $("#gz-home-meta").textContent = G.name + " · " + G.month(x) + (x.pages ? " · " + x.pages + " " + plural(x.pages, "сторінка", "сторінки", "сторінок") : "");
+      sec.hidden = false;
+    });
+  })();
+
   /* меню на сьогодні: головна страва дня з menu.js (у вихідні - на понеділок) */
   (function () {
     var M = window.MENU, el = $("#menu-dish");

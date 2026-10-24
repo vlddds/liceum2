@@ -1,0 +1,71 @@
+# Шкільна газета: щогодини перевіряє папку Google Drive «Газета — опублікувати»
+# і публікує нові випуски на сайті (скрипт scripts/gazeta-sync.mjs).
+# Сайт збирається з гілки main, а коміт від GITHUB_TOKEN збірку сам не запускає,
+# тому після коміту просимо GitHub Pages перезібрати сайт.
+# Якщо з якимось файлом проблема - запуск позначається як невдалий, і GitHub надсилає лист власнику репозиторію.
+name: Газета
+
+on:
+  schedule:
+    - cron: "17 * * * *"     # щогодини о :17 (на початку години GitHub перевантажений)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: gazeta
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Інструменти для PDF
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+
+      - name: Тести скрипта
+        run: node --test scripts/gazeta-sync.test.mjs
+
+      - name: Забрати випуски з Google Drive
+        id: sync
+        env:
+          GDRIVE_SERVICE_ACCOUNT_JSON: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_JSON }}
+          GDRIVE_PUBLISH_FOLDER_ID: ${{ secrets.GDRIVE_PUBLISH_FOLDER_ID }}
+        run: node scripts/gazeta-sync.mjs
+
+      - name: Коміт
+        if: steps.sync.outputs.changed == 'true'
+        env:
+          MESSAGE: ${{ steps.sync.outputs.message }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/gazeta.json data/gazeta-index.json gazeta/
+          if git diff --cached --quiet; then echo "Змін немає"; exit 0; fi
+          git commit -m "$MESSAGE"
+          git pull --rebase -q
+          git push
+
+      - name: Перезібрати сайт
+        if: steps.sync.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          curl -sf -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/pages/builds" \
+            || echo "::warning::Не вдалося попросити перезбірку сайту. Він оновиться з наступним комітом."
+
+      - name: Чи були помилки
+        if: steps.sync.outputs.errors != '0'
+        run: |
+          echo "::error::Деякі файли в папці не опубліковано (${{ steps.sync.outputs.errors }}). Причини - у кроці «Забрати випуски з Google Drive»."
+          exit 1
