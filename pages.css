@@ -201,27 +201,42 @@ mark.ph{background:rgba(246,184,0,.18);color:inherit;border-bottom:1px dashed va
 
 /* шкільна газета: підшивка (gazeta-page.js) і читалка (gazeta-read.js) */
 .gz-skel{height:420px;border-radius:28px;background:var(--surface);border:1px solid var(--line)}
-.gz-cover{display:block;aspect-ratio:210/297;overflow:hidden;border-radius:6px;background:var(--tint);
-  box-shadow:0 1px 2px rgba(12,26,54,.12),0 10px 28px rgba(12,26,54,.16),4px 4px 0 -1px var(--surface),4px 4px 0 0 var(--line)}
-.gz-cover img{width:100%;height:100%;object-fit:cover;display:block}
-.gz-fresh{display:grid;grid-template-columns:minmax(0,320px) 1fr;gap:clamp(20px,4vw,48px);align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:clamp(20px,4vw,40px);margin-bottom:36px}
-.gz-fresh-pic{display:block;transition:transform .25s var(--ease)}
-.gz-fresh-pic:hover{transform:translateY(-4px) rotate(-.6deg)}
-.gz-fresh-txt{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
-.gz-tag{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;background:var(--accent);color:var(--navy-deep);border-radius:var(--r-pill);padding:5px 12px}
-.gz-fresh h2{margin:0;font-size:clamp(24px,3vw,36px);line-height:1.15}
-.gz-meta{margin:0;color:var(--muted);font-weight:600}
-.gz-acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
-.gz-year{margin-bottom:32px}
-.gz-year h2{margin:0 0 16px;font-size:clamp(19px,2vw,24px)}
-.gz-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:24px 20px}
-.gz-item{display:flex;flex-direction:column;gap:10px;color:var(--ink);text-decoration:none}
-.gz-item .gz-cover{transition:transform .25s var(--ease)}
-.gz-item:hover .gz-cover{transform:translateY(-4px)}
-.gz-item-t{display:flex;flex-direction:column;gap:2px}
-.gz-item-t b{font-size:14px;font-weight:800;line-height:1.3}
-.gz-item:hover b{text-decoration:underline;text-underline-offset:3px}
-.gz-item-t small{color:var(--muted);font-size:13px;font-weight:600}
+/* прилавок: обкладинки стоять на полиці, як у газетному кіоску */
+.gz-stand{--cw:210px;margin-bottom:40px}
+.gz-stand h2{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 18px;font-size:clamp(19px,2vw,24px)}
+.gz-stand h2 small{font-family:var(--f-text);font-size:14px;font-weight:700;color:var(--muted);letter-spacing:0}
+.gz-shelf{position:relative;min-width:0;padding:0 4px}
+/* сама полиця: дошка під обкладинками, на неї падає тінь */
+.gz-shelf::before{content:"";position:absolute;left:0;right:0;top:calc(22px + var(--cw) * 1.4143 - 6px);height:26px;border-radius:6px;z-index:0;
+  background:linear-gradient(180deg,var(--brand-soft) 0 9px,var(--brand) 9px);box-shadow:0 14px 22px -10px rgba(12,26,54,.45)}
+.gz-rack{position:relative;z-index:1;list-style:none;margin:0;padding:22px 8px 6px;display:flex;gap:30px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:8px;scrollbar-width:none}
+.gz-rack::-webkit-scrollbar{display:none}
+.gz-mag{flex:0 0 var(--cw);scroll-snap-align:start}
+.gz-mag a{display:flex;flex-direction:column;color:var(--ink);text-decoration:none;border-radius:6px}
+.gz-mag a:focus-visible{outline:3px solid var(--accent);outline-offset:6px}
+.gz-cover{position:relative;display:block;aspect-ratio:210/297;border-radius:3px;background:var(--tint);transform:rotate(var(--tilt,0deg));transform-origin:50% 100%;
+  box-shadow:0 1px 1px rgba(12,26,54,.15),0 12px 18px -6px rgba(12,26,54,.35),3px 3px 0 -1px #fff,3px 3px 0 0 var(--line),6px 6px 0 -2px #fff,6px 6px 0 -1px var(--line);
+  transition:transform .3s var(--ease),box-shadow .3s}
+.gz-cover img{width:100%;height:100%;object-fit:cover;display:block;border-radius:3px}
+.gz-mag a:hover .gz-cover,.gz-mag a:focus-visible .gz-cover{transform:translateY(-14px) rotate(0) scale(1.03);box-shadow:0 2px 2px rgba(12,26,54,.12),0 26px 30px -10px rgba(12,26,54,.45)}
+.gz-fresh-tag{position:absolute;top:10px;left:-8px;padding:5px 12px 5px 14px;background:var(--accent);color:var(--navy-deep);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;border-radius:0 4px 4px 0;box-shadow:0 3px 6px rgba(12,26,54,.25)}
+.gz-fresh-tag::before{content:"";position:absolute;left:0;bottom:-6px;border:3px solid transparent;border-top-color:#a37800;border-right-color:#a37800}
+.gz-mag-t{display:flex;flex-direction:column;gap:3px;margin-top:40px;padding:0 2px}
+.gz-mag-t b{font-size:15px;font-weight:800;line-height:1.3}
+.gz-mag a:hover .gz-mag-t b{text-decoration:underline;text-underline-offset:3px}
+.gz-mag-t small{color:var(--muted);font-size:13px;font-weight:600}
+.gz-arrow{position:absolute;top:calc(22px + var(--cw) * .707 - 23px);z-index:3;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink);box-shadow:var(--sh2);cursor:pointer;transition:background .2s,color .2s,opacity .2s}
+.gz-arrow.prev{left:-18px}
+.gz-arrow.next{right:-18px}
+.gz-arrow.prev .ic{transform:rotate(180deg)}
+.gz-arrow:hover{background:var(--brand);border-color:var(--brand);color:#fff}
+.gz-arrow:disabled{opacity:0;pointer-events:none}
+.gz-arrow:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.gz-hint{margin:-12px 0 28px;color:var(--muted);font-size:14px}
+html.contrast .gz-shelf::before{background:#000;box-shadow:none}
+html.contrast .gz-cover{box-shadow:none;outline:2px solid #000}
+html.contrast .gz-arrow{border:2px solid #000}
 .gz-empty{text-align:center;background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:clamp(32px,6vw,64px) 20px;margin-bottom:28px}
 .gz-empty-ic{display:inline-grid;place-items:center;width:64px;height:64px;border-radius:20px;background:var(--tint);color:var(--ink);margin-bottom:12px}
 .gz-empty-ic .ic{width:30px;height:30px}
@@ -286,8 +301,7 @@ dialog.gz-zoom::backdrop{background:#0b1222}
 .gz-zoom-in img{display:block;width:100%;height:auto;max-width:none}
 html.contrast .gz-reader{background:#000;border:2px solid #000}
 html.contrast .gz-btn{border:2px solid #fff;background:#000}
-html.contrast .gz-cover{box-shadow:none;border:2px solid #000}
-html.contrast :is(.gz-fresh,.gz-empty,.gz-text){border:2px solid #000}
+html.contrast :is(.gz-empty,.gz-text){border:2px solid #000}
 
 /* 6. темна тема: сині картки лишаються синіми, світлі - темними */
 html.dark .t-hero .hero-bg{background:var(--brand)}
@@ -337,9 +351,12 @@ html.contrast mark.ph{background:#FFE600;color:#000}
   .bl-body p{font-size:16px}
   .bl-nav{grid-template-columns:1fr}
   .bl-nav-a.next{text-align:left}
-  .gz-fresh{grid-template-columns:1fr;border-radius:22px}
-  .gz-fresh-pic{max-width:240px}
-  .gz-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 14px}
+  .gz-stand{--cw:150px}
+  .gz-rack{gap:22px}
+  .gz-arrow{width:38px;height:38px;margin-top:4px}
+  .gz-arrow.prev{left:-8px}
+  .gz-arrow.next{right:-8px}
+  .gz-mag-t{margin-top:34px}
   .gz-reader{border-radius:20px}
 }
 @media (max-width:768px){

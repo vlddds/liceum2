@@ -1,5 +1,7 @@
-/* Шкільна газета - підшивка (blog.html): свіжий номер великою карткою,
-   нижче всі обкладинки за навчальними роками. Дані - data/gazeta.json через js/gazeta-common.js. */
+/* Шкільна газета - підшивка (blog.html): номери стоять на «прилавку», як у газетному кіоску,
+   по полиці на навчальний рік, свіжий номер першим. Клік по обкладинці - читалка,
+   не вміщаються на полицю - гортаємо стрілками (L2.rail, як гуртки на головній).
+   Дані - data/gazeta.json через js/gazeta-common.js. */
 (function () {
   "use strict";
 
@@ -8,8 +10,14 @@
   var $ = L.$, $$ = L.$$, esc = L.esc, ICON = L.ICON, plural = L.plural;
   var main = $("#main");
 
-  function cover(x, big) {
-    return '<span class="gz-cover' + (big ? " big" : "") + '"><img src="' + esc(x.cover) + '" alt="" loading="' + (big ? "eager" : "lazy") + '" decoding="async"></span>';
+  function mag(x, fresh, i) {
+    return '<li class="gz-mag" style="--tilt:' + (i % 3 === 0 ? -1.6 : i % 3 === 1 ? 1.2 : -0.6) + 'deg">' +
+      '<a href="' + esc(G.readUrl(x)) + '" aria-label="Читати №' + esc(x.number) + " — " + esc(x.title) + ", " + esc(G.month(x)) + '">' +
+        '<span class="gz-cover"><img src="' + esc(x.cover) + '" alt="" loading="' + (i < 4 ? "eager" : "lazy") + '" decoding="async">' +
+          (fresh ? '<span class="gz-fresh-tag">Свіжий' + (x.draft ? " · тест" : "") + "</span>" : "") + "</span>" +
+        '<span class="gz-mag-t" aria-hidden="true"><b>№' + esc(x.number) + " — " + esc(x.title) + "</b><small>" + esc(G.month(x)) +
+          (x.pages ? " · " + x.pages + " с." : "") + "</small></span>" +
+      "</a></li>";
   }
   var join = G.joinUrl
     ? '<a class="btn primary" href="' + esc(G.joinUrl) + '" target="_blank" rel="noopener">' + ICON("send") + 'Хочу в редакцію<span class="sr"> (відкриється Telegram)</span></a>' : "";
@@ -33,28 +41,22 @@
         "<p>Редакція працює над першим випуском. Щойно він вийде, тут з'явиться обкладинка, і газету можна буде гортати просто на сайті.</p></div>" + joinBox;
       return;
     }
-    var first = issues[0], rest = issues.slice(1);
-    var years = [];
-    rest.forEach(function (x) {
+    var first = issues[0], years = [];
+    issues.forEach(function (x) {
       var y = years.filter(function (g) { return g.y === x.schoolYear; })[0];
       if (!y) years.push(y = { y: x.schoolYear || "", items: [] });
       y.items.push(x);
     });
-    body.innerHTML =
-      '<article class="gz-fresh" aria-labelledby="gz-fresh-h">' +
-        '<a class="gz-fresh-pic" href="' + esc(G.readUrl(first)) + '" tabindex="-1" aria-hidden="true">' + cover(first, true) + "</a>" +
-        '<div class="gz-fresh-txt"><span class="gz-tag">Свіжий номер' + (first.draft ? " · тестовий" : "") + "</span>" +
-          '<h2 id="gz-fresh-h">№' + esc(first.number) + " — " + esc(first.title) + "</h2>" +
-          '<p class="gz-meta">' + esc(G.month(first)) + (first.pages ? " · " + first.pages + " " + plural(first.pages, "сторінка", "сторінки", "сторінок") : "") + "</p>" +
-          '<div class="gz-acts"><a class="btn primary" href="' + esc(G.readUrl(first)) + '">' + ICON("book") + "Читати</a>" +
-            (G.downloadUrl(first) ? '<a class="btn" href="' + esc(G.downloadUrl(first)) + '"' + (/^https?:/.test(G.downloadUrl(first)) ? ' target="_blank" rel="noopener"' : " download") + ">" + ICON("doc") + "Завантажити PDF</a>" : "") + "</div>" +
-        "</div></article>" +
-      years.map(function (g, i) {
-        return '<section class="gz-year" aria-labelledby="gz-y' + i + '"><h2 id="gz-y' + i + '">' + esc(g.y ? g.y + " навчальний рік" : "Інші випуски") + "</h2>" +
-          '<ul class="gz-grid">' + g.items.map(function (x) {
-            return '<li><a class="gz-item" href="' + esc(G.readUrl(x)) + '">' + cover(x) +
-              '<span class="gz-item-t"><b>№' + esc(x.number) + " — " + esc(x.title) + "</b><small>" + esc(G.month(x)) + "</small></span></a></li>";
-          }).join("") + "</ul></section>";
-      }).join("") + joinBox;
+    body.innerHTML = years.map(function (g, i) {
+        return '<section class="gz-stand" aria-labelledby="gz-y' + i + '"><h2 id="gz-y' + i + '">' + esc(g.y ? g.y + " навчальний рік" : "Інші випуски") +
+            '<small>' + g.items.length + " " + plural(g.items.length, "номер", "номери", "номерів") + "</small></h2>" +
+          '<div class="gz-shelf">' +
+            '<button class="gz-arrow prev" type="button" aria-label="Попередні номери" disabled>' + ICON("chev") + "</button>" +
+            '<ul class="gz-rack">' + g.items.map(function (x, k) { return mag(x, x === first, k); }).join("") + "</ul>" +
+            '<button class="gz-arrow next" type="button" aria-label="Наступні номери">' + ICON("chev") + "</button>" +
+          "</div></section>";
+      }).join("") +
+      '<p class="gz-hint">Натисніть на обкладинку, щоб читати номер. Усередині сторінки гортаються, як у справжній газеті.</p>' + joinBox;
+    $$(".gz-shelf", body).forEach(function (s) { L.rail($(".gz-rack", s), $(".gz-arrow.prev", s), $(".gz-arrow.next", s)); });
   });
 })();
