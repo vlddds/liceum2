@@ -29,7 +29,7 @@
   }).join("");
   $("#h-dirs").innerHTML = H.directors.map(function (d) {
     return '<li' + (d.current ? ' class="now"' : "") + '><span class="ico">' + ICON("user") + "</span><span><b>" + esc(d.name) + "</b>" +
-      "<small>" + esc(d.years) + (d.current ? " · чинний директор" : "") + "</small></span></li>";
+      (d.years || d.current ? "<small>" + esc(d.years) + (d.current ? " · чинний директор" : "") + "</small>" : "") + "</span></li>";
   }).join("");
 
   /* 2. акордеон */
