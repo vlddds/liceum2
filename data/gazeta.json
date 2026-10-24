@@ -14,6 +14,26 @@
       "pages": 8,
       "ratio": 0.707,
       "publishedAt": "2026-10-24T00:00:00.000Z"
+    },
+    {
+      "id": "2026-10-0",
+      "driveFileId": "16bOpIDVp2_Ae4Nj6Qhz6omVrp09P_aHR",
+      "driveModified": "2026-10-24T07:23:29.000Z",
+      "coverFile": "1GOFQBXW7i-b8XlmlZxYf70hb5Ov6cs3q@2026-10-24T07:23:29.000Z",
+      "number": 0,
+      "title": "Наш новий сайт",
+      "date": "2026-10-01",
+      "schoolYear": "2026/2027",
+      "pdf": "https://drive.google.com/file/d/16bOpIDVp2_Ae4Nj6Qhz6omVrp09P_aHR/view",
+      "download": "https://drive.google.com/uc?export=download&id=16bOpIDVp2_Ae4Nj6Qhz6omVrp09P_aHR",
+      "base": "gazeta/2026-10-0/",
+      "cover": "gazeta/2026-10-0/cover.jpg",
+      "pages": 8,
+      "ratio": 0.7067,
+      "size": 601115,
+      "publishedAt": "2026-10-24T07:50:15.420Z"
     }
-  ]
+  ],
+  "rejected": [],
+  "heartbeat": "2026-10-24T07:50:15.420Z"
 }
