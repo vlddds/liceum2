@@ -22,6 +22,7 @@
     debug: debug,
     load: function () {
       if (!issuesP) issuesP = getJSON("data/gazeta.json").then(function (d) {
+        if (real(d.name)) window.L2G.name = d.name;   /* назву газети робот бере з файлу «Назва газети: …» на Диску */
         return (d.issues || []).filter(function (x) { return x && x.id && x.pages && (debug || !x.draft); })
           .sort(function (a, b) { return (b.date + pad(b.number)).localeCompare(a.date + pad(a.number)); });
       }).catch(function () { return []; });

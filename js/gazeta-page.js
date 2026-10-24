@@ -26,6 +26,7 @@
 
   var body = $("#gz-body");
   G.load().then(function (issues) {
+    $("#h1").textContent = G.name;
     var joinBox = '<div class="bl-send"><div><h2>Хочеш у редакцію?</h2><p>Любиш писати, фотографувати, верстати чи брати інтерв\'ю? Долучайся до редакції шкільної газети: напиши нам, і ми розповімо, з чого почати.</p></div>' + join + "</div>";
     if (!issues.length) {
       body.innerHTML = '<div class="gz-empty"><span class="gz-empty-ic" aria-hidden="true">' + ICON("pen") + '</span><h2>Перший номер уже готується</h2>' +

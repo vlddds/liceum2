@@ -14,6 +14,7 @@
 //   data/gazeta-index.json    текст сторінок для пошуку по сайту
 //
 // Назва файлу = дані випуску: "2026-11 №1 Осінній випуск.pdf".
+// Назва самої газети - теж з Диска: файл (будь-який, хоч порожній Google Документ) «Назва газети: Вісник ліцею».
 // Потрібні Node 20+, poppler-utils (pdfinfo, pdftoppm, pdftotext) і ImageMagick (convert) для власної обкладинки.
 
 import { execFileSync } from "node:child_process";
@@ -31,6 +32,12 @@ const MONTHS = ["січень", "лютий", "березень", "квітен�
 const IMG = /\.(jpe?g|png|webp)$/i;
 
 export const NAME_HINT = "Назва файлу має бути у форматі «2026-11 №1 Назва.pdf»: рік-місяць, номер, назва випуску.";
+
+/* «Назва газети: Вісник ліцею» (з розширенням чи без) -> «Вісник ліцею» */
+export function gazetaTitle(name) {
+  const m = /^назва(?: газети)? ?[:—-] ?(.+?)(?:\.[a-z0-9]{2,5})?$/i.exec(tidy(name));
+  return m ? m[1].replace(/^[«"'„]+|[»"'“]+$/g, "").trim() : "";
+}
 
 /* 1. розбір назви файлу. Терпимо до "№1", "№ 1", "N1", "No 1", різних тире й зайвих пробілів */
 function tidy(name) {
@@ -61,12 +68,14 @@ export function schoolYear(year, month) {
    issues - уже опубліковані випуски з data/gazeta.json */
 export function plan(files, issues) {
   const byId = new Map(issues.filter((x) => !x.draft).map((x) => [x.id, x]));
-  const out = { publish: [], update: [], same: [], errors: [], warnings: [], skipped: [], missing: [] };
+  const out = { publish: [], update: [], same: [], errors: [], warnings: [], skipped: [], missing: [], name: "" };
   const images = new Map(files.filter((f) => IMG.test(f.name || "")).map((f) => [baseName(f.name), f]));
   const seen = new Map();
 
   for (const f of files) {
     if (IMG.test(f.name || "")) continue;
+    const t = gazetaTitle(f.name);
+    if (t) { out.name = t; continue; }
     if (!/\.pdf$/i.test(f.name || "")) {
       out.errors.push({ file: f.name, key: f.id, reason: "Це не PDF. Експортуйте випуск у Canva як «PDF стандартний»." });
       continue;
@@ -231,7 +240,7 @@ export function shareHTML(issue, gazetaName) {
 }
 
 /* 5. один запуск: список -> план -> обробка -> файли сайту. drive і tools можна підмінити в тестах */
-export async function run({ drive, pdf = tools, root = ROOT, now = new Date(), log = console.log, gazetaName = "Шкільна газета" }) {
+export async function run({ drive, pdf = tools, root = ROOT, now = new Date(), log = console.log, gazetaName: fallbackName = "Шкільна газета" }) {
   const dataPath = join(root, "data", "gazeta.json"), indexPath = join(root, "data", "gazeta-index.json");
   const data = readJSON(dataPath, { issues: [] });
   data.issues = data.issues || [];
@@ -240,6 +249,10 @@ export async function run({ drive, pdf = tools, root = ROOT, now = new Date(), l
 
   const files = await drive.list();
   const p = plan(files, data.issues);
+  /* назва газети: з файлу «Назва газети: …» на Диску; змінилась - перебудовуємо сторінки прев'ю всіх номерів */
+  const renamed = !!p.name && p.name !== data.name;
+  if (renamed) { log(`📝 Назва газети: «${p.name}»`); data.name = p.name; }
+  const gazetaName = data.name || fallbackName;
   log(`У папці файлів: ${files.length}. Нових номерів: ${p.publish.length}, оновлених: ${p.update.length}, без змін: ${p.same.length}, з помилками: ${p.errors.length}.`);
   for (const w of p.warnings) log(`⚠️  ${w.file}: ${w.reason}`);
   for (const s of p.skipped) log(`ℹ️  ${s.file}: ${s.reason}`);
@@ -309,6 +322,13 @@ export async function run({ drive, pdf = tools, root = ROOT, now = new Date(), l
     rmSync(tmp, { recursive: true, force: true });
   }
 
+  if (renamed) {
+    for (const x of data.issues) {
+      const dir = join(root, "gazeta", x.id);
+      if (!x.draft && existsSync(dir) && !done.some((d) => d.issue.id === x.id)) writeFileSync(join(dir, "index.html"), shareHTML(x, gazetaName));
+    }
+  }
+
   /* про файл з помилкою повідомляємо один раз (інакше лист щогодини), доки його не виправлять чи не приберуть */
   const was = new Set(data.rejected || []);
   const fresh = errors.filter((e) => !was.has(e.key));
@@ -319,7 +339,7 @@ export async function run({ drive, pdf = tools, root = ROOT, now = new Date(), l
   /* службова позначка, щоб розклад не вимкнувся за довгу паузу (літо) */
   const beat = data.heartbeat ? Date.parse(data.heartbeat) : 0;
   const heartbeat = !done.length && now - beat > HEARTBEAT_DAYS * 864e5;
-  if (done.length || heartbeat || rejectedChanged) {
+  if (done.length || heartbeat || rejectedChanged || renamed) {
     data.issues.sort((a, b) => (b.date + String(b.number).padStart(3, "0")).localeCompare(a.date + String(a.number).padStart(3, "0")));
     data.heartbeat = now.toISOString();
     mkdirSync(dirname(dataPath), { recursive: true });
@@ -331,7 +351,7 @@ export async function run({ drive, pdf = tools, root = ROOT, now = new Date(), l
   for (const e of errors) log(`❌ ${e.file}: ${e.reason}${was.has(e.key) ? " (про цей файл уже повідомляли)" : ""}`);
   const message = done.length
     ? "Газета: " + done.map((d) => `${d.updated ? "оновлено " : ""}№${d.issue.number} ${d.issue.title}`).join("; ")
-    : heartbeat || rejectedChanged ? "Газета: службова позначка" : "";
+    : renamed ? `Газета: назва «${gazetaName}»` : heartbeat || rejectedChanged ? "Газета: службова позначка" : "";
   return { changed: !!message, message, done, errors, fresh, plan: p };
 }
 

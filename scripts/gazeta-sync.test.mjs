@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, rmSync, readdirSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { parseName, schoolYear, plan, run, parseFolderPage, readConfig, NAME_HINT } from "./gazeta-sync.mjs";
+import { parseName, schoolYear, plan, run, parseFolderPage, readConfig, gazetaTitle, NAME_HINT } from "./gazeta-sync.mjs";
 
 function tmp() { return mkdtempSync(join(tmpdir(), "gz-test-")); }
 
@@ -27,6 +27,16 @@ test("назва: неправильні варіанти не проходят�
   for (const n of ["Осінній випуск.pdf", "2026-11 Осінній випуск.pdf", "2026-13 №1 Назва.pdf", "11-2026 №1 Назва.pdf", "2026-11 №1 .pdf", "2026-11 №1 Назва.docx"]) {
     assert.equal(parseName(n), null, n);
   }
+});
+
+test("назва газети з файлу на Диску", () => {
+  assert.equal(gazetaTitle("Назва газети: Вісник ліцею"), "Вісник ліцею");
+  assert.equal(gazetaTitle("назва газети — «Шкільний вісник».txt"), "Шкільний вісник");
+  assert.equal(gazetaTitle("Назва: Перерва"), "Перерва");
+  assert.equal(gazetaTitle("2026-11 №1 Осінній випуск.pdf"), "");
+  const p = plan([{ id: "N", name: "Назва газети: Вісник ліцею" }, { id: "A", name: "2026-11 №1 Осінній випуск.pdf" }], []);
+  assert.equal(p.name, "Вісник ліцею");
+  assert.equal(p.errors.length, 0);   // файл з назвою - не помилка «це не PDF»
 });
 
 test("навчальний рік вересень-серпень", () => {
@@ -168,6 +178,23 @@ test("прогін: публікує, пише json, сторінки, обкл�
     assert.equal(a2.publishedAt, a.publishedAt);
     assert.ok(a2.updatedAt);
     assert.ok(!existsSync(join(root, "gazeta/2026-11-1/p-9.jpg")));
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("прогін: назва газети з Диска потрапляє в json і прев'ю, зміна назви перебудовує прев'ю", async () => {
+  const root = tmp();
+  try {
+    const files = [{ id: "A", name: "2026-11 №1 Осінній випуск.pdf", modified: "x" }];
+    await run({ drive: fakeDrive(files, {}), pdf: fakePdf, root, now: new Date("2026-12-21T12:00:00Z"), log: () => {} });
+    assert.match(readFileSync(join(root, "gazeta/2026-11-1/index.html"), "utf8"), /Шкільна газета №1/);
+    const r = await run({ drive: fakeDrive(files.concat({ id: "N", name: "Назва газети: Вісник ліцею" }), {}), pdf: fakePdf, root, now: new Date("2026-12-21T13:00:00Z"), log: () => {} });
+    assert.equal(r.message, "Газета: назва «Вісник ліцею»");
+    assert.equal(JSON.parse(readFileSync(join(root, "data/gazeta.json"), "utf8")).name, "Вісник ліцею");
+    assert.match(readFileSync(join(root, "gazeta/2026-11-1/index.html"), "utf8"), /Вісник ліцею №1/);
+    const again = await run({ drive: fakeDrive(files.concat({ id: "N", name: "Назва газети: Вісник ліцею" }), {}), pdf: fakePdf, root, now: new Date("2026-12-21T14:00:00Z"), log: () => {} });
+    assert.equal(again.changed, false);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
