@@ -46,7 +46,7 @@
           '<h2 id="gz-fresh-h">№' + esc(first.number) + " — " + esc(first.title) + "</h2>" +
           '<p class="gz-meta">' + esc(G.month(first)) + (first.pages ? " · " + first.pages + " " + plural(first.pages, "сторінка", "сторінки", "сторінок") : "") + "</p>" +
           '<div class="gz-acts"><a class="btn primary" href="' + esc(G.readUrl(first)) + '">' + ICON("book") + "Читати</a>" +
-            (G.downloadUrl(first) ? '<a class="btn" href="' + esc(G.downloadUrl(first)) + '"' + (first.localPdf ? " download" : ' target="_blank" rel="noopener"') + ">" + ICON("doc") + "Завантажити PDF</a>" : "") + "</div>" +
+            (G.downloadUrl(first) ? '<a class="btn" href="' + esc(G.downloadUrl(first)) + '"' + (/^https?:/.test(G.downloadUrl(first)) ? ' target="_blank" rel="noopener"' : " download") + ">" + ICON("doc") + "Завантажити PDF</a>" : "") + "</div>" +
         "</div></article>" +
       years.map(function (g, i) {
         return '<section class="gz-year" aria-labelledby="gz-y' + i + '"><h2 id="gz-y' + i + '">' + esc(g.y ? g.y + " навчальний рік" : "Інші випуски") + "</h2>" +

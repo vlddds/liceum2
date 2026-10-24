@@ -1,5 +1,6 @@
 /* Шкільна газета: спільне для підшивки, читалки, головної й пошуку.
    window.L2G.load() - випуски з data/gazeta.json (нові зверху), L2G.loadIndex() - текст сторінок для пошуку.
+   Сторінки - картинки gazeta/<id>/p-N.jpg (мініатюри t-N.jpg), їх готує робот; сам PDF лежить на Google Диску.
    Тестові випуски (draft: true) видно лише з ?debug=1 в адресі. */
 (function () {
   "use strict";
@@ -13,6 +14,7 @@
   function getJSON(url) {
     return fetch(url, { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); });
   }
+  function pad(n) { return String(n).padStart(3, "0"); }
 
   window.L2G = {
     name: real(C.name) ? C.name : "Шкільна газета",
@@ -20,7 +22,7 @@
     debug: debug,
     load: function () {
       if (!issuesP) issuesP = getJSON("data/gazeta.json").then(function (d) {
-        return (d.issues || []).filter(function (x) { return x && x.id && (debug || !x.draft); })
+        return (d.issues || []).filter(function (x) { return x && x.id && x.pages && (debug || !x.draft); })
           .sort(function (a, b) { return (b.date + pad(b.number)).localeCompare(a.date + pad(a.number)); });
       }).catch(function () { return []; });
       return issuesP;
@@ -38,18 +40,10 @@
       var m = +String(issue.date).slice(5, 7), y = String(issue.date).slice(0, 4);
       return (MONTHS[m - 1] || "") + " " + y;
     },
-    label: function (issue) { return "№" + issue.number + " · " + issue.title; },
-    /* звідки читалка бере PDF: тестовий - з репозиторію, справжній - з Google Диска через API (так дозволено CORS) */
-    pdfUrl: function (issue) {
-      if (issue.localPdf) return issue.localPdf;
-      if (!issue.driveFileId || !real(C.apiKey)) return "";
-      return "https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(issue.driveFileId) + "?alt=media&key=" + encodeURIComponent(C.apiKey);
-    },
-    downloadUrl: function (issue) {
-      if (issue.localPdf) return issue.localPdf;
-      return issue.driveFileId ? "https://drive.google.com/uc?export=download&id=" + encodeURIComponent(issue.driveFileId) : issue.pdf || "";
-    },
-    viewUrl: function (issue) { return issue.localPdf || issue.pdf || ""; },
+    page: function (issue, n) { return issue.base + "p-" + n + ".jpg"; },
+    thumb: function (issue, n) { return issue.base + "t-" + n + ".jpg"; },
+    downloadUrl: function (issue) { return issue.download || issue.pdf || ""; },
+    viewUrl: function (issue) { return issue.pdf || issue.download || ""; },
     readUrl: function (issue, page) {
       return "post.html?id=" + encodeURIComponent(issue.id) + (debug ? "&debug=1" : "") + (page > 1 ? "#page=" + page : "");
     },
@@ -59,5 +53,4 @@
       return issue.draft ? base + window.L2G.readUrl(issue, page) : base + "gazeta/" + encodeURIComponent(issue.id) + "/" + (page > 1 ? "#page=" + page : "");
     }
   };
-  function pad(n) { return String(n).padStart(3, "0"); }
 })();

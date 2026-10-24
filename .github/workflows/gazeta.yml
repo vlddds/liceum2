@@ -1,5 +1,6 @@
 # Шкільна газета: щогодини перевіряє папку Google Drive «Газета — опублікувати»
-# і публікує нові випуски на сайті (скрипт scripts/gazeta-sync.mjs).
+# і публікує нові випуски на сайті (скрипт scripts/gazeta-sync.mjs). PDF лишається на Диску,
+# у репозиторій ідуть картинки сторінок, обкладинка й текст для пошуку.
 # Сайт збирається з гілки main, а коміт від GITHUB_TOKEN збірку сам не запускає,
 # тому після коміту просимо GitHub Pages перезібрати сайт.
 # Якщо з якимось файлом проблема - запуск позначається як невдалий, і GitHub надсилає лист власнику репозиторію.
@@ -30,16 +31,17 @@ jobs:
           node-version: 22
 
       - name: Інструменти для PDF
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils imagemagick
 
       - name: Тести скрипта
         run: node --test scripts/gazeta-sync.test.mjs
 
+      # папка - з data/gazeta-config.js (publishFolderId), ключі не потрібні.
+      # GDRIVE_API_KEY - запасний варіант, якщо Google змінить сторінку перегляду папки (необов'язково)
       - name: Забрати випуски з Google Drive
         id: sync
         env:
-          GDRIVE_SERVICE_ACCOUNT_JSON: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_JSON }}
-          GDRIVE_PUBLISH_FOLDER_ID: ${{ secrets.GDRIVE_PUBLISH_FOLDER_ID }}
+          GDRIVE_API_KEY: ${{ secrets.GDRIVE_API_KEY }}
         run: node scripts/gazeta-sync.mjs
 
       - name: Коміт
