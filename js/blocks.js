@@ -44,11 +44,13 @@
 
   /* галереї запам'ятовуємо тут, щоб по кліку відкрити фото на весь екран */
   var GAL = [];
+  /* фото - шлях або { src, caption } (тоді в кожного свій підпис) */
   function gallery(srcs, caption) {
-    var g = GAL.push(srcs.map(function (s) { return { src: s, caption: caption || "" }; })) - 1;
-    return '<ul class="b-gallery' + (srcs.length === 1 ? " one" : "") + '">' + srcs.map(function (s, i) {
-      return '<li><button type="button" class="b-ph" data-g="' + g + '" data-i="' + i + '" aria-label="Відкрити фото ' + (i + 1) + '">' +
-        L.photoHTML(s ? { src: s } : null, i, true) + "</button></li>";
+    var items = srcs.map(function (s) { return s && typeof s === "object" ? { src: s.src || "", caption: s.caption || caption || "" } : { src: s || "", caption: caption || "" }; });
+    var g = GAL.push(items) - 1;
+    return '<ul class="b-gallery' + (items.length === 1 ? " one" : "") + '">' + items.map(function (x, i) {
+      return '<li><button type="button" class="b-ph" data-g="' + g + '" data-i="' + i + '" aria-label="Відкрити фото ' + (i + 1) + (x.caption ? ": " + esc(x.caption) : "") + '">' +
+        L.photoHTML(x.src ? x : null, i, true) + "</button></li>";
     }).join("") + "</ul>";
   }
   function video(title, yt) {
