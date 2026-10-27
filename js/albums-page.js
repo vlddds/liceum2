@@ -61,28 +61,34 @@
     return p;
   }
 
-  /* 3. розкладка по сторінках: сітка 2×2. wide - на всю ширину (2 клітинки), tall - на всю висоту (2), полароїд - 1.
-     Широке й високе разом не вміщаються. Якщо наступне фото не лізе, на вільне місце беремо найближче,
-     яке влазить (дивимось на кілька фото вперед), щоб не лишалось пів порожньої сторінки. */
-  function fits(pg, p) {
-    var cost = p.kind === "pol" ? 1 : 2;
-    if (pg.w + cost > 4) return false;
-    if (p.kind === "wide" && pg.tall) return false;
-    if (p.kind === "tall" && pg.wide) return false;
-    return true;
+  /* 3. розкладка по сторінках. ПК - альбомні сторінки, сітка 3×2; телефон - книжкові, 2×2 (інакше фото надто дрібні).
+     полароїд - 1 клітинка, широке фото - 2 поруч, високе - 2 одна над одною.
+     Розставляємо по клітинках самі (а не як вирішить браузер): якщо наступне фото не влазить,
+     беремо найближче, що влазить (до 8 фото вперед), щоб не лишалось порожніх місць. */
+  var GRID = window.matchMedia("(max-width: 768px)").matches ? { cols: 2, rows: 2, W: 600, H: 800 } : { cols: 3, rows: 2, W: 800, H: 600 };
+  function span(p) { return p.kind === "wide" ? [1, 2] : p.kind === "tall" ? [2, 1] : [1, 1]; }   /* [рядки, колонки] */
+  function place(pg, p) {
+    var sz = span(p);
+    for (var r = 0; r + sz[0] <= GRID.rows; r++) {
+      for (var c = 0; c + sz[1] <= GRID.cols; c++) {
+        var free = true;
+        for (var y = r; y < r + sz[0] && free; y++) for (var x = c; x < c + sz[1]; x++) if (pg.taken[y * GRID.cols + x]) { free = false; break; }
+        if (!free) continue;
+        for (y = r; y < r + sz[0]; y++) for (x = c; x < c + sz[1]; x++) pg.taken[y * GRID.cols + x] = 1;
+        pg.items.push({ p: p, r: r + 1, c: c + 1, rs: sz[0], cs: sz[1] });
+        return true;
+      }
+    }
+    return false;
   }
   function paginate(list) {
-    var queue = list.slice(), pages = [];
+    var queue = list.slice(), pages = [], cells = GRID.cols * GRID.rows;
     while (queue.length) {
-      var pg = { items: [], w: 0, wide: 0, tall: 0 };
-      for (var i = 0; i < queue.length && i < 6 && pg.w < 4; i++) {
-        var p = queue[i];
-        if (!fits(pg, p)) continue;
-        pg.items.push(p); pg.w += p.kind === "pol" ? 1 : 2;
-        if (p.kind === "wide") pg.wide++;
-        if (p.kind === "tall") pg.tall++;
-        queue.splice(i, 1); i--;
+      var pg = { items: [], taken: [] };
+      for (var i = 0; i < queue.length && i < 8 && pg.items.length < cells; i++) {
+        if (place(pg, queue[i])) { queue.splice(i, 1); i--; }
       }
+      if (!pg.items.length) place(pg, queue.shift());   /* на всяк випадок, щоб не зациклитись */
       pages.push(pg);
     }
     return pages;
@@ -93,8 +99,8 @@
     var img = '<img src="' + esc(p.src) + '" alt="' + cap + '"' + L.imgSize(p.src) + ' loading="lazy" decoding="async" draggable="false"' +
       (/^https?:/i.test(p.src) ? ' referrerpolicy="no-referrer"' : "") + ">";   /* Google Фото без цього не віддає картинку */
     if (p.kind === "pol") {
-      return '<button type="button" class="ph pol" data-k="' + p.k + '" style="--tilt:' + tilt + 'deg" aria-label="Відкрити фото: ' + cap + '">' +
-        '<span class="ph-img">' + img + "</span>" + (p.caption ? '<span class="ph-cap" aria-hidden="true">' + cap + "</span>" : "") + "</button>";
+      return '<button type="button" class="ph pol" data-k="' + p.k + '" style="--tilt:' + tilt + 'deg" title="' + cap + '" aria-label="Відкрити фото: ' + cap + '">' +
+        '<span class="ph-img">' + img + "</span>" + (p.caption ? '<span class="ph-cap" aria-hidden="true"><span>' + cap + "</span></span>" : "") + "</button>";
     }
     return '<figure class="ph print ' + p.kind + '" style="--tilt:' + tilt * 0.6 + 'deg">' +
       '<button type="button" class="ph-btn" data-k="' + p.k + '" aria-label="Відкрити фото: ' + cap + '"><span class="ph-img" style="aspect-ratio:' + p.ratio.toFixed(3) + '">' + img +
@@ -134,7 +140,9 @@
     /* після обкладинки - форзац; у PageFlip з обкладинкою кількість сторінок має бути парною */
     var inner = ['<div class="ab-pg ab-fly"><p class="ab-fly-t">Ліцей №2<br>Підгородне</p><p class="ab-fly-s">Тут живуть наші свята, уроки, перемоги й просто гарні дні.</p></div>']
       .concat(pages.map(function (pg, i) {
-        return '<div class="ab-pg"><div class="ab-grid">' + pg.items.map(function (p) { return item(p, p.k); }).join("") + "</div>" +
+        return '<div class="ab-pg"><div class="ab-grid" style="--cols:' + GRID.cols + ";--rows:" + GRID.rows + '">' + pg.items.map(function (x) {
+            return '<div class="ab-cell" style="grid-area:' + x.r + " / " + x.c + " / span " + x.rs + " / span " + x.cs + '">' + item(x.p, x.p.k) + "</div>";
+          }).join("") + "</div>" +
           '<span class="ab-pn" aria-hidden="true">' + (i + 1) + "</span></div>";
       }));
     if (inner.length % 2) inner.push('<div class="ab-pg ab-end"><p>Далі буде…</p></div>');
@@ -150,7 +158,7 @@
       '<p class="ab-num" id="ab-num" aria-live="polite"></p>';
 
     if (!PF) { desk.classList.add("no-flip"); return; }
-    var W = 560, H = 760, ratio = W / H, box = $("#ab-fit");
+    var W = GRID.W, H = GRID.H, ratio = W / H, box = $("#ab-fit");
     var phone = function () { return window.matchMedia("(max-width: 768px)").matches; };
     function fit() {
       if (phone()) { box.style.maxWidth = ""; return; }

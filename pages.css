@@ -330,34 +330,35 @@ html.contrast :is(.gz-empty,.gz-text){border:2px solid #000}
 .ab-book{margin:0 auto;width:100%;transition:transform .6s var(--ease)}
 /* закрита книга - по центру столу (бібліотека ставить обкладинку в праву половину розвороту) */
 @media (min-width:769px){.ab-desk.closed .ab-book{transform:translateX(-25%)}}
-.ab-pg{position:relative;overflow:hidden;background:#f7f1e3;color:#2b2a27;
+.ab-pg{position:relative;overflow:hidden;background:#f7f1e3;color:#2b2a27;container-type:size;
   background-image:radial-gradient(rgba(120,95,40,.06) 1px,transparent 1px);background-size:16px 16px}
 .ab-pg.stf__item.--left{box-shadow:inset -18px 0 24px -16px rgba(60,45,10,.35)}
 .ab-pg.stf__item.--right{box-shadow:inset 18px 0 24px -16px rgba(60,45,10,.35)}
-.ab-grid{position:absolute;inset:6% 7% 9%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;grid-auto-flow:dense;gap:6% 7%;align-items:center;justify-items:center}
-.ab-pn{position:absolute;bottom:3.2%;left:0;right:0;text-align:center;font-family:"Caveat",var(--f-text);font-size:18px;color:#8a7b5a}
+/* розміри всередині сторінки - у частках сторінки (cqw/cqh), тож на будь-якому екрані виглядає однаково */
+.ab-grid{position:absolute;inset:6cqh 5cqw 9cqh;display:grid;grid-template-columns:repeat(var(--cols,3),minmax(0,1fr));grid-template-rows:repeat(var(--rows,2),minmax(0,1fr));gap:5cqh 4cqw}
+.ab-cell{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0}
+.ab-pn{position:absolute;bottom:2.4cqh;left:0;right:0;text-align:center;font-family:"Caveat",var(--f-text);font-size:4.4cqh;color:#8a7b5a}
 /* полароїд: квадрат у білій рамці з широким низом, на скотчі */
 .ph{position:relative;transform:rotate(var(--tilt));transition:transform .25s var(--ease)}
-.pol{display:flex;flex-direction:column;width:96%;padding:6% 6% 0;border:0;background:#fff;cursor:zoom-in;box-shadow:0 1px 2px rgba(0,0,0,.12),0 10px 20px -8px rgba(60,45,10,.45)}
-.pol::before{content:"";position:absolute;left:50%;top:-6%;width:44%;height:11%;margin-left:-22%;background:rgba(246,220,140,.6);transform:rotate(-4deg);box-shadow:0 1px 2px rgba(0,0,0,.08)}
-.pol .ph-img{display:block;aspect-ratio:1/1;overflow:hidden;background:#e9e4d6}
+.pol{display:flex;flex-direction:column;height:100%;aspect-ratio:.76;max-width:100%;padding:5% 5% 0;container-type:inline-size;border:0;background:#fff;cursor:zoom-in;
+  box-shadow:0 1px 2px rgba(0,0,0,.12),0 10px 20px -8px rgba(60,45,10,.45)}
+.pol::before{content:"";position:absolute;left:50%;top:-5%;width:46%;height:10%;margin-left:-23%;background:rgba(246,220,140,.6);transform:rotate(-4deg);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.pol .ph-img{display:block;flex:none;width:100%;aspect-ratio:1/1;overflow:hidden;background:#e9e4d6}
 .ph-img img{width:100%;height:100%;object-fit:cover;display:block}
-.ph-cap{display:block;padding:7% 2% 9%;font-family:"Caveat",var(--f-text);font-size:clamp(13px,1.35vw,19px);font-weight:600;line-height:1.05;color:#2b2a27;text-align:center;
-  overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+/* підпис полароїда: до 2 рядків у білій смужці, розмір - від ширини самого полароїда */
+.ph-cap{flex:1;display:flex;align-items:center;justify-content:center;padding:2% 1%;font-family:"Caveat",var(--f-text);font-size:max(11.5cqw,12px);font-weight:600;line-height:1;color:#2b2a27;text-align:center;overflow:hidden}
+.ph-cap>span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 /* надруковане фото: свої пропорції, тонка біла рамка, паперові куточки, підпис від руки нижче */
-.print{display:flex;flex-direction:column;align-items:center;margin:0;max-width:100%;max-height:100%}
-.print.wide{grid-column:1 / -1;width:100%}
-.print.tall{grid-row:span 2;height:100%;justify-content:center}
-.ph-btn{display:block;padding:0;border:0;background:none;cursor:zoom-in;max-width:100%}
-.print .ph-img{position:relative;display:block;border:5px solid #fff;box-shadow:0 1px 2px rgba(0,0,0,.12),0 8px 18px -8px rgba(60,45,10,.45)}
-.print.wide .ph-img{width:100%}
-.print.tall .ph-img{height:min(100%,560px);max-height:62vh;width:auto}
-.cn{position:absolute;width:16px;height:16px;background:#2e2a24}
-.cn.tl{left:-7px;top:-7px;clip-path:polygon(0 0,100% 0,0 100%)}
-.cn.tr{right:-7px;top:-7px;clip-path:polygon(0 0,100% 0,100% 100%)}
-.cn.bl{left:-7px;bottom:-7px;clip-path:polygon(0 0,0 100%,100% 100%)}
-.cn.br{right:-7px;bottom:-7px;clip-path:polygon(100% 0,100% 100%,0 100%)}
-.ph-note{margin:6px 0 0;font-family:"Caveat",var(--f-text);font-size:clamp(14px,1.4vw,20px);font-weight:600;line-height:1.1;color:#3a3527;text-align:center;
+.print{display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0;width:100%;height:100%;min-height:0}
+.ph-btn{display:flex;align-items:center;justify-content:center;flex:1;min-height:0;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.print .ph-img{position:relative;display:block;max-width:100%;max-height:100%;width:auto;height:100%;border:.9cqh solid #fff;box-shadow:0 1px 2px rgba(0,0,0,.12),0 8px 18px -8px rgba(60,45,10,.45)}
+.print.wide .ph-img{height:auto;width:100%}
+.cn{position:absolute;width:2.8cqh;height:2.8cqh;background:#2e2a24}
+.cn.tl{left:-1.2cqh;top:-1.2cqh;clip-path:polygon(0 0,100% 0,0 100%)}
+.cn.tr{right:-1.2cqh;top:-1.2cqh;clip-path:polygon(0 0,100% 0,100% 100%)}
+.cn.bl{left:-1.2cqh;bottom:-1.2cqh;clip-path:polygon(0 0,0 100%,100% 100%)}
+.cn.br{right:-1.2cqh;bottom:-1.2cqh;clip-path:polygon(100% 0,100% 100%,0 100%)}
+.ph-note{flex:none;max-width:100%;margin:1.4cqh 0 0;font-family:"Caveat",var(--f-text);font-size:3.4cqh;font-weight:600;line-height:1.05;color:#3a3527;text-align:center;
   overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .ph:hover,.ph:focus-within{transform:rotate(0) scale(1.03);z-index:2}
 .pol:focus-visible,.ph-btn:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
@@ -392,7 +393,7 @@ html.contrast .ab-arrow{border:2px solid #000;background:#fff}
 html.contrast .ab-num{color:#000}
 .ab-hint{margin:14px 0 0;text-align:center;color:var(--muted);font-size:14px}
 .ab-desk.no-flip .ab-book{display:grid;gap:16px}
-.ab-desk.no-flip .ab-pg{position:relative;aspect-ratio:560/760;max-width:560px;margin:0 auto}
+.ab-desk.no-flip .ab-pg{position:relative;aspect-ratio:4/3;max-width:800px;margin:0 auto}
 html.dark .ab-desk{background:#3b3226;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 2px,transparent 2px 9px),linear-gradient(180deg,#43392b,#2e271d)}
 html.contrast .ab-desk{background:#fff;border:2px solid #000}
 html.contrast .ph{transform:none}
@@ -403,8 +404,6 @@ html.contrast .pol::before{display:none}
   .ab-arrow .ic{width:18px;height:18px}
   .ab-num{bottom:12px;font-size:19px}
   .ab-cover-in{gap:6px}
-  .print .ph-img{border-width:3px}
-  .cn{width:11px;height:11px}
 }
 
 /* 6. темна тема: сині картки лишаються синіми, світлі - темними */
