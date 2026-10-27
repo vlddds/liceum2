@@ -13,7 +13,7 @@
   if (!L) return;
   var $ = L.$, $$ = L.$$, esc = L.esc, ICON = L.ICON, plural = L.plural;
   var SIZES = window.IMG_SIZES || {};
-  var TILT = [-2.6, 1.8, -1.2, 2.4, -1.8, 1.1, -0.7, 2.1];
+  var TILT = [-1.4, 0.9, -0.6, 1.2, -1, 0.5, -0.3, 1.1];   /* легкий нахил, щоб було живо, але рівно */
 
   /* 1. збираємо фото */
   var seen = {}, photos = [];
@@ -56,12 +56,33 @@
   }
   var NOT_PHOTO = /youtube\.com|youtu\.be|photos\.app\.goo\.gl|photos\.google\.com|drive\.google\.com\/(drive\/)?(u\/\d+\/)?folders/i;
 
-  /* 2. вид фото: полароїд (близький до квадрата) чи надруковане фото (свої пропорції) */
-  function shape(p) {
-    var s = SIZES[p.src], r = s ? s[0] / s[1] : p.from === "life" || p.from === "sheet" ? 1.33 : 1.5;
-    p.ratio = r;
-    p.kind = r >= 0.78 && r <= 1.35 ? "pol" : r > 1.35 ? "wide" : "tall";
+  /* 2. вид фото. Нічого не обрізаємо: і полароїд, і надруковане фото показують кадр у його пропорціях.
+     Звичайні кадри (від 3:4 до 4:3, разом з квадратними) - полароїд з білою рамкою й підписом знизу;
+     дуже широкі (16:9, панорами) - надруковане фото на дві клітинки, дуже високі - на дві клітинки вниз.
+     Розміри фото з сайту знаємо (js/img-sizes.js), а для фото з Диска/Google Фото спершу вантажимо
+     крихітну мініатюру й дивимось на неї. Не вдалось дізнатись - надруковане широке: так нічого не обріжеться. */
+  function shape(p, r) {
+    p.ratio = r || 1.5;
+    p.kind = p.ratio >= 0.7 && p.ratio <= 1.45 ? "pol" : p.ratio > 1.45 ? "wide" : "tall";
     return p;
+  }
+  function small(src) {
+    /* мініатюра Диска: та сама адреса з меншим розміром; Google Фото (lh3): параметр розміру після «=» */
+    if (/drive\.google\.com\/thumbnail/.test(src)) return src.replace(/([?&]sz=)w\d+/, "$1w120");
+    if (/googleusercontent\.com\//.test(src)) return src.replace(/=[^/=]*$/, "") + "=w120";
+    return src;
+  }
+  function measure(p) {
+    var s = SIZES[p.src];
+    if (s) return Promise.resolve(shape(p, s[0] / s[1]));
+    return new Promise(function (ok) {
+      var im = new Image(), done = function (r) { if (!im._d) { im._d = 1; ok(shape(p, r)); } };
+      im.referrerPolicy = "no-referrer";
+      im.onload = function () { done(im.naturalWidth && im.naturalHeight ? im.naturalWidth / im.naturalHeight : 0); };
+      im.onerror = function () { done(0); };
+      setTimeout(function () { done(0); }, 5000);
+      im.src = small(p.src);
+    });
   }
 
   /* 3. розкладка по сторінках. ПК - альбомні сторінки (8:7, щоб розворот був вищим), сітка 3×2; телефон - книжкові, 2×2 (інакше фото надто дрібні).
@@ -102,10 +123,12 @@
     var img = '<img src="' + esc(p.src) + '" alt="' + cap + '"' + L.imgSize(p.src) + ' loading="lazy" decoding="async" draggable="false"' +
       (/^https?:/i.test(p.src) ? ' referrerpolicy="no-referrer"' : "") + ">";   /* Google Фото без цього не віддає картинку */
     if (p.kind === "pol") {
-      return '<button type="button" class="ph pol" data-k="' + p.k + '" style="--tilt:' + tilt + 'deg" title="' + cap + '" aria-label="Відкрити фото: ' + cap + '">' +
+      /* рамку полароїда беремо одного з трьох форматів (3:4, квадрат, 4:3) - так полароїди в ряду однакові, а зайве по краях трохи обрізається */
+      var pr = [0.75, 1, 4 / 3].reduce(function (a, b) { return Math.abs(b - p.ratio) < Math.abs(a - p.ratio) ? b : a; });
+      return '<button type="button" class="ph pol" data-k="' + p.k + '" style="--tilt:' + tilt + "deg;--r:" + pr.toFixed(3) + '" title="' + cap + '" aria-label="Відкрити фото: ' + cap + '">' +
         '<span class="ph-img">' + img + "</span>" + (p.caption ? '<span class="ph-cap" aria-hidden="true"><span>' + cap + "</span></span>" : "") + "</button>";
     }
-    return '<figure class="ph print ' + p.kind + '" style="--tilt:' + tilt * 0.6 + 'deg">' +
+    return '<figure class="ph print ' + p.kind + '" style="--tilt:' + (tilt * 0.5).toFixed(2) + 'deg">' +
       '<button type="button" class="ph-btn" data-k="' + p.k + '" aria-label="Відкрити фото: ' + cap + '"><span class="ph-img" style="aspect-ratio:' + p.ratio.toFixed(3) + '">' + img +
       '<i class="cn tl"></i><i class="cn tr"></i><i class="cn bl"></i><i class="cn br"></i></span></button>' +
       (p.caption ? '<figcaption class="ph-note">' + cap + "</figcaption>" : "") + "</figure>";
@@ -132,8 +155,8 @@
       (post.photos || []).forEach(function (u) { if (!NOT_PHOTO.test(u)) add(u, post.title, "life"); });
     });
     site.forEach(function (p) { add(p.src, p.caption, p.from); });
-    photos.forEach(function (p, k) { p.k = k; shape(p); });
-    build();
+    photos.forEach(function (p, k) { p.k = k; });
+    Promise.all(photos.map(measure)).then(build);
   });
 
   function build() {

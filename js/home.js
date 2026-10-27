@@ -337,19 +337,28 @@
   var photos = D.photos || [], track = $("#gal-track"), dots = $("#gal-dots"), gal = $("#gal");
   if (!photos.length) { $("#hero-gal").hidden = true; $("#gallery").hidden = true; return; }
 
-  var photoHTML = L.photoHTML;
-  /* фото в каруселі не обрізаємо: кадр показується цілком, а вільне місце - те саме фото розмите */
-  track.innerHTML = photos.map(function (p, i) {
-    return '<li class="gal-slide" aria-roledescription="слайд" aria-label="' + (i + 1) + " з " + photos.length + '">' +
-      '<button type="button" class="gal-item" data-k="' + i + '" aria-label="Відкрити фото: ' + esc(p.caption || "фото " + (i + 1)) + '">' +
-      (p.src ? '<span class="gal-blur" style="background-image:url(' + esc(p.src) + ')" aria-hidden="true"></span>' : "") +
-      photoHTML(p, i, i === 0 ? "high" : true) + (p.caption ? '<span class="gal-cap">' + esc(p.caption) + "</span>" : "") + "</button></li>";
-  }).join("");
-  dots.innerHTML = photos.map(function (p, i) {
-    return '<button type="button" data-k="' + i + '" aria-label="Фото ' + (i + 1) + '"></button>';
-  }).join("");
+  var photoHTML = L.photoHTML, slides = [], cur = 0;
+  /* фото в каруселі не обрізаємо: кадр показується цілком, а вільне місце - те саме фото розмите.
+     фото з Google (аркуш «Фото» в таблиці) - розмитий фон теж картинкою з no-referrer, інакше Google її не віддасть */
+  function blur(src) {
+    if (!src) return "";
+    return /^https?:/i.test(src)
+      ? '<img class="gal-blur" src="' + esc(src) + '" alt="" aria-hidden="true" referrerpolicy="no-referrer" loading="lazy" decoding="async">'
+      : '<span class="gal-blur" style="background-image:url(' + esc(src) + ')" aria-hidden="true"></span>';
+  }
+  function render() {
+    track.innerHTML = photos.map(function (p, i) {
+      return '<li class="gal-slide" aria-roledescription="слайд" aria-label="' + (i + 1) + " з " + photos.length + '">' +
+        '<button type="button" class="gal-item" data-k="' + i + '" aria-label="Відкрити фото: ' + esc(p.caption || "фото " + (i + 1)) + '">' +
+        blur(p.src) + photoHTML(p, i, i === 0 ? "high" : true) + (p.caption ? '<span class="gal-cap">' + esc(p.caption) + "</span>" : "") + "</button></li>";
+    }).join("");
+    dots.innerHTML = photos.map(function (p, i) {
+      return '<button type="button" data-k="' + i + '" aria-label="Фото ' + (i + 1) + '"></button>';
+    }).join("");
+    slides = $$(".gal-slide", track);
+    grid();
+  }
 
-  var slides = $$(".gal-slide", track), cur = 0;
   function nearest() {
     var x = track.scrollLeft, best = 0, d = Infinity;
     slides.forEach(function (s, i) { var dd = Math.abs(s.offsetLeft - slides[0].offsetLeft - x); if (dd < d) { d = dd; best = i; } });
@@ -380,7 +389,35 @@
   $("#gal-prev").addEventListener("click", function () { go(nearest() - 1); });
   $("#gal-next").addEventListener("click", function () { go(nearest() + 1); });
   dots.addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) go(+b.getAttribute("data-k")); });
+  render();
   paintDots();
+
+  /* аркуш «Фото» в гугл-таблиці сайту (той самий, з якого бере фотоальбом): ці фото - першими в каруселі.
+     Сторінка таблиці не чекає: спершу показуємо фото сайту, а свіжі додаємо, щойно прийдуть (кеш 2 хв) */
+  (function () {
+    var C = D.config || {}, feed = C.lifeEndpoint || C.reviewEndpoint || C.formEndpoint || "";
+    if (!feed || !/script\.google\.com/.test(feed) || !window.fetch) return;
+    var cached = null;
+    try { cached = JSON.parse(sessionStorage.getItem("l2photos") || "null"); } catch (e) {}
+    var got = cached && Date.now() - cached.t < 2 * 60 * 1000 ? Promise.resolve(cached.list) :
+      Promise.race([
+        fetch(feed + (feed.indexOf("?") > -1 ? "&" : "?") + "action=photos").then(function (r) { if (!r.ok) throw 0; return r.json(); }),
+        new Promise(function (_, no) { setTimeout(no, 8000); })
+      ]).then(function (list) {
+        if (!Array.isArray(list)) throw 0;
+        try { sessionStorage.setItem("l2photos", JSON.stringify({ t: Date.now(), list: list })); } catch (e) {}
+        return list;
+      });
+    got.then(function (list) {
+      var seen = {}, fresh = [];
+      (list || []).forEach(function (p) { if (p && p.src && !seen[p.src]) { seen[p.src] = 1; fresh.push({ src: p.src, caption: p.caption || "" }); } });
+      if (!fresh.length) return;
+      photos = fresh.concat(photos.filter(function (p) { return !seen[p.src]; }));
+      render();
+      track.scrollLeft = 0;
+      paintDots();
+    }).catch(function () {});
+  })();
 
   /* автопрокрутка раз на 5 с, стоп, коли мишка/фокус на каруселі або її не видно */
   var hold = false, visible = false, holdTimer = null;
@@ -402,10 +439,12 @@
   }
 
   /* "Життя ліцею у фото": перші 7 фото сіткою, клік - на весь екран (гортаються всі) */
-  $("#h-photos").innerHTML = photos.slice(0, 7).map(function (p, i) {
-    return '<li><button type="button" class="gal-item" data-k="' + i + '" aria-label="Відкрити фото на весь екран: ' + esc(p.caption || "фото " + (i + 1)) + '">' +
-      photoHTML(p, i, true) + (p.caption ? '<span class="gal-cap">' + esc(p.caption) + "</span>" : "") + "</button></li>";
-  }).join("");
+  function grid() {
+    $("#h-photos").innerHTML = photos.slice(0, 7).map(function (p, i) {
+      return '<li><button type="button" class="gal-item" data-k="' + i + '" aria-label="Відкрити фото на весь екран: ' + esc(p.caption || "фото " + (i + 1)) + '">' +
+        photoHTML(p, i, true) + (p.caption ? '<span class="gal-cap">' + esc(p.caption) + "</span>" : "") + "</button></li>";
+    }).join("");
+  }
   $("#h-photos").addEventListener("click", function (e) {
     var b = e.target.closest(".gal-item");
     if (!b) return;

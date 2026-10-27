@@ -86,6 +86,7 @@
 .h-gal .gal-cap{padding:48px 20px 20px;max-width:100%;font-size:14px}
 .h-gal .gal-item img{position:relative;object-fit:contain}
 .h-gal .gal-blur{position:absolute;inset:-24px;background-size:cover;background-position:center;filter:blur(18px) brightness(.7)}
+.h-gal img.gal-blur{width:calc(100% + 48px);height:calc(100% + 48px);max-width:none;object-fit:cover}
 .h-gal-nav{position:absolute;top:20px;right:20px;display:flex;gap:8px;z-index:2}
 .h-gal .gal-btn{width:44px;height:44px;border:0;background:rgba(255,255,255,.92);color:#14274E}
 .h-gal .gal-btn:hover:not(:disabled){background:#fff;color:#14274E}
