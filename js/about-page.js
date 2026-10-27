@@ -63,6 +63,8 @@
       (p.subject ? '<span class="adm-sub">' + esc(p.subject) + "</span>" : "") +
       (contacts ? '<div class="adm-contacts">' + contacts + "</div>" : "") +
       (rec ? '<div class="adm-rec"><span>' + ICON("clock") + 'Особистий прийом</span><ul>' + rec + "</ul></div>" : "") +
+      (p.projects && p.projects.length ? '<div class="adm-rec adm-proj"><span>' + ICON("award") + "Проєкти в ліцеї</span><ul>" +
+        p.projects.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul></div>" : "") +
       "</div></li>";
   }).join("");
 

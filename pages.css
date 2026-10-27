@@ -81,6 +81,13 @@ html.dark .content a:hover{color:var(--accent)}
 .t-ph,.gal-ph{background-color:var(--navy-soft);background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 14px,transparent 14px 28px);background-size:auto}
 
 /* педколектив */
+/* освіта у вікні педагога: кожен заклад окремим пунктом */
+.t-edu{list-style:none;margin:4px 0 0;padding:0;display:grid}
+.t-edu li{display:flex;flex-direction:column;gap:2px;padding:8px 0 8px 14px;border-left:3px solid var(--brand)}
+.t-edu li+li{margin-top:8px}
+.t-edu b{font-weight:800;line-height:1.35}
+.t-edu span{color:var(--muted);font-size:.92em;line-height:1.45}
+html.contrast .t-edu li{border-left-color:#000}
 .t-card{border-radius:22px;box-shadow:none}
 .t-card:hover{box-shadow:none;border-color:var(--ink)}
 .t-badge{border-radius:var(--r-pill)}

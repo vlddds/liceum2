@@ -135,6 +135,15 @@
   var FIELDS = [["post", "Посада"], ["category", "Кваліфікаційна категорія"], ["title", "Педагогічне звання"],
     ["experience", "Педагогічний стаж"], ["education", "Освіта"]];
 
+  /* освіта: кілька закладів у даних розділені «;» - показуємо кожен окремо, щоб було видно, де закінчується один */
+  function edu(text) {
+    var items = String(text).split(/\s*;\s*/).filter(Boolean);
+    return '<ul class="t-edu">' + items.map(function (x) {
+      var i = x.indexOf(", ");
+      return i > 0 ? "<li><b>" + esc(x.slice(0, i)) + "</b><span>" + esc(x.slice(i + 2)) + "</span></li>" : "<li><b>" + esc(x) + "</b></li>";
+    }).join("") + "</ul>";
+  }
+
   function fill(k) {
     at = k;
     var p = list[k], named = !!p.name.trim();
@@ -144,7 +153,9 @@
     $("#d-name").classList.toggle("is-ph", !named);
     $("#d-role").textContent = p.role || "";
     var rows = FIELDS.filter(function (f) { return p[f[0]]; });
-    $("#d-dl").innerHTML = rows.map(function (f) { return "<div><dt>" + f[1] + "</dt><dd>" + esc(p[f[0]]) + "</dd></div>"; }).join("");
+    $("#d-dl").innerHTML = rows.map(function (f) {
+      return "<div><dt>" + f[1] + "</dt><dd>" + (f[0] === "education" ? edu(p.education) : esc(p[f[0]])) + "</dd></div>";
+    }).join("");
     $("#d-dl").hidden = !rows.length;
     $("#d-about").innerHTML = p.about
       ? p.about.split(/\n+/).map(function (t) { return "<p>" + esc(t) + "</p>"; }).join("")

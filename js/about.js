@@ -28,7 +28,7 @@ window.ABOUT = (function () {
   };
 
   /* адміністрація
-     reception - дні прийому, day: 1 це понеділок, 5 п'ятниця
+     reception - дні прийому, day: 1 це понеділок, 5 п'ятниця; projects - проєкти в ліцеї (необов'язково)
      УВАГА: час прийому поки вигаданий, треба взяти з нормального графіка */
   var admin = [
     { name: "Гошкодеря Олена Вікторівна", position: "Директор ліцею", subject: "Учитель англійської мови",
@@ -38,7 +38,15 @@ window.ABOUT = (function () {
     { name: "Хоменко Людмила Степанівна", position: "Заступник директора з НВР", subject: "Учитель української мови",
       photo: "img/teachers/KhomenkoLudmila.JPG", phone: "", email: "", reception: [{ day: 3, time: "14:00–16:00" }] },
     { name: "Коваль Яна Анатоліївна", position: "Заступник директора з ВР", subject: "Учитель англійської мови",
-      photo: "img/teachers/KovalYanna.JPG", phone: "", email: "", reception: [{ day: 5, time: "13:00–15:00" }] }
+      photo: "img/teachers/KovalYanna.JPG", phone: "", email: "", reception: [{ day: 5, time: "13:00–15:00" }] },
+    /* працює разом із заступником з виховної роботи; особистого прийому немає */
+    { name: "Харьков Вадим Сергійович", position: "Педагог-організатор", subject: "Свята, конкурси, проєкти й учнівське самоврядування",
+      photo: "img/teachers/KharkovVadim.JPG", phone: "", email: "", reception: [],
+      projects: [
+        "День вчителя — постановка та курування виступу для вчителів",
+        "L2 community — самоврядування учнів через чат-бот",
+        "Олімпійський тиждень — організація цікавих конкурсів для дітей"
+      ] }
   ];
   var receptionNote = "Попередньо записатися на прийом можна за електронною поштою ліцею.";
   var receptionDoc = "https://drive.google.com/file/d/1I8MPSfuc-UrYHSmfa6Z9Fk9If-yBEFHl/view";   /* pdf з графіком прийому */
