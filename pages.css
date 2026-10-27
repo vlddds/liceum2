@@ -82,6 +82,8 @@ html.dark .content a:hover{color:var(--accent)}
 
 /* адміністрація: на ПК усі в один ряд (--n ставить about-page.js), на планшеті 3, на телефоні 2 і 1 */
 .adm-grid{grid-template-columns:repeat(var(--n,4),minmax(0,1fr))}
+/* квадратна рамка з вертикального портрета: кадр від верху фото, щоб не зрізало маківку */
+.adm .t-ph img{object-position:50% 0}
 @media (max-width:960px){.adm-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .adm-proj{margin-top:auto;padding-top:.8rem}
 .adm-proj summary{display:flex;align-items:center;gap:.4rem;font-size:.85rem;font-weight:700;color:var(--ink);cursor:pointer;list-style:none;padding:.45rem .6rem;border-radius:10px;background:var(--tint)}
