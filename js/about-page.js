@@ -64,8 +64,9 @@
       (p.subject ? '<span class="adm-sub">' + esc(p.subject) + "</span>" : "") +
       (contacts ? '<div class="adm-contacts">' + contacts + "</div>" : "") +
       (rec ? '<div class="adm-rec"><span>' + ICON("clock") + 'Особистий прийом</span><ul>' + rec + "</ul></div>" : "") +
-      (p.projects && p.projects.length ? '<div class="adm-rec adm-proj"><span>' + ICON("award") + "Проєкти в ліцеї</span><ul>" +
-        p.projects.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul></div>" : "") +
+      /* проєкти сховані в картці: розгортаються по кліку, щоб картка була такої ж висоти, як у решти */
+      (p.projects && p.projects.length ? '<details class="adm-proj"><summary>' + ICON("award") + "Проєкти в ліцеї · " + p.projects.length + ICON("chev") + "</summary><ul>" +
+        p.projects.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul></details>" : "") +
       "</div></li>";
   }).join("");
 

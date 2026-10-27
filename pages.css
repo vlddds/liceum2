@@ -83,6 +83,16 @@ html.dark .content a:hover{color:var(--accent)}
 /* адміністрація: на ПК усі в один ряд (--n ставить about-page.js), на планшеті 3, на телефоні 2 і 1 */
 .adm-grid{grid-template-columns:repeat(var(--n,4),minmax(0,1fr))}
 @media (max-width:960px){.adm-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.adm-proj{margin-top:auto;padding-top:.8rem}
+.adm-proj summary{display:flex;align-items:center;gap:.4rem;font-size:.85rem;font-weight:700;color:var(--ink);cursor:pointer;list-style:none;padding:.45rem .6rem;border-radius:10px;background:var(--tint)}
+.adm-proj summary::-webkit-details-marker{display:none}
+.adm-proj summary:hover{background:var(--line)}
+.adm-proj summary .ic{width:16px;height:16px;flex:none}
+.adm-proj summary .ic:last-child{margin-left:auto;transform:rotate(90deg);transition:transform .2s}
+.adm-proj[open] summary .ic:last-child{transform:rotate(-90deg)}
+.adm-proj ul{list-style:none;margin:.5rem 0 0;padding:0;display:grid;gap:.4rem}
+.adm-proj li{font-size:.85rem;line-height:1.4;padding-left:.7rem;border-left:3px solid var(--accent)}
+html.contrast .adm-proj summary{background:#fff;border:2px solid #000}
 @media (max-width:640px){.adm-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:420px){.adm-grid{grid-template-columns:1fr}}
 
