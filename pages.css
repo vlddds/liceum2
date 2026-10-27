@@ -375,7 +375,12 @@ html.contrast :is(.gz-empty,.gz-text){border:2px solid #000}
 .ab-fly{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:14%}
 .ab-fly-t{margin:0 0 14px;font-family:"Caveat",var(--f-text);font-size:clamp(30px,4vw,48px);font-weight:700;line-height:1;color:#1f3a7a}
 .ab-fly-s{margin:0;font-family:"Caveat",var(--f-text);font-size:clamp(18px,2vw,24px);color:#5a5140}
-.ab-end{display:grid;place-items:center;font-family:"Caveat",var(--f-text);font-size:28px;color:#8a7b5a}
+.ab-end{display:grid;place-items:center}
+.ab-end-in{position:absolute;left:50%;top:50%;width:80%;text-align:center;transform:translate(-50%,-50%) rotate(-2deg)}
+.ab-end-t{margin:0 0 2cqh;font-family:"Caveat",var(--f-text);font-weight:700;font-size:9cqh;line-height:1;color:#1f3a7a}
+.ab-end-s{margin:0;font-family:"Caveat",var(--f-text);font-weight:600;font-size:6cqh;line-height:1.1;color:#5a5140}
+.ab-end-heart{display:block;margin-top:2cqh;font-size:7cqh;color:#d9534f}
+html.contrast .ab-end-t,html.contrast .ab-end-s,html.contrast .ab-end-heart{color:#000}
 /* стрілки по боках столу */
 .ab-arrow{position:absolute;top:50%;z-index:5;display:grid;place-items:center;width:56px;height:56px;margin-top:-40px;border-radius:50%;border:0;cursor:pointer;
   background:rgba(255,255,255,.88);color:#14274E;box-shadow:0 6px 18px rgba(60,45,10,.35);backdrop-filter:blur(2px);transition:background .2s,transform .15s,opacity .2s}

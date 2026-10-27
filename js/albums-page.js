@@ -145,7 +145,11 @@
           }).join("") + "</div>" +
           '<span class="ab-pn" aria-hidden="true">' + (i + 1) + "</span></div>";
       }));
-    if (inner.length % 2) inner.push('<div class="ab-pg ab-end"><p>Далі буде…</p></div>');
+    /* остання сторінка перед задньою обкладинкою; сторінок усередині має бути парно - якщо ні, перед нею чистий аркуш */
+    var last = '<div class="ab-pg ab-end"><div class="ab-end-in"><p class="ab-end-t">Це ще не кінець…</p>' +
+      '<p class="ab-end-s">Скоро тут будуть нові спогади</p><span class="ab-end-heart" aria-hidden="true">♡</span></div></div>';
+    if (inner.length % 2 === 0) inner.push('<div class="ab-pg"></div>');
+    inner.push(last);
     var html = '<div class="ab-pg ab-cover" data-density="hard"><div class="ab-cover-in"><span class="ab-cover-k">Фотоальбом</span>' +
         '<b class="ab-cover-t">Ліцей №2</b><span class="ab-cover-s">Підгородненської міської ради</span>' +
         '<span class="ab-cover-open">' + ICON("book") + "Відкрити</span></div></div>" +
