@@ -1,5 +1,6 @@
 /* Фотоальбом ліцею (albums.html): одна книга, яку відкривають і гортають (StPageFlip, як газета).
    Фото збираються самі з усього сайту - нічого руками в альбом класти не треба:
+     - аркуш «Фото» в гугл-таблиці сайту: посилання на фото, папки Диска чи альбоми Google Фото з підписами;
      - дописи «Життя ліцею» з гугл-таблиці (ті самі, що на сторінці новин), нові першими;
      - фото головної сторінки (photos у js/data.js);
      - заповнені галереї розділів (js/sections/*.js).
@@ -36,26 +37,28 @@
       });
     });
   }
-  /* «Життя ліцею»: той самий запит і кеш, що й на сторінці новин (js/news-tabs.js) */
-  function fromLife() {
+  /* дані з гугл-таблиці сайту (той самий скрипт, що й для відгуків): кеш 2 хв, чекаємо не довше 6 с.
+     action=life - «Життя ліцею» (той самий запит і кеш, що на сторінці новин), action=photos - аркуш «Фото» */
+  function fromSheet(action, key) {
     var C = D.config || {}, feed = C.lifeEndpoint || C.reviewEndpoint || C.formEndpoint || "";
     if (!feed || !/script\.google\.com/.test(feed) || !window.fetch) return Promise.resolve([]);
     var cached = null;
-    try { cached = JSON.parse(sessionStorage.getItem("l2life") || "null"); } catch (e) {}
+    try { cached = JSON.parse(sessionStorage.getItem(key) || "null"); } catch (e) {}
     if (cached && Date.now() - cached.t < 2 * 60 * 1000) return Promise.resolve(cached.list || []);
     return Promise.race([
-      fetch(feed + (feed.indexOf("?") > -1 ? "&" : "?") + "action=life").then(function (r) { if (!r.ok) throw 0; return r.json(); }),
+      fetch(feed + (feed.indexOf("?") > -1 ? "&" : "?") + "action=" + action).then(function (r) { if (!r.ok) throw 0; return r.json(); }),
       new Promise(function (_, no) { setTimeout(no, 6000); })
     ]).then(function (list) {
-      try { sessionStorage.setItem("l2life", JSON.stringify({ t: Date.now(), list: list })); } catch (e) {}
-      return Array.isArray(list) ? list : [];
+      if (!Array.isArray(list)) throw 0;   /* старий скрипт без action=photos віддає {ok:true} */
+      try { sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), list: list })); } catch (e) {}
+      return list;
     }).catch(function () { return cached && cached.list ? cached.list : []; });
   }
   var NOT_PHOTO = /youtube\.com|youtu\.be|photos\.app\.goo\.gl|photos\.google\.com|drive\.google\.com\/(drive\/)?(u\/\d+\/)?folders/i;
 
   /* 2. вид фото: полароїд (близький до квадрата) чи надруковане фото (свої пропорції) */
   function shape(p) {
-    var s = SIZES[p.src], r = s ? s[0] / s[1] : p.from === "life" ? 1.33 : 1.5;
+    var s = SIZES[p.src], r = s ? s[0] / s[1] : p.from === "life" || p.from === "sheet" ? 1.33 : 1.5;
     p.ratio = r;
     p.kind = r >= 0.78 && r <= 1.35 ? "pol" : r > 1.35 ? "wide" : "tall";
     return p;
@@ -120,10 +123,11 @@
   document.title = "Фотоальбом · Підгородненський Ліцей №2";
 
   fromSite();
-  fromLife().then(function (posts) {
-    /* дописи «Життя ліцею» - найсвіжіші, тож першими */
-    var site = photos.splice(0, photos.length);
+  Promise.all([fromSheet("photos", "l2photos"), fromSheet("life", "l2life")]).then(function (res) {
+    /* спершу аркуш «Фото», далі дописи «Життя ліцею», далі фото з самого сайту */
+    var site = photos.splice(0, photos.length), posts = res[1];
     seen = {};
+    res[0].forEach(function (p) { if (p && p.src && !NOT_PHOTO.test(p.src)) add(p.src, p.caption, "sheet"); });
     posts.forEach(function (post) {
       (post.photos || []).forEach(function (u) { if (!NOT_PHOTO.test(u)) add(u, post.title, "life"); });
     });
