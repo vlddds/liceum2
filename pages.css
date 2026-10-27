@@ -335,9 +335,11 @@ html.contrast :is(.gz-empty,.gz-text){border:2px solid #000}
 .ab-pg.stf__item.--left{box-shadow:inset -18px 0 24px -16px rgba(60,45,10,.35)}
 .ab-pg.stf__item.--right{box-shadow:inset 18px 0 24px -16px rgba(60,45,10,.35)}
 /* розміри всередині сторінки - у частках сторінки (cqw/cqh), тож на будь-якому екрані виглядає однаково */
-.ab-grid{position:absolute;inset:6cqh 7.5cqw 9cqh;display:grid;grid-template-columns:repeat(var(--cols,3),minmax(0,1fr));grid-template-rows:repeat(var(--rows,2),minmax(0,1fr));gap:5cqh 4cqw}
+.ab-grid{position:absolute;inset:6cqh 7.5cqw 10cqh;display:grid;grid-template-columns:repeat(var(--cols,3),minmax(0,1fr));grid-template-rows:repeat(var(--rows,2),minmax(0,1fr));gap:5cqh 4cqw}
 .ab-cell{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;container-type:size}
-.ab-pn{position:absolute;bottom:2.4cqh;left:0;right:0;text-align:center;font-family:"Caveat",var(--f-text);font-size:4.4cqh;color:#8a7b5a}
+/* номер сторінки - у зовнішньому нижньому куті, як у справжньому альбомі (не заважає підписам) */
+.ab-pn{position:absolute;bottom:2.2cqh;left:3.5cqw;font-family:"Caveat",var(--f-text);font-size:4cqh;line-height:1;color:#8a7b5a}
+.ab-pg.--right .ab-pn{left:auto;right:3.5cqw}
 /* полароїд: квадрат у білій рамці з широким низом, на скотчі */
 .ph{position:relative;transform:rotate(var(--tilt));transition:transform .25s var(--ease)}
 /* ширина полароїда - найбільша, за якої він влазить у клітинку: висота = ширина × (0.24 + 0.9 / пропорції фото) */
@@ -349,6 +351,12 @@ html.contrast :is(.gz-empty,.gz-text){border:2px solid #000}
 /* підпис полароїда: до 2 рядків у білій смужці, розмір - від ширини самого полароїда */
 .ph-cap{flex:none;height:19cqw;display:flex;align-items:center;justify-content:center;padding:0 1%;font-family:"Caveat",var(--f-text);font-size:max(11.5cqw,12px);font-weight:600;line-height:1;color:#2b2a27;text-align:center;overflow:hidden}
 .ph-cap>span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* довгий підпис полароїда: дрібніше й до 3 рядків, щоб влазив повністю */
+.ph-cap.long{font-size:max(8.6cqw,11px);line-height:.98}
+.ph-cap.long>span{-webkit-line-clamp:3}
+/* дуже довгий (понад 55 знаків): ще дрібніше, до 4 рядків, ширша біла смужка */
+.ph-cap.xlong{height:25cqw;font-size:max(7.6cqw,10px)}
+.ph-cap.xlong>span{-webkit-line-clamp:4}
 /* надруковане фото: свої пропорції, тонка біла рамка, паперові куточки, підпис від руки нижче */
 .print{display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0;width:100%;height:100%;min-height:0}
 .ph-btn{display:flex;align-items:center;justify-content:center;flex:1;min-height:0;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
@@ -362,6 +370,7 @@ html.contrast :is(.gz-empty,.gz-text){border:2px solid #000}
 .cn.br{right:-6px;bottom:-6px;clip-path:polygon(100% 0,100% 100%,0 100%)}
 .ph-note{flex:none;max-width:100%;margin:max(4px,2.5cqh) 0 0;font-family:"Caveat",var(--f-text);font-size:max(12px,min(7cqh,9cqw));font-weight:600;line-height:1.05;color:#3a3527;text-align:center;
   overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.ph-note.long{font-size:max(11px,min(5.8cqh,7.5cqw));-webkit-line-clamp:4}
 .ph:hover,.ph:focus-within{transform:rotate(0) scale(1.03);z-index:2}
 .pol:focus-visible,.ph-btn:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
 /* обкладинка: темно-синя «шкіра» з тисненням */

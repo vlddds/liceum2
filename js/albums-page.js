@@ -126,12 +126,12 @@
       /* рамку полароїда беремо одного з трьох форматів (3:4, квадрат, 4:3) - так полароїди в ряду однакові, а зайве по краях трохи обрізається */
       var pr = [0.75, 1, 4 / 3].reduce(function (a, b) { return Math.abs(b - p.ratio) < Math.abs(a - p.ratio) ? b : a; });
       return '<button type="button" class="ph pol" data-k="' + p.k + '" style="--tilt:' + tilt + "deg;--r:" + pr.toFixed(3) + '" title="' + cap + '" aria-label="Відкрити фото: ' + cap + '">' +
-        '<span class="ph-img">' + img + "</span>" + (p.caption ? '<span class="ph-cap" aria-hidden="true"><span>' + cap + "</span></span>" : "") + "</button>";
+        '<span class="ph-img">' + img + "</span>" + (p.caption ? '<span class="ph-cap' + (p.caption.length > 55 ? " long xlong" : p.caption.length > 28 ? " long" : "") + '" aria-hidden="true"><span>' + cap + "</span></span>" : "") + "</button>";
     }
     return '<figure class="ph print ' + p.kind + '" style="--tilt:' + (tilt * 0.5).toFixed(2) + 'deg">' +
       '<button type="button" class="ph-btn" data-k="' + p.k + '" aria-label="Відкрити фото: ' + cap + '"><span class="ph-img" style="aspect-ratio:' + p.ratio.toFixed(3) + '">' + img +
       '<i class="cn tl"></i><i class="cn tr"></i><i class="cn bl"></i><i class="cn br"></i></span></button>' +
-      (p.caption ? '<figcaption class="ph-note">' + cap + "</figcaption>" : "") + "</figure>";
+      (p.caption ? '<figcaption class="ph-note' + (p.caption.length > 45 ? " long" : "") + '">' + cap + "</figcaption>" : "") + "</figure>";
   }
 
   /* 4. сторінка */
