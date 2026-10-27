@@ -319,6 +319,57 @@ html.contrast .gz-reader{background:#000;border:2px solid #000}
 html.contrast .gz-btn{border:2px solid #fff;background:#000}
 html.contrast :is(.gz-empty,.gz-text){border:2px solid #000}
 
+/* фотоальбоми (albums-page.js): шкільний альбом - сторінка на подію, фото-полароїди на скотчі */
+.ab-book{display:grid;gap:36px}
+.ab-page{position:relative;padding:clamp(22px,4vw,44px) clamp(18px,4vw,48px) clamp(26px,4vw,48px);border-radius:10px 22px 22px 10px;scroll-margin-top:100px;
+  background:#fbf6ea;color:#2b2a27;
+  background-image:radial-gradient(rgba(120,95,40,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.07),rgba(0,0,0,0) 26px);
+  background-size:18px 18px,100% 100%;
+  box-shadow:0 1px 0 #efe5cc,0 2px 0 #fbf6ea,0 3px 0 #e6dbbf,0 4px 0 #f6f0df,0 18px 40px -18px rgba(60,45,10,.35)}
+/* корінець альбому зліва: дірочки під кільця */
+.ab-page::before{content:"";position:absolute;left:12px;top:24px;bottom:24px;width:10px;
+  background:radial-gradient(circle,#d9cdaa 0 4px,transparent 5px) 0 0/10px 46px repeat-y;opacity:.9}
+.ab-head{margin:0 0 26px 18px}
+.ab-head h2{margin:0;font-family:"Caveat",var(--f-text);font-weight:700;font-size:clamp(30px,4vw,44px);line-height:1.05;letter-spacing:0;color:#1f3a7a}
+.ab-sub{margin:6px 0 0;font-size:14px;font-weight:600;color:#7a6c4f}
+.ab-photos{list-style:none;margin:0 0 0 18px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:34px 26px}
+.pl{transform:rotate(var(--tilt));transition:transform .25s var(--ease)}
+.pl:hover,.pl:focus-within{transform:rotate(0) translateY(-6px) scale(1.03);z-index:2;position:relative}
+.pl-btn{position:relative;display:block;width:100%;padding:12px 12px 0;border:0;background:#fff;cursor:zoom-in;text-align:center;
+  box-shadow:0 1px 2px rgba(0,0,0,.12),0 10px 22px -8px rgba(60,45,10,.45);border-radius:2px}
+.pl-btn:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+/* скотч */
+.pl-btn::before{content:"";position:absolute;left:50%;top:-11px;width:78px;height:24px;margin-left:-39px;transform:rotate(var(--tape));z-index:1;
+  background:rgba(246,220,140,.55);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.pl-ph{display:block;aspect-ratio:1/1;overflow:hidden;background:#e9e4d6}
+.pl-ph img,.pl-ph .gal-ph{width:100%;height:100%;object-fit:cover;display:block}
+.pl-cap{display:block;padding:10px 4px 14px;min-height:54px;font-family:"Caveat",var(--f-text);font-size:21px;font-weight:600;line-height:1.1;color:#2b2a27;
+  overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.ab-note{display:inline-flex;align-items:center;gap:10px;margin:0 0 0 18px;padding:14px 18px;background:#fff59d;color:#5a4b12;font-family:"Caveat",var(--f-text);font-size:24px;font-weight:600;
+  transform:rotate(-1.5deg);box-shadow:0 8px 16px -8px rgba(60,45,10,.4)}
+.ab-note .ic{width:22px;height:22px}
+.ab-links{margin:26px 0 0 18px;display:flex;flex-wrap:wrap;gap:10px}
+html.dark .ab-page{background-color:#2a2620;color:#efe7d4;background-image:radial-gradient(rgba(255,240,200,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.25),rgba(0,0,0,0) 26px);
+  box-shadow:0 18px 40px -18px rgba(0,0,0,.6)}
+html.dark .ab-head h2{color:#f2d27a}
+html.dark .ab-sub{color:#cbbd9c}
+html.dark .ab-page::before{background:radial-gradient(circle,#4a4234 0 4px,transparent 5px) 0 0/10px 46px repeat-y}
+html.contrast .ab-page{background:#fff;color:#000;border:2px solid #000;box-shadow:none}
+html.contrast .ab-page::before{display:none}
+html.contrast .ab-head h2,html.contrast .ab-sub{color:#000}
+html.contrast .pl{transform:none}
+html.contrast .pl-btn{border:2px solid #000;box-shadow:none}
+html.contrast .pl-btn::before{display:none}
+@media (max-width:480px){
+  .ab-page{padding:20px 14px 24px 22px}
+  .ab-head,.ab-photos,.ab-note,.ab-links{margin-left:6px}
+  .ab-photos{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 14px}
+  .pl-btn{padding:7px 7px 0}
+  .pl-cap{font-size:17px;min-height:44px;padding:7px 2px 10px}
+  .pl-btn::before{width:54px;margin-left:-27px;height:18px;top:-8px}
+}
+@media print{.ab-page{box-shadow:none;break-inside:avoid}.pl{transform:none}}
+
 /* 6. темна тема: сині картки лишаються синіми, світлі - темними */
 html.dark .t-hero .hero-bg{background:var(--brand)}
 html.dark .b-links a,html.dark .b-people li,html.dark .b-facts div,html.dark .b-news article,html.dark .b-phones .phone,html.dark .b-button{background:var(--bg)}

@@ -12,7 +12,7 @@ window.SECTION = (function () {
     num: "",
     items: [].concat(home.length ? [
       { id: "life", title: "Життя ліцею у фото", short: "Життя ліцею", icon: "image", open: true,
-        sub: home.length + " фото · ті самі, що на головній",
+        sub: "ті самі, що на головній",
         blocks: [ { type: "gallery", items: home.map(function (p) { return { src: p.src, caption: p.caption }; }) } ] }
     ] : [], [
       { id: "titans-2026", title: "Жива книга «Книга — це вікно, через яке видно душу»", short: "Жива книга", icon: "book",
