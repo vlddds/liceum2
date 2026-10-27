@@ -111,11 +111,6 @@
       '<p class="gz-meta" id="ab-count">Збираємо фото…</p>' +
     "</div></section>" +
     '<div class="wrap ab-wrap"><div class="ab-desk" id="ab-desk"><div class="gz-skel-book" aria-hidden="true"><i></i><i></i></div></div>' +
-    '<div class="gz-bar ab-bar" role="toolbar" aria-label="Гортати альбом" hidden>' +
-      '<button class="gz-btn" id="ab-prev" type="button" aria-label="Попередня сторінка">' + ICON("chev") + "</button>" +
-      '<span class="gz-num" id="ab-num" aria-live="polite"></span>' +
-      '<button class="gz-btn" id="ab-next" type="button" aria-label="Наступна сторінка">' + ICON("chev") + "</button>" +
-    "</div>" +
     '<p class="ab-hint">Нові фото з\'являються в альбомі самі: щойно їх додали на сайт.</p></div>';
   document.title = "Фотоальбом · Підгородненський Ліцей №2";
 
@@ -148,28 +143,32 @@
         '<span class="ab-cover-open">' + ICON("book") + "Відкрити</span></div></div>" +
       inner.join("") +
       '<div class="ab-pg ab-cover ab-back" data-density="hard"><div class="ab-cover-in"><span class="ab-cover-s">Ліцей №2 · Підгородне</span></div></div>';
-    desk.innerHTML = '<div class="gz-fit" id="ab-fit"><div class="ab-book" id="ab-book">' + html + "</div></div>";
+    /* гортання: великі стрілки по боках столу, номер сторінки - рукописом під книгою */
+    desk.innerHTML = '<div class="gz-fit" id="ab-fit"><div class="ab-book" id="ab-book">' + html + "</div></div>" +
+      '<button class="ab-arrow prev" id="ab-prev" type="button" aria-label="Попередня сторінка" hidden>' + ICON("chev") + "</button>" +
+      '<button class="ab-arrow next" id="ab-next" type="button" aria-label="Наступна сторінка" hidden>' + ICON("chev") + "</button>" +
+      '<p class="ab-num" id="ab-num" aria-live="polite"></p>';
 
     if (!PF) { desk.classList.add("no-flip"); return; }
     var W = 560, H = 760, ratio = W / H, box = $("#ab-fit");
     var phone = function () { return window.matchMedia("(max-width: 768px)").matches; };
     function fit() {
       if (phone()) { box.style.maxWidth = ""; return; }
-      box.style.maxWidth = Math.max(560, Math.floor((window.innerHeight - 200) * 2 * ratio)) + "px";
+      box.style.maxWidth = Math.max(640, Math.floor((window.innerHeight - 130) * 2 * ratio)) + "px";
     }
     fit();
     window.addEventListener("resize", fit);
     var minW = phone() ? Math.ceil(desk.clientWidth / 2) + 20 : 220;
     var flip = new PF($("#ab-book"), {
-      width: W, height: H, size: "stretch", minWidth: minW, maxWidth: 900, minHeight: Math.round(minW / ratio), maxHeight: Math.round(900 / ratio),
+      width: W, height: H, size: "stretch", minWidth: minW, maxWidth: 1200, minHeight: Math.round(minW / ratio), maxHeight: Math.round(1200 / ratio),
       showCover: true, usePortrait: true, mobileScrollSupport: true, maxShadowOpacity: 0.4, flippingTime: L.reduce ? 1 : 800, showPageCorners: !phone(),
       disableFlipByClick: true   /* клік по фото відкриває фото, а гортають свайпом, стрілками й кутиками */
     });
     flip.loadFromHTML($$(".ab-pg", desk));
     if (/[?&]debug=1\b/.test(location.search)) window.__abFlip = flip;
 
-    var bar = $(".ab-bar"), num = $("#ab-num"), total = flip.getPageCount();
-    bar.hidden = false;
+    var num = $("#ab-num"), total = flip.getPageCount();
+    $("#ab-prev").hidden = $("#ab-next").hidden = false;
     function status() {
       var i = flip.getCurrentPageIndex();
       var two = flip.getOrientation() === "landscape";

@@ -288,7 +288,7 @@ html.contrast .gz-arrow{border:2px solid #000}
 .gz-btn:hover:not(:disabled){background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.4)}
 .gz-btn:disabled{opacity:.35;cursor:default}
 .gz-btn .ic{width:18px;height:18px}
-#gz-prev .ic,#ab-prev .ic{transform:rotate(180deg)}
+#gz-prev .ic{transform:rotate(180deg)}
 .gz-btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .gz-num{min-width:9.5em;text-align:center;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
 .gz-tools{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
@@ -320,12 +320,12 @@ html.contrast .gz-btn{border:2px solid #fff;background:#000}
 html.contrast :is(.gz-empty,.gz-text){border:2px solid #000}
 
 /* фотоальбом (albums-page.js): книга з обкладинкою, яку гортають; полароїди й надруковані фото */
-.ab-top{padding:28px 0 12px}
+.ab-top{padding:20px 0 10px}
 .ab-top .crumbs{color:var(--muted);font-size:13px;font-weight:600;margin-bottom:10px}
 .ab-top .crumbs a{color:var(--ink)}
-.ab-top h1{margin:0 0 6px;font-size:clamp(26px,3.4vw,40px)}
-.ab-wrap{padding-bottom:40px}
-.ab-desk{position:relative;padding:clamp(14px,3vw,36px);border-radius:28px;min-height:360px;display:flex;justify-content:center;align-items:center;
+.ab-top h1{margin:0 0 4px;font-size:clamp(24px,3vw,34px)}
+.ab-wrap{padding-bottom:40px;width:min(1500px,100% - 2*var(--gut))}   /* стіл ширший за звичайну колонку - книга більша */
+.ab-desk{position:relative;padding:clamp(14px,2.5vw,30px) clamp(56px,6vw,84px) 46px;border-radius:28px;min-height:360px;display:flex;justify-content:center;align-items:center;
   background:#cbb08a;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 2px,transparent 2px 9px),linear-gradient(180deg,#d4bb94,#b99b72)}
 .ab-book{margin:0 auto;width:100%;transition:transform .6s var(--ease)}
 /* закрита книга - по центру столу (бібліотека ставить обкладинку в праву половину розвороту) */
@@ -375,7 +375,21 @@ html.contrast :is(.gz-empty,.gz-text){border:2px solid #000}
 .ab-fly-t{margin:0 0 14px;font-family:"Caveat",var(--f-text);font-size:clamp(30px,4vw,48px);font-weight:700;line-height:1;color:#1f3a7a}
 .ab-fly-s{margin:0;font-family:"Caveat",var(--f-text);font-size:clamp(18px,2vw,24px);color:#5a5140}
 .ab-end{display:grid;place-items:center;font-family:"Caveat",var(--f-text);font-size:28px;color:#8a7b5a}
-.ab-bar{max-width:520px;margin:14px auto 0;padding:10px 12px;border-radius:16px;background:var(--brand);border:0}
+/* стрілки по боках столу */
+.ab-arrow{position:absolute;top:50%;z-index:5;display:grid;place-items:center;width:56px;height:56px;margin-top:-40px;border-radius:50%;border:0;cursor:pointer;
+  background:rgba(255,255,255,.92);color:#14274E;box-shadow:0 6px 18px rgba(60,45,10,.35);transition:background .2s,transform .15s,opacity .2s}
+.ab-arrow .ic{width:24px;height:24px}
+.ab-arrow.prev{left:clamp(6px,1.2vw,16px)}
+.ab-arrow.next{right:clamp(6px,1.2vw,16px)}
+.ab-arrow.prev .ic{transform:rotate(180deg)}
+.ab-arrow:hover{background:var(--accent)}
+.ab-arrow:active{transform:scale(.92)}
+.ab-arrow:disabled{opacity:0;pointer-events:none}
+.ab-arrow:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.ab-num{position:absolute;left:0;right:0;bottom:10px;margin:0;text-align:center;font-family:"Caveat",var(--f-text);font-size:22px;font-weight:700;color:#4a3b22}
+html.dark .ab-num{color:#e8d9b8}
+html.contrast .ab-arrow{border:2px solid #000;background:#fff}
+html.contrast .ab-num{color:#000}
 .ab-hint{margin:14px 0 0;text-align:center;color:var(--muted);font-size:14px}
 .ab-desk.no-flip .ab-book{display:grid;gap:16px}
 .ab-desk.no-flip .ab-pg{position:relative;aspect-ratio:560/760;max-width:560px;margin:0 auto}
@@ -384,7 +398,10 @@ html.contrast .ab-desk{background:#fff;border:2px solid #000}
 html.contrast .ph{transform:none}
 html.contrast .pol::before{display:none}
 @media (max-width:480px){
-  .ab-desk{border-radius:20px;padding:10px}
+  .ab-desk{border-radius:20px;padding:10px 10px 44px}
+  .ab-arrow{top:auto;bottom:6px;margin-top:0;width:40px;height:40px}
+  .ab-arrow .ic{width:18px;height:18px}
+  .ab-num{bottom:12px;font-size:19px}
   .ab-cover-in{gap:6px}
   .print .ph-img{border-width:3px}
   .cn{width:11px;height:11px}
