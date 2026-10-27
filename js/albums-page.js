@@ -116,8 +116,7 @@
       '<h1 id="h1">Фотоальбом ліцею</h1>' +
       '<p class="gz-meta" id="ab-count">Збираємо фото…</p>' +
     "</div></section>" +
-    '<div class="wrap ab-wrap"><div class="ab-desk" id="ab-desk"><div class="gz-skel-book" aria-hidden="true"><i></i><i></i></div></div>' +
-    '<p class="ab-hint">Нові фото з\'являються в альбомі самі: щойно їх додали на сайт.</p></div>';
+    '<div class="wrap ab-wrap"><div class="ab-desk" id="ab-desk"><div class="gz-skel-book" aria-hidden="true"><i></i><i></i></div></div></div>';
   document.title = "Фотоальбом · Підгородненський Ліцей №2";
 
   fromSite();

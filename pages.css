@@ -396,7 +396,6 @@ html.contrast .ab-end-t,html.contrast .ab-end-s,html.contrast .ab-end-heart{colo
 html.dark .ab-num{color:#e8d9b8}
 html.contrast .ab-arrow{border:2px solid #000;background:#fff}
 html.contrast .ab-num{color:#000}
-.ab-hint{margin:14px 0 0;text-align:center;color:var(--muted);font-size:14px}
 .ab-desk.no-flip .ab-book{display:grid;gap:16px}
 .ab-desk.no-flip .ab-pg{position:relative;aspect-ratio:8/7;max-width:800px;margin:0 auto}
 html.dark .ab-desk{background:#3b3226;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 2px,transparent 2px 9px),linear-gradient(180deg,#43392b,#2e271d)}
