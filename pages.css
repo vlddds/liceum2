@@ -80,6 +80,12 @@ html.dark .content a:hover{color:var(--accent)}
 /* заглушки фото - смугастий візерунок з макета */
 .t-ph,.gal-ph{background-color:var(--navy-soft);background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 14px,transparent 14px 28px);background-size:auto}
 
+/* адміністрація: на ПК усі в один ряд (--n ставить about-page.js), на планшеті 3, на телефоні 2 і 1 */
+.adm-grid{grid-template-columns:repeat(var(--n,4),minmax(0,1fr))}
+@media (max-width:960px){.adm-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:640px){.adm-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:420px){.adm-grid{grid-template-columns:1fr}}
+
 /* педколектив */
 /* освіта у вікні педагога: кожен заклад окремим пунктом */
 .t-edu{list-style:none;margin:4px 0 0;padding:0;display:grid}

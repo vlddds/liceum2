@@ -51,6 +51,7 @@
 
   /* адміністрація і графік прийому */
   $("#adm-count").textContent = A.admin.length + " " + plural(A.admin.length, "особа", "особи", "осіб");
+  $("#adm-grid").style.setProperty("--n", A.admin.length);   /* на ПК - уся адміністрація в один ряд */
   $("#adm-grid").innerHTML = A.admin.map(function (p, i) {
     var rec = (p.reception || []).map(function (r) {
       return '<li><span class="rec-d">' + DAYS_S[r.day] + "</span>" + esc(r.time) + "</li>";
