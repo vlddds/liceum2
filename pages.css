@@ -358,11 +358,13 @@ html.contrast :is(.gz-empty,.gz-text){border:2px solid #000}
 .ph-cap.xlong{height:25cqw;font-size:max(7.6cqw,10px)}
 .ph-cap.xlong>span{-webkit-line-clamp:4}
 /* надруковане фото: свої пропорції, тонка біла рамка, паперові куточки, підпис від руки нижче */
-.print{display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0;width:100%;height:100%;min-height:0}
-.ph-btn{display:flex;align-items:center;justify-content:center;flex:1;min-height:0;width:100%;padding:0;border:0;background:none;cursor:zoom-in}
+/* надруковане фото: найбільша рамка у пропорціях фото, що влазить у клітинку разом з підписом (--cap), по центру */
+.print{--cap:0px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0;width:100%;height:100%;min-height:0}
+.print.cap{--cap:max(30px,15cqh)}
+.print.longcap{--cap:max(46px,24cqh)}
+.ph-btn{display:block;flex:none;padding:0;border:0;background:none;cursor:zoom-in}
 /* розміри надрукованого фото - від клітинки (cqh/cqw клітинки): широке фото - низька широка клітинка, високе - вузька висока */
-.print .ph-img{position:relative;display:block;max-width:100%;max-height:100%;width:auto;height:100%;border:max(3px,min(2cqh,2.5cqw)) solid #fff;box-shadow:0 1px 2px rgba(0,0,0,.12),0 8px 18px -8px rgba(60,45,10,.45)}
-.print.wide .ph-img{height:auto;width:100%}
+.print .ph-img{position:relative;display:block;box-sizing:border-box;width:min(100cqw - 8px,(100cqh - var(--cap)) * var(--r,1.5));height:auto;aspect-ratio:var(--r,1.5);border:max(3px,min(2cqh,2.5cqw)) solid #fff;box-shadow:0 1px 2px rgba(0,0,0,.12),0 8px 18px -8px rgba(60,45,10,.45)}
 .cn{position:absolute;width:max(10px,min(5.5cqh,7cqw));height:max(10px,min(5.5cqh,7cqw));background:#2e2a24}
 .cn.tl{left:-6px;top:-6px;clip-path:polygon(0 0,100% 0,0 100%)}
 .cn.tr{right:-6px;top:-6px;clip-path:polygon(0 0,100% 0,100% 100%)}

@@ -128,8 +128,10 @@
       return '<button type="button" class="ph pol" data-k="' + p.k + '" style="--tilt:' + tilt + "deg;--r:" + pr.toFixed(3) + '" title="' + cap + '" aria-label="Відкрити фото: ' + cap + '">' +
         '<span class="ph-img">' + img + "</span>" + (p.caption ? '<span class="ph-cap' + (p.caption.length > 55 ? " long xlong" : p.caption.length > 28 ? " long" : "") + '" aria-hidden="true"><span>' + cap + "</span></span>" : "") + "</button>";
     }
-    return '<figure class="ph print ' + p.kind + '" style="--tilt:' + (tilt * 0.5).toFixed(2) + 'deg">' +
-      '<button type="button" class="ph-btn" data-k="' + p.k + '" aria-label="Відкрити фото: ' + cap + '"><span class="ph-img" style="aspect-ratio:' + p.ratio.toFixed(3) + '">' + img +
+    /* розмір рамки рахує CSS від клітинки й пропорцій (--r), з місцем під підпис (cap / longcap) */
+    var capCls = p.caption ? (p.caption.length > 45 ? " cap longcap" : " cap") : "";
+    return '<figure class="ph print ' + p.kind + capCls + '" style="--tilt:' + (tilt * 0.5).toFixed(2) + "deg;--r:" + p.ratio.toFixed(3) + '">' +
+      '<button type="button" class="ph-btn" data-k="' + p.k + '" aria-label="Відкрити фото: ' + cap + '"><span class="ph-img">' + img +
       '<i class="cn tl"></i><i class="cn tr"></i><i class="cn bl"></i><i class="cn br"></i></span></button>' +
       (p.caption ? '<figcaption class="ph-note' + (p.caption.length > 45 ? " long" : "") + '">' + cap + "</figcaption>" : "") + "</figure>";
   }
