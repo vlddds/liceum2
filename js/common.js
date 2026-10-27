@@ -208,9 +208,11 @@
     var s = (window.IMG_SIZES || {})[src];
     return s ? ' width="' + s[0] + '" height="' + s[1] + '"' : "";
   }
-  /* lazy=true - вантажимо, коли докрутили, "high" - перший слайд, вантажимо одразу */
+  /* lazy=true - вантажимо, коли докрутили, "high" - перший слайд, вантажимо одразу.
+     фото з Google Фото / Диска не віддаються чужому сайту, якщо браузер передає адресу сторінки - тому no-referrer */
   function photoHTML(p, i, lazy) {
     if (p && p.src) return '<img src="' + esc(p.src) + '" alt="' + esc(p.caption || "") + '"' + imgSize(p.src) +
+      (/^https?:/i.test(p.src) ? ' referrerpolicy="no-referrer"' : "") +
       (lazy === "high" ? ' fetchpriority="high" decoding="async"' : lazy ? ' loading="lazy" decoding="async"' : "") + ">";
     return '<span class="gal-ph">' + ICON("image") + (i >= 0 ? "<small>Фото " + (i + 1) + "</small>" : "") + "</span>";
   }
