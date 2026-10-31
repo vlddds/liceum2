@@ -17,10 +17,11 @@
 
   /* 1. збираємо фото */
   var seen = {}, photos = [];
-  function add(src, caption, from) {
+  /* look - вибір з колонки «Вигляд» таблиці: pol43 / pol169 (полароїд з рамкою цих пропорцій), print (звичайне фото) */
+  function add(src, caption, from, look) {
     if (!src || seen[src]) return;
     seen[src] = 1;
-    photos.push({ src: src, caption: caption || "", from: from });
+    photos.push({ src: src, caption: caption || "", from: from, look: look || "" });
   }
   function fromSite() {
     (D.photos || []).forEach(function (p) { if (p) add(p.src, p.caption, "home"); });
@@ -63,7 +64,9 @@
      крихітну мініатюру й дивимось на неї. Не вдалось дізнатись - надруковане широке: так нічого не обріжеться. */
   function shape(p, r) {
     p.ratio = r || 1.5;
-    p.kind = p.ratio >= 0.7 && p.ratio <= 1.45 ? "pol" : p.ratio > 1.45 ? "wide" : "tall";
+    if (p.look === "pol43" || p.look === "pol169") { p.kind = "pol"; p.polR = p.look === "pol169" ? 16 / 9 : 4 / 3; }
+    else if (p.look === "print") p.kind = p.ratio >= 1 ? "wide" : "tall";
+    else p.kind = p.ratio >= 0.7 && p.ratio <= 1.45 ? "pol" : p.ratio > 1.45 ? "wide" : "tall";
     return p;
   }
   function small(src) {
@@ -90,7 +93,8 @@
      Розставляємо по клітинках самі (а не як вирішить браузер): якщо наступне фото не влазить,
      беремо найближче, що влазить (до 8 фото вперед), щоб не лишалось порожніх місць. */
   var GRID = window.matchMedia("(max-width: 768px)").matches ? { cols: 2, rows: 2, W: 600, H: 800 } : { cols: 3, rows: 2, W: 800, H: 700 };
-  function span(p) { return p.kind === "wide" ? [1, 2] : p.kind === "tall" ? [2, 1] : [1, 1]; }   /* [рядки, колонки] */
+  /* [рядки, колонки]; широкий полароїд 16:9 - теж на дві клітинки поруч */
+  function span(p) { return p.kind === "wide" || p.polR > 1.5 ? [1, 2] : p.kind === "tall" ? [2, 1] : [1, 1]; }
   function place(pg, p) {
     var sz = span(p);
     for (var r = 0; r + sz[0] <= GRID.rows; r++) {
@@ -124,7 +128,7 @@
       (/^https?:/i.test(p.src) ? ' referrerpolicy="no-referrer"' : "") + ">";   /* Google Фото без цього не віддає картинку */
     if (p.kind === "pol") {
       /* рамку полароїда беремо одного з трьох форматів (3:4, квадрат, 4:3) - так полароїди в ряду однакові, а зайве по краях трохи обрізається */
-      var pr = [0.75, 1, 4 / 3].reduce(function (a, b) { return Math.abs(b - p.ratio) < Math.abs(a - p.ratio) ? b : a; });
+      var pr = p.polR || [0.75, 1, 4 / 3].reduce(function (a, b) { return Math.abs(b - p.ratio) < Math.abs(a - p.ratio) ? b : a; });
       return '<button type="button" class="ph pol" data-k="' + p.k + '" style="--tilt:' + tilt + "deg;--r:" + pr.toFixed(3) + '" title="' + cap + '" aria-label="Відкрити фото: ' + cap + '">' +
         '<span class="ph-img">' + img + "</span>" + (p.caption ? '<span class="ph-cap' + (p.caption.length > 55 ? " long xlong" : p.caption.length > 28 ? " long" : "") + '" aria-hidden="true"><span>' + cap + "</span></span>" : "") + "</button>";
     }
@@ -152,7 +156,7 @@
     /* спершу аркуш «Фото», далі дописи «Життя ліцею», далі фото з самого сайту */
     var site = photos.splice(0, photos.length), posts = res[1];
     seen = {};
-    res[0].forEach(function (p) { if (p && p.src && !NOT_PHOTO.test(p.src)) add(p.src, p.caption, "sheet"); });
+    res[0].forEach(function (p) { if (p && p.src && !NOT_PHOTO.test(p.src)) add(p.src, p.caption, "sheet", p.look); });
     posts.forEach(function (post) {
       (post.photos || []).forEach(function (u) { if (!NOT_PHOTO.test(u)) add(u, post.title, "life"); });
     });
