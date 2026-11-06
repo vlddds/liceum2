@@ -82,7 +82,7 @@ html.contrast .util button{border:2px solid #fff}
 .hd-search{display:grid;place-items:center;width:44px;height:44px;border-radius:var(--r-ctl);border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none;transition:border-color .2s,background .2s}
 .hd-search:hover{border-color:var(--ink)}
 .hd-search .ic{width:20px;height:20px}
-.hd-cta{display:inline-flex;align-items:center;text-decoration:none;background:var(--accent);color:var(--navy-deep);font-weight:800;font-size:14px;padding:12px 16px;border-radius:var(--r-ctl);white-space:nowrap;transition:background .2s,transform .15s}
+.hd-cta{display:inline-flex;align-items:center;text-decoration:none;background:var(--accent);color:var(--navy-deep);font-weight:800;font-size:14px;min-height:44px;box-sizing:border-box;padding:0 16px;border-radius:var(--r-ctl);white-space:nowrap;transition:background .2s,transform .15s}
 .hd-cta:hover{background:var(--accent-soft)}
 .site-header .menu-btn{margin-left:0;width:44px;height:44px;place-items:center;border-radius:var(--r-ctl);border:1px solid var(--line);color:var(--ink);background:var(--surface)}
 html.contrast .site-header{border-bottom:2px solid #000}
@@ -130,3 +130,20 @@ html.contrast .hd-cta{border:2px solid #000}
 html.contrast .site-foot{background:#000;color:#fff}
 html.contrast .site-foot a,html.contrast .foot-print{color:#fff;text-decoration:underline}
 @media print{.site-foot{display:none!important}}
+
+/* кнопки: єдині правила для всього сайту (шапка, головна й внутрішні сторінки) */
+.btn{box-sizing:border-box;min-height:48px;padding:11px 20px;border-radius:var(--r-ctl);font-size:.9375rem;font-weight:800;line-height:1.2;border-width:1.5px;border-color:var(--ink);color:var(--ink);background:var(--surface)}
+.btn:hover{background:var(--tint)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.primary:hover{background:var(--navy-deep);border-color:var(--navy-deep);box-shadow:none}
+/* на темних картках синя кнопка зливається з фоном - там вона жовта */
+.pr-test .btn.primary,.pr-banner .btn,.pr-banner .btn.primary{background:var(--accent);border-color:var(--accent);color:#0C1A36}
+.pr-test:hover .btn.primary,.pr-test .btn.primary:hover,.pr-banner .btn:hover,.pr-banner .btn.primary:hover{background:var(--accent-soft);border-color:var(--accent-soft);color:#0C1A36;box-shadow:none}
+html.dark .btn.primary{background:var(--accent);border-color:var(--accent);color:#0C1A36}
+html.dark .btn.primary:hover{background:var(--accent-soft);border-color:var(--accent-soft)}
+/* круглі кнопки зі стрілками */
+.gal-btn{width:44px;height:44px;border-color:var(--ink)}
+/* чипи-фільтри однакової висоти, в легендах і формах - менші */
+.chip{box-sizing:border-box;min-height:40px}
+.cal-legend .chip,.rv-set .chip{min-height:0}
+html.dark .chip[aria-pressed=true],html.dark .chip:has(input:checked){border-color:var(--brand-line)}

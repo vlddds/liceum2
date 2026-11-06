@@ -221,7 +221,7 @@
   function catBox() {
     var id = "cat-box-" + (++catBoxN), OR = "#E8A15C", BL = "#3A3440", LN = "#14274E", CR = "#FFFDF8", PK = "#F7B6C2";
     var S = ' stroke="' + LN + '" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"';
-    return '<span class="gal-ph cat-ph"><svg class="cat-box" viewBox="8 14 384 280" aria-hidden="true"><defs><clipPath id="' + id + '"><ellipse cx="200" cy="124" rx="88" ry="66"/></clipPath></defs>' +
+    return '<span class="gal-ph cat-ph"><svg class="cat-box" viewBox="40 14 320 280" aria-hidden="true"><defs><clipPath id="' + id + '"><ellipse cx="200" cy="124" rx="88" ry="66"/></clipPath></defs>' +
       /* задня стінка коробки */
       '<path d="M72 170 92 136h216l20 34z" fill="#C98F00"' + S + "/>" +
       /* вушка: руде й чорне */
@@ -238,8 +238,7 @@
       '<path d="M194 141h12q2 0 1 2l-5 5q-2 1-4 0l-5-5q-1-2 1-2z" fill="#EE8A9C"/>' +
       '<path d="M200 149q-1 8-10 7M200 149q1 8 10 7" fill="none" stroke="' + LN + '" stroke-width="3" stroke-linecap="round"/>' +
       '<path d="M112 136 84 130M112 148 84 152M288 136l28-6M288 148l28 4" stroke="' + LN + '" stroke-width="3" stroke-linecap="round" opacity=".55"/>' +
-      /* клапани й передня стінка */
-      '<path d="M72 170 28 150 14 182l46 18z" fill="#FFD558"' + S + '/><path d="M328 170l44-20 14 32-46 18z" fill="#FFD558"' + S + "/>" +
+      /* передня стінка */
       '<path d="M72 170h256l12 118H60z" fill="#F6B800"' + S + "/>" +
       /* лапки */
       '<path d="M128 170q0-13 18-13t18 13q0 14-18 14t-18-14z" fill="' + CR + '"' + S + '/><path d="M236 170q0-13 18-13t18 13q0 14-18 14t-18-14z" fill="' + CR + '"' + S + "/>" +
