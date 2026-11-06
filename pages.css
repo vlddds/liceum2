@@ -174,7 +174,7 @@ mark.ph{background:rgba(246,184,0,.18);color:inherit;border-bottom:1px dashed va
 .sp-pic.gal-item:hover{transform:none;box-shadow:none}
 .sp-ph{display:grid;place-items:center;align-content:center;gap:8px;color:#fff;background-color:var(--navy-soft);
   background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 14px,transparent 14px 28px)}
-.sp-ph .gal-ph{position:absolute;inset:0;background:none}
+.sp-ph .gal-ph{position:absolute;inset:0}
 .sp-n{position:absolute;right:12px;bottom:12px;display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:var(--r-pill);background:rgba(12,26,54,.75);color:#fff;font-size:13px;font-weight:700}
 .sp-n .ic{width:16px;height:16px}
 .sp-txt{display:flex;flex-direction:column;gap:10px;padding:20px 22px 22px;flex:1}

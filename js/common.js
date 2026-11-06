@@ -214,37 +214,34 @@
      id кліпу в кожної свій: якщо перша така картка схована фільтром, чужий кліп не спрацював би */
   var catBoxN = 0;
   function catBox() {
-    var id = "cat-box-" + (++catBoxN), OR = "#d9894a", BL = "#2b2522", LN = "#14274E", W = "#A9B4C8";
-    return '<span class="gal-ph"><svg class="cat-box" viewBox="0 0 400 300" aria-hidden="true"><defs><clipPath id="' + id + '"><ellipse cx="200" cy="112" rx="86" ry="70"/></clipPath></defs>' +
-      /* задній клапан і нутро коробки */
-      '<path d="M84 146h232l-20-30H104z" fill="#D9A400" stroke="' + LN + '" stroke-width="3" stroke-linejoin="round"/>' +
-      '<path d="M56 174h288l-28-28H84z" fill="#0C1A36" stroke="' + LN + '" stroke-width="3" stroke-linejoin="round"/>' +
-      /* вушка */
-      '<path d="M130 76 122 14l58 36z" fill="' + OR + '" stroke="' + LN + '" stroke-width="3" stroke-linejoin="round"/><path d="M138 58 134 30l26 17z" fill="#ffb3c7"/>' +
-      '<path d="M270 76l8-62-58 36z" fill="' + BL + '" stroke="' + LN + '" stroke-width="3" stroke-linejoin="round"/><path d="M262 58l4-28-26 17z" fill="#ffb3c7"/>' +
-      /* голова: біла, чорні плями на лобі, руді біля очей, біла смуга посередині */
-      '<ellipse cx="200" cy="112" rx="86" ry="70" fill="#fff"/><g clip-path="url(#' + id + ')">' +
-      '<ellipse cx="148" cy="58" rx="46" ry="30" fill="' + BL + '"/><ellipse cx="252" cy="58" rx="46" ry="30" fill="' + BL + '"/>' +
-      '<ellipse cx="146" cy="104" rx="38" ry="24" fill="' + OR + '"/><ellipse cx="254" cy="104" rx="38" ry="24" fill="' + OR + '"/>' +
-      '<ellipse cx="170" cy="130" rx="13" ry="8" fill="' + OR + '"/><ellipse cx="230" cy="130" rx="13" ry="8" fill="' + OR + '"/>' +
-      '<path d="M188 36h24l8 78q-20 14-40 0z" fill="#fff"/><ellipse cx="200" cy="58" rx="7" ry="17" fill="' + OR + '"/></g>' +
-      '<ellipse cx="200" cy="112" rx="86" ry="70" fill="none" stroke="' + LN + '" stroke-width="3"/>' +
-      /* очі заплющені, носик, ротик */
-      '<path d="M140 106q15 13 30 0M230 106q15 13 30 0" fill="none" stroke="' + LN + '" stroke-width="4.5" stroke-linecap="round"/>' +
-      '<path d="M192 127h16q2 0-1 3l-6 7q-1 1-2 0l-6-7q-3-3-1-3z" fill="#ef8f9f"/>' +
-      '<path d="M200 138q-2 11-17 7M200 138q2 11 17 7" fill="none" stroke="' + LN + '" stroke-width="2.5" stroke-linecap="round"/>' +
-      /* довгі вуса */
-      '<path d="M150 134Q104 118 66 128M148 142Q100 140 62 154M152 150Q112 158 82 182M250 134q46-16 84-6M252 142q48-2 86 12M248 150q40 8 70 32" fill="none" stroke="' + W + '" stroke-width="2" stroke-linecap="round"/>' +
-      /* бокові клапани і передня стінка */
-      '<path d="M56 174 84 146 22 128 4 158z" fill="#F9CD3F" stroke="' + LN + '" stroke-width="3" stroke-linejoin="round"/>' +
-      '<path d="M344 174 316 146l62-18 18 30z" fill="#F9CD3F" stroke="' + LN + '" stroke-width="3" stroke-linejoin="round"/>' +
-      '<path d="M56 174h288l-14 114H70z" fill="#F6B800" stroke="' + LN + '" stroke-width="3" stroke-linejoin="round"/>' +
-      /* лапки на краю коробки */
-      '<ellipse cx="146" cy="176" rx="24" ry="14" fill="#fff" stroke="' + LN + '" stroke-width="3"/><ellipse cx="254" cy="176" rx="24" ry="14" fill="' + OR + '" stroke="' + LN + '" stroke-width="3"/>' +
-      '<path d="M137 181v8M155 181v8M245 181v8M263 181v8" stroke="' + LN + '" stroke-width="2.5" stroke-linecap="round"/>' +
+    var id = "cat-box-" + (++catBoxN), OR = "#E8A15C", BL = "#3A3440", LN = "#14274E", CR = "#FFFDF8", PK = "#F7B6C2";
+    var S = ' stroke="' + LN + '" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"';
+    return '<span class="gal-ph cat-ph"><svg class="cat-box" viewBox="8 14 384 280" aria-hidden="true"><defs><clipPath id="' + id + '"><ellipse cx="200" cy="124" rx="88" ry="66"/></clipPath></defs>' +
+      /* задня стінка коробки */
+      '<path d="M72 170 92 136h216l20 34z" fill="#C98F00"' + S + "/>" +
+      /* вушка: руде й чорне */
+      '<path d="M128 92 118 40q-2-12 9-7l47 26z" fill="' + OR + '"' + S + '/><path d="M134 72l-6-24 25 15z" fill="' + PK + '"/>' +
+      '<path d="M272 92l10-52q2-12-9-7l-47 26z" fill="' + BL + '"' + S + '/><path d="M266 72l6-24-25 15z" fill="' + PK + '"/>' +
+      /* голова з плямами */
+      '<ellipse cx="200" cy="124" rx="88" ry="66" fill="' + CR + '"/><g clip-path="url(#' + id + ')">' +
+      '<path d="M100 50h74q6 34-16 52-24 18-64 8z" fill="' + OR + '"/><path d="M300 50h-72q-8 30 12 48 22 18 66 10z" fill="' + BL + '"/>' +
+      '<ellipse cx="198" cy="66" rx="10" ry="14" fill="' + OR + '"/></g>' +
+      '<ellipse cx="200" cy="124" rx="88" ry="66" fill="none"' + S + "/>" +
+      /* сплячі очі, щічки, носик, ротик, вуса */
+      '<path d="M146 130q13 11 26 0M228 130q13 11 26 0" fill="none" stroke="' + LN + '" stroke-width="4.5" stroke-linecap="round"/>' +
+      '<ellipse cx="136" cy="150" rx="13" ry="8" fill="' + PK + '" opacity=".75"/><ellipse cx="264" cy="150" rx="13" ry="8" fill="' + PK + '" opacity=".75"/>' +
+      '<path d="M194 141h12q2 0 1 2l-5 5q-2 1-4 0l-5-5q-1-2 1-2z" fill="#EE8A9C"/>' +
+      '<path d="M200 149q-1 8-10 7M200 149q1 8 10 7" fill="none" stroke="' + LN + '" stroke-width="3" stroke-linecap="round"/>' +
+      '<path d="M112 136 84 130M112 148 84 152M288 136l28-6M288 148l28 4" stroke="' + LN + '" stroke-width="3" stroke-linecap="round" opacity=".55"/>' +
+      /* клапани й передня стінка */
+      '<path d="M72 170 28 150 14 182l46 18z" fill="#FFD558"' + S + '/><path d="M328 170l44-20 14 32-46 18z" fill="#FFD558"' + S + "/>" +
+      '<path d="M72 170h256l12 118H60z" fill="#F6B800"' + S + "/>" +
+      /* лапки */
+      '<path d="M128 170q0-13 18-13t18 13q0 14-18 14t-18-14z" fill="' + CR + '"' + S + '/><path d="M236 170q0-13 18-13t18 13q0 14-18 14t-18-14z" fill="' + CR + '"' + S + "/>" +
+      '<path d="M141 176v6M151 176v6M249 176v6M259 176v6" stroke="' + LN + '" stroke-width="3" stroke-linecap="round"/>' +
       /* хр-р-р і напис */
-      '<g class="cat-z" fill="#F9CD3F"><text x="300" y="72" font-size="20">z</text><text x="320" y="50" font-size="27">z</text><text x="346" y="24" font-size="34">z</text></g>' +
-      '<g class="cat-t" fill="' + LN + '" text-anchor="middle"><text x="200" y="232" font-size="23">Тут скоро буде фото</text><text x="200" y="262" font-size="17" class="cat-s">а поки що тут я</text></g>' +
+      '<g fill="' + LN + '"><text x="304" y="74" font-size="20">z</text><text x="324" y="52" font-size="27">z</text><text x="350" y="30" font-size="34">z</text></g>' +
+      '<g fill="' + LN + '" text-anchor="middle"><text x="200" y="234" font-size="23">Тут скоро буде фото</text><text x="200" y="264" font-size="17" class="cat-s">а поки що тут я</text></g>' +
       "</svg></span>";
   }
   function photoHTML(p, i, lazy) {
