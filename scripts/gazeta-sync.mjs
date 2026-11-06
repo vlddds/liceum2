@@ -103,7 +103,8 @@ export function plan(files, issues) {
     const old = byId.get(meta.id);
     const job = { file: f, meta, cover, old };
     if (!old) out.publish.push(job);
-    else if (old.driveFileId !== f.id || (f.modified && old.driveModified !== f.modified) ||
+    /* файл просто перейменували (виправили назву випуску) - вміст той самий, але на сайті має бути нова назва */
+    else if (old.title !== meta.title || old.driveFileId !== f.id || (f.modified && old.driveModified !== f.modified) ||
              (cover ? cover.id + "@" + (cover.modified || "") : "") !== (old.coverFile || "")) out.update.push(job);
     else out.same.push(job);
   }

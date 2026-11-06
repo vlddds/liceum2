@@ -106,6 +106,12 @@ test("план: оновлення новим файлом, новою верс�
   assert.ok(plan(newCover, issues).update.some((x) => x.meta.id === "2026-11-1"));
 });
 
+test("план: файл перейменували - випуск оновлюється", () => {
+  const issues = [{ id: "2026-11-1", driveFileId: "A", driveModified: "2026-11-02T10:00:00.000Z", number: 1, title: "Троє що будують" }];
+  const p = plan([{ id: "A", name: "2026-11 №1 Троє, що будують.pdf", modified: "2026-11-02T10:00:00.000Z" }], issues);
+  assert.deepEqual(p.update.map((x) => x.meta.title), ["Троє, що будують"]);
+});
+
 test("план: два файли на один номер - беремо новіший", () => {
   const p = plan([
     { id: "X1", name: "2026-11 №1 Перший.pdf", modified: "2026-11-01T10:00:00Z" },
