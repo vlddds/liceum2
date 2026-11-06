@@ -275,7 +275,7 @@ window.SITE_DATA = (function () {
     { src: "img/gallery/08-flag.jpg", caption: "З державним прапором України" },
     { src: "img/gallery/10-first.jpg", caption: "Урок у початковій школі" },
     { src: "img/gallery/11-big.jpg", caption: "Шаную воїнів, біжу за героїв України" },
-    { src: "img/gallery/12-meet.jpg", caption: "Зустріч що об`єднує серця" },
+    { src: "img/gallery/12-meet.jpg", caption: "Зустріч, що об'єднує серця" },
     { src: "img/gallery/09-library.jpg", caption: "Шкільна бібліотека" }
   ];
 

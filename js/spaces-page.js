@@ -21,7 +21,7 @@
       ? '<button type="button" class="sp-pic gal-item" data-k="' + i + '" aria-label="Переглянути фото: ' + esc(s.title) + ", " + n + " " + plural(n, "фото", "фото", "фото") + '">' +
           L.photoHTML({ src: ph[0], caption: s.title }, i, true) +
           (n > 1 ? '<span class="sp-n">' + ICON("image") + n + "</span>" : "") + "</button>"
-      : '<div class="sp-pic sp-ph" aria-hidden="true">' + ICON("image") + "<small>Фото скоро</small></div>";
+      : '<div class="sp-pic sp-ph" aria-hidden="true">' + L.photoHTML(null) + "</div>";
     return '<li class="sp-card" data-tags="' + esc((s.tags || []).join(" ")) + '">' + pic +
       '<div class="sp-txt"><h2>' + esc(s.title) + "</h2>" +
         (s.description ? "<p>" + esc(s.description) + "</p>" : "") +

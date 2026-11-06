@@ -334,7 +334,7 @@
   });
 
   /* фотокарусель і перегляд на весь екран */
-  var photos = D.photos || [], track = $("#gal-track"), dots = $("#gal-dots"), gal = $("#gal");
+  var photos = D.photos || [], track = $("#gal-track"), count = $("#gal-count"), bar = $("#gal-bar"), gal = $("#gal");
   if (!photos.length) { $("#hero-gal").hidden = true; $("#gallery").hidden = true; return; }
 
   var photoHTML = L.photoHTML, slides = [], cur = 0;
@@ -352,9 +352,6 @@
         '<button type="button" class="gal-item" data-k="' + i + '" aria-label="Відкрити фото: ' + esc(p.caption || "фото " + (i + 1)) + '">' +
         blur(p.src) + photoHTML(p, i, i === 0 ? "high" : true) + (p.caption ? '<span class="gal-cap">' + esc(p.caption) + "</span>" : "") + "</button></li>";
     }).join("");
-    dots.innerHTML = photos.map(function (p, i) {
-      return '<button type="button" data-k="' + i + '" aria-label="Фото ' + (i + 1) + '"></button>';
-    }).join("");
     slides = $$(".gal-slide", track);
     grid();
   }
@@ -366,9 +363,10 @@
     if (x + track.clientWidth >= track.scrollWidth - 4) best = slides.length - 1;
     return best;
   }
-  function paintDots() {
+  function paintPos() {
     cur = nearest();
-    $$("button", dots).forEach(function (b, i) { b.setAttribute("aria-current", i === cur ? "true" : "false"); });
+    count.textContent = (cur + 1) + " / " + slides.length;
+    bar.style.width = (cur + 1) / slides.length * 100 + "%";
     $("#gal-prev").disabled = track.scrollLeft <= 2;
     $("#gal-next").disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
   }
@@ -379,18 +377,17 @@
     /* деякі браузери не вміють плавно скролити, тоді просто стрибаємо */
     if (!reduce) setTimeout(function () {
       if (Math.abs(track.scrollLeft - target) > 2 && Math.abs(track.scrollLeft - start) < 2) track.scrollTo({ left: target, behavior: "auto" });
-      paintDots();
+      paintPos();
     }, 700);
-    if (reduce) paintDots();
+    if (reduce) paintPos();
   }
   var raf = 0;
-  track.addEventListener("scroll", function () { cancelAnimationFrame(raf); raf = requestAnimationFrame(paintDots); }, { passive: true });
-  window.addEventListener("resize", paintDots);
+  track.addEventListener("scroll", function () { cancelAnimationFrame(raf); raf = requestAnimationFrame(paintPos); }, { passive: true });
+  window.addEventListener("resize", paintPos);
   $("#gal-prev").addEventListener("click", function () { go(nearest() - 1); });
   $("#gal-next").addEventListener("click", function () { go(nearest() + 1); });
-  dots.addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) go(+b.getAttribute("data-k")); });
   render();
-  paintDots();
+  paintPos();
 
   /* аркуш «Фото» в гугл-таблиці сайту (той самий, з якого бере фотоальбом): ці фото - першими в каруселі.
      Сторінка таблиці не чекає: спершу показуємо фото сайту, а свіжі додаємо, щойно прийдуть (кеш 2 хв) */
@@ -402,7 +399,7 @@
     var got = cached && Date.now() - cached.t < 2 * 60 * 1000 ? Promise.resolve(cached.list) :
       Promise.race([
         fetch(feed + (feed.indexOf("?") > -1 ? "&" : "?") + "action=photos").then(function (r) { if (!r.ok) throw 0; return r.json(); }),
-        new Promise(function (_, no) { setTimeout(no, 8000); })
+        new Promise(function (_, no) { setTimeout(no, 20000); })   /* таблиця після простою прокидається довго */
       ]).then(function (list) {
         if (!Array.isArray(list)) throw 0;
         try { sessionStorage.setItem("l2photos", JSON.stringify({ t: Date.now(), list: list })); } catch (e) {}
@@ -415,7 +412,7 @@
       photos = fresh.concat(photos.filter(function (p) { return !seen[p.src]; }));
       render();
       track.scrollLeft = 0;
-      paintDots();
+      paintPos();
     }).catch(function () {});
   })();
 

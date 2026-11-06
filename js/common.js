@@ -210,11 +210,48 @@
   }
   /* lazy=true - вантажимо, коли докрутили, "high" - перший слайд, вантажимо одразу.
      фото з Google Фото / Диска не віддаються чужому сайту, якщо браузер передає адресу сторінки - тому no-referrer */
+  /* заглушка «немає фото»: наша кішка спить у коробці. Малюнок вбудований, щоб напис був шрифтом сайту.
+     id кліпу в кожної свій: якщо перша така картка схована фільтром, чужий кліп не спрацював би */
+  var catBoxN = 0;
+  function catBox() {
+    var id = "cat-box-" + (++catBoxN), OR = "#d9894a", BL = "#2b2522", LN = "#14274E", W = "#A9B4C8";
+    return '<span class="gal-ph"><svg class="cat-box" viewBox="0 0 400 300" aria-hidden="true"><defs><clipPath id="' + id + '"><ellipse cx="200" cy="112" rx="86" ry="70"/></clipPath></defs>' +
+      /* задній клапан і нутро коробки */
+      '<path d="M84 146h232l-20-30H104z" fill="#D9A400" stroke="' + LN + '" stroke-width="3" stroke-linejoin="round"/>' +
+      '<path d="M56 174h288l-28-28H84z" fill="#0C1A36" stroke="' + LN + '" stroke-width="3" stroke-linejoin="round"/>' +
+      /* вушка */
+      '<path d="M130 76 122 14l58 36z" fill="' + OR + '" stroke="' + LN + '" stroke-width="3" stroke-linejoin="round"/><path d="M138 58 134 30l26 17z" fill="#ffb3c7"/>' +
+      '<path d="M270 76l8-62-58 36z" fill="' + BL + '" stroke="' + LN + '" stroke-width="3" stroke-linejoin="round"/><path d="M262 58l4-28-26 17z" fill="#ffb3c7"/>' +
+      /* голова: біла, чорні плями на лобі, руді біля очей, біла смуга посередині */
+      '<ellipse cx="200" cy="112" rx="86" ry="70" fill="#fff"/><g clip-path="url(#' + id + ')">' +
+      '<ellipse cx="148" cy="58" rx="46" ry="30" fill="' + BL + '"/><ellipse cx="252" cy="58" rx="46" ry="30" fill="' + BL + '"/>' +
+      '<ellipse cx="146" cy="104" rx="38" ry="24" fill="' + OR + '"/><ellipse cx="254" cy="104" rx="38" ry="24" fill="' + OR + '"/>' +
+      '<ellipse cx="170" cy="130" rx="13" ry="8" fill="' + OR + '"/><ellipse cx="230" cy="130" rx="13" ry="8" fill="' + OR + '"/>' +
+      '<path d="M188 36h24l8 78q-20 14-40 0z" fill="#fff"/><ellipse cx="200" cy="58" rx="7" ry="17" fill="' + OR + '"/></g>' +
+      '<ellipse cx="200" cy="112" rx="86" ry="70" fill="none" stroke="' + LN + '" stroke-width="3"/>' +
+      /* очі заплющені, носик, ротик */
+      '<path d="M140 106q15 13 30 0M230 106q15 13 30 0" fill="none" stroke="' + LN + '" stroke-width="4.5" stroke-linecap="round"/>' +
+      '<path d="M192 127h16q2 0-1 3l-6 7q-1 1-2 0l-6-7q-3-3-1-3z" fill="#ef8f9f"/>' +
+      '<path d="M200 138q-2 11-17 7M200 138q2 11 17 7" fill="none" stroke="' + LN + '" stroke-width="2.5" stroke-linecap="round"/>' +
+      /* довгі вуса */
+      '<path d="M150 134Q104 118 66 128M148 142Q100 140 62 154M152 150Q112 158 82 182M250 134q46-16 84-6M252 142q48-2 86 12M248 150q40 8 70 32" fill="none" stroke="' + W + '" stroke-width="2" stroke-linecap="round"/>' +
+      /* бокові клапани і передня стінка */
+      '<path d="M56 174 84 146 22 128 4 158z" fill="#F9CD3F" stroke="' + LN + '" stroke-width="3" stroke-linejoin="round"/>' +
+      '<path d="M344 174 316 146l62-18 18 30z" fill="#F9CD3F" stroke="' + LN + '" stroke-width="3" stroke-linejoin="round"/>' +
+      '<path d="M56 174h288l-14 114H70z" fill="#F6B800" stroke="' + LN + '" stroke-width="3" stroke-linejoin="round"/>' +
+      /* лапки на краю коробки */
+      '<ellipse cx="146" cy="176" rx="24" ry="14" fill="#fff" stroke="' + LN + '" stroke-width="3"/><ellipse cx="254" cy="176" rx="24" ry="14" fill="' + OR + '" stroke="' + LN + '" stroke-width="3"/>' +
+      '<path d="M137 181v8M155 181v8M245 181v8M263 181v8" stroke="' + LN + '" stroke-width="2.5" stroke-linecap="round"/>' +
+      /* хр-р-р і напис */
+      '<g class="cat-z" fill="#F9CD3F"><text x="300" y="72" font-size="20">z</text><text x="320" y="50" font-size="27">z</text><text x="346" y="24" font-size="34">z</text></g>' +
+      '<g class="cat-t" fill="' + LN + '" text-anchor="middle"><text x="200" y="232" font-size="23">Тут скоро буде фото</text><text x="200" y="262" font-size="17" class="cat-s">а поки що тут я</text></g>' +
+      "</svg></span>";
+  }
   function photoHTML(p, i, lazy) {
     if (p && p.src) return '<img src="' + esc(p.src) + '" alt="' + esc(p.caption || "") + '"' + imgSize(p.src) +
       (/^https?:/i.test(p.src) ? ' referrerpolicy="no-referrer"' : "") +
       (lazy === "high" ? ' fetchpriority="high" decoding="async"' : lazy ? ' loading="lazy" decoding="async"' : "") + ">";
-    return '<span class="gal-ph">' + ICON("image") + (i >= 0 ? "<small>Фото " + (i + 1) + "</small>" : "") + "</span>";
+    return catBox();
   }
   /* lazyload: фото вантажаться, коли до них докрутили, і плавно проявляються
      (поки вантажиться - мерехтить фон, див. style.css) */
@@ -232,7 +269,9 @@
   /* фото не завантажилось - показуємо заглушку замість битої картинки */
   document.addEventListener("error", function (e) {
     var img = e.target;
-    if (img.tagName === "IMG" && img.closest(".gal-item, .lb-img, .ev-cover")) img.outerHTML = photoHTML(null, -1);
+    if (img.tagName !== "IMG") return;
+    if (img.classList.contains("gal-blur")) { img.remove(); return; }
+    if (img.closest(".gal-item, .lb-img, .ev-cover")) img.outerHTML = photoHTML(null, -1);
   }, true);
 
   var lb = null, lbItems = [], lbAt = 0, lbDone = null;
@@ -545,21 +584,21 @@
       C.tx = C.x; C.ty = C.y;
       place(C.x, C.y, 0);
       if (lx != null) laser(true, lx, ly);
-      setTimeout(function () { say("Мяу!", 2000); }, pop && !reduce ? 550 : 0);
+      setTimeout(function () { say("Няв!", 2000); }, pop && !reduce ? 550 : 0);
       el.addEventListener("click", function (e) {
         if (!C || C.leaving) return;
         if (C.tap) {   /* телефон: перший тап - лазер, два тапи підряд - йде */
           var now = Date.now();
           if (now - C.lastTap < 600) {
-            say("Мяу!", 1500); leave();
+            say("Няв!", 1500); leave();
             try { sessionStorage.setItem(OFF, "1"); } catch (e) {}
-          } else if (!C.laser) { laser(true, e.clientX, e.clientY); say("Мяу!", 2000); }
-          else say("Мяу!", 2000);
+          } else if (!C.laser) { laser(true, e.clientX, e.clientY); say("Няв!", 2000); }
+          else say("Няв!", 2000);
           C.lastTap = now;
           return;
         }
         laser(!C.laser, e.clientX, e.clientY);
-        say("Мяу!", 2000);
+        say("Няв!", 2000);
       });
       if (pop && !reduce) setTimeout(function () { if (C) { C.el.classList.remove("pop"); hop(); } }, 520); else hop();
     }

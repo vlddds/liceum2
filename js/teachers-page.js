@@ -72,13 +72,9 @@
   });
 
   /* 4. картки */
-  function initials(name) {
-    var w = name.trim().split(/\s+/);
-    return (w[0].charAt(0) + (w[1] ? w[1].charAt(0) : "")).toUpperCase();
-  }
   function photo(p) {
     if (p.photo) return '<img src="' + esc(p.photo) + '" alt=""' + L.imgSize(p.photo) + ' loading="lazy" decoding="async">';
-    return p.name.trim() ? '<span class="t-ini">' + esc(initials(p.name)) + "</span>" : ICON("user");
+    return L.photoHTML(null);
   }
   function card(p, k, withGroup) {
     var named = !!p.name.trim();
@@ -101,7 +97,7 @@
   document.addEventListener("error", function (e) {
     var img = e.target;
     if (img.tagName === "IMG" && img.parentNode && img.parentNode.classList.contains("t-ph")) {
-      img.parentNode.innerHTML = ICON("user");
+      img.parentNode.innerHTML = L.photoHTML(null);
     }
   }, true);
 

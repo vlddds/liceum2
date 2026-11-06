@@ -12,10 +12,6 @@
     var w = n.trim().split(/\s+/);
     return w[0] + (w[1] ? " " + w[1].charAt(0) + "." : "") + (w[2] ? " " + w[2].charAt(0) + "." : "");
   }
-  function initials(n) {
-    var w = n.trim().split(/\s+/);
-    return (w[0].charAt(0) + (w[1] ? w[1].charAt(0) : "")).toUpperCase();
-  }
   function paras(t) { return String(t || "").split(/\n+/).filter(Boolean).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join(""); }
 
   /* 1. історія */
@@ -59,7 +55,7 @@
     var contacts = (p.phone ? '<a href="tel:' + esc(p.phone.replace(/[^\d+]/g, "")) + '">' + ICON("phone") + esc(p.phone) + "</a>" : "") +
       (p.email ? '<a href="mailto:' + esc(p.email) + '">' + ICON("mail") + esc(p.email) + "</a>" : "");
     return '<li class="adm' + (i === 0 ? " adm-lead" : "") + '">' +
-      '<span class="t-ph">' + (p.photo ? '<img src="' + esc(p.photo) + '" alt=""' + L.imgSize(p.photo) + ' loading="lazy" decoding="async">' : '<span class="t-ini">' + esc(initials(p.name)) + "</span>") + "</span>" +
+      '<span class="t-ph">' + (p.photo ? '<img src="' + esc(p.photo) + '" alt=""' + L.imgSize(p.photo) + ' loading="lazy" decoding="async">' : L.photoHTML(null)) + "</span>" +
       '<div class="adm-body"><span class="adm-pos">' + esc(p.position) + "</span><h4>" + esc(p.name) + "</h4>" +
       (p.subject ? '<span class="adm-sub">' + esc(p.subject) + "</span>" : "") +
       (contacts ? '<div class="adm-contacts">' + contacts + "</div>" : "") +

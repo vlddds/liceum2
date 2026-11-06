@@ -86,15 +86,16 @@
 .h-gal .gal-cap{padding:48px 20px 20px;max-width:100%;font-size:14px}
 .h-gal .gal-item img{position:relative;object-fit:contain}
 .h-gal .gal-blur{position:absolute;inset:-24px;background-size:cover;background-position:center;filter:blur(18px) brightness(.7)}
-.h-gal img.gal-blur{width:calc(100% + 48px);height:calc(100% + 48px);max-width:none;object-fit:cover}
+.h-gal .gal-item img.gal-blur{position:absolute;width:calc(100% + 48px);height:calc(100% + 48px);max-width:none;object-fit:cover}
 .h-gal-nav{position:absolute;top:20px;right:20px;display:flex;gap:8px;z-index:2}
 .h-gal .gal-btn{width:44px;height:44px;border:0;background:rgba(255,255,255,.92);color:#14274E}
 .h-gal .gal-btn:hover:not(:disabled){background:#fff;color:#14274E}
 .h-gal .gal-btn:disabled{opacity:.5}
-/* крапки вгорі ліворуч, навпроти стрілок, щоб не налазили на підпис */
-.h-gal .gal-dots{position:absolute;left:20px;top:32px;margin:0;z-index:2;flex-wrap:wrap;max-width:calc(100% - 140px);justify-content:flex-start;padding:6px 8px;border-radius:999px;background:rgba(12,26,54,.45)}
-.h-gal .gal-dots button{background:rgba(255,255,255,.5);height:8px;width:8px}
-.h-gal .gal-dots button[aria-current=true]{background:#fff;width:22px}
+/* котре фото: лічильник біля стрілок і тонка смужка по нижньому краю */
+.gal-count{display:grid;place-items:center;min-width:64px;height:44px;padding:0 14px;border-radius:22px;background:rgba(255,255,255,.92);color:#14274E;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.gal-bar{position:absolute;left:0;right:0;bottom:0;height:4px;background:rgba(255,255,255,.28);z-index:2;pointer-events:none}
+.gal-bar span{display:block;width:0;height:100%;border-radius:0 2px 2px 0;background:#fff;transition:width .3s var(--ease)}
+html.contrast .gal-count{background:#000;color:#fff;border:2px solid #fff}
 /* що зараз: урок чи перерва */
 .h-now{background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:12px;min-height:220px}
 .h-now-l{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--ok-text)}
@@ -422,9 +423,6 @@ html.contrast .h-gal{border:2px solid #000}
   .h-hero-main .hero-sub{font-size:16px}
   .h-gal{border-radius:24px}
   .h-gal-nav{top:12px;right:12px}
-  .h-gal .gal-dots{left:12px;top:22px;max-width:calc(100% - 124px);gap:5px}
-  .h-gal .gal-dots button{width:6px;height:6px}
-  .h-gal .gal-dots button[aria-current=true]{width:16px}
   .h-gal .gal-cap{max-width:100%}
   .h-now,.h-menu{border-radius:22px;padding:16px;min-height:0;gap:8px}
   .h-now-big{font-size:20px}

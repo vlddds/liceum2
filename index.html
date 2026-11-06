@@ -25,9 +25,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20261023-11">
+<link rel="stylesheet" href="style.css?v=20261106-4">
 <link rel="stylesheet" href="theme.css?v=20261023-11">
-<link rel="stylesheet" href="home.css?v=20261027-1">
+<link rel="stylesheet" href="home.css?v=20261106-4">
 </head>
 <body class="home">
 
@@ -165,10 +165,11 @@
         <div class="h-gal" id="hero-gal" aria-roledescription="карусель" aria-label="Фото ліцею">
           <div class="gal" id="gal"><ul class="gal-track" id="gal-track"></ul></div>
           <div class="h-gal-nav">
+            <span class="gal-count" id="gal-count"></span>
             <button class="gal-btn prev" id="gal-prev" type="button" aria-label="Попереднє фото"><svg class="ic" aria-hidden="true"><use href="#i-chev"/></svg></button>
             <button class="gal-btn" id="gal-next" type="button" aria-label="Наступне фото"><svg class="ic" aria-hidden="true"><use href="#i-chev"/></svg></button>
           </div>
-          <div class="gal-dots" id="gal-dots"></div>
+          <div class="gal-bar" aria-hidden="true"><span id="gal-bar"></span></div>
         </div>
         <div class="h-now" id="now" aria-live="polite"></div>
         <a class="h-menu" id="menu-today" href="menu.html">
@@ -410,7 +411,7 @@
             </div>
             <p class="err" id="e-msg" aria-live="polite"></p>
           </div>
-          <p class="form-note">Лист відкриється у вашій поштовій програмі — перевірте його перед відправкою.</p>
+          <p class="form-note">Лист відкриється у вашій поштовій програмі — перевірте його перед надсиланням.</p>
           <div class="h-msg-go">
             <button class="btn primary" type="submit"><span class="lbl">Надіслати</span><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg></button>
             <a id="msg-mail" href="#">або напишіть на пошту ліцею</a>
@@ -506,25 +507,25 @@
 
 <button class="totop" id="totop" type="button" aria-label="Нагору"><svg class="ic"><use href="#i-up"/></svg></button>
 
-<script src="js/data.js?v=20261027-1" defer></script>
+<script src="js/data.js?v=20261106-4" defer></script>
 <script src="js/img-sizes.js?v=20261027-1" defer></script>
-<script src="js/common.js?v=20261027-1" defer></script>
+<script src="js/common.js?v=20261106-4" defer></script>
 <!-- для пошуку по сайту -->
-<script src="js/teachers.js?v=20261027-2" defer></script>
+<script src="js/teachers.js?v=20261106-4" defer></script>
 <script src="js/sections/education.js?v=20261023-11" defer></script>
-<script src="js/sections/public.js?v=20261023-11" defer></script>
-<script src="js/sections/upbringing.js?v=20261023-13" defer></script>
+<script src="js/sections/public.js?v=20261106-4" defer></script>
+<script src="js/sections/upbringing.js?v=20261106-4" defer></script>
 <script src="js/sections/services.js?v=20261023-11" defer></script>
-<script src="js/sections/news.js?v=20261023-11" defer></script>
-<script src="js/sections/faq.js?v=20261023-11" defer></script>
+<script src="js/sections/news.js?v=20261106-4" defer></script>
+<script src="js/sections/faq.js?v=20261106-4" defer></script>
 <script src="js/sections/albums.js?v=20261027-2" defer></script>
 <script src="js/clusters.js?v=20261023-11" defer></script>
 <script src="js/schedule.js?v=20261023-11" defer></script>
-<script src="js/menu.js?v=20261023-11" defer></script>
+<script src="js/menu.js?v=20261106-4" defer></script>
 <script src="data/countdowns.js?v=20261023-4" defer></script>
 <script src="data/gazeta-config.js?v=20261024-3" defer></script>
 <script src="js/gazeta-common.js?v=20261024-3" defer></script>
-<script src="js/home.js?v=20261027-1" defer></script>
+<script src="js/home.js?v=20261106-4" defer></script>
 <script src="js/app.js?v=20261024-1" defer></script>
 </body>
 </html>
