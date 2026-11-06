@@ -41,7 +41,6 @@ html.dark{color-scheme:dark;
   --sh2:0 2px 4px rgba(0,0,0,.4),0 14px 32px rgba(0,0,0,.45)}
 html.dark .map-frame{filter:invert(.9) hue-rotate(180deg) brightness(.95)}
 html.dark .sent{background:#10301F;border-color:#1F5A38}
-html.dark .mark rect:first-child{stroke:rgba(255,255,255,.25);stroke-width:2}
 html.contrast{--navy:#000;--navy-2:#000;--ink:#000;--ink-2:#000;--muted:#1a1a1a;--paper:#fff;--sky:#fff;--line:#000;--sun:#FFE600;--sh1:none;--sh2:none;
   --bg:#fff;--surface:#fff;--fill:#000;--band:#000;--header-bg:#fff}
 html.contrast .tile,html.contrast details.grp,html.contrast .feature,html.contrast .quick a,html.contrast .formcard{border:2px solid #000}
@@ -103,7 +102,7 @@ h1,h2,h3{margin:0}
 .brand{display:flex;align-items:center;gap:.75rem;text-decoration:none}
 .brand .mark{transition:transform .35s var(--ease)}
 .brand:hover .mark{transform:rotate(-8deg) scale(1.06)}
-.mark{width:44px;height:44px;flex:none;border-radius:12px;display:block}
+.mark{width:44px;height:44px;flex:none;display:block;color:var(--ink)}
 .brand b{font-family:var(--serif);font-size:1.2rem;line-height:1.1;display:block}
 .brand small{font-size:.78rem;color:var(--muted);display:block;line-height:1.25}
 .nav{margin-left:auto}

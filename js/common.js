@@ -24,11 +24,16 @@
   }
 
   /* логотип, верхня смужка, підвал */
+  /* «Сузір'я двійки»: цифра 2 із семи вузлів - сім профілів ліцею.
+     жовті - STEM, сині - мовно-літературний кластер, колір лінії - соціально-гуманітарний. Опис є на сторінці «Про ліцей» */
+  var LOGO = '<svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><path d="M14 24C14 13 22 7 32 7c10 0 18 6 18 17 0 9-9 14-18 20-8 5-16 8-20 13h40" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '<g fill="#F6B800"><circle cx="14" cy="24" r="6"/><circle cx="32" cy="7" r="6"/><circle cx="50" cy="24" r="6"/></g>' +
+    '<g fill="#2F7BE8"><circle cx="32" cy="44" r="6"/><circle cx="12" cy="57" r="6"/></g>' +
+    '<g fill="currentColor"><circle cx="32" cy="57" r="6"/><circle cx="52" cy="57" r="6"/></g></svg>';
   $("#logo").innerHTML = CONFIG.logoUrl
     ? '<img class="mark" src="' + esc(CONFIG.logoUrl) + '" alt="" width="48" height="48" fetchpriority="high">'
-    : '<svg class="mark" viewBox="0 0 52 52" aria-hidden="true"><defs><clipPath id="mk"><rect width="52" height="52" rx="14"/></clipPath></defs>' +
-      '<g clip-path="url(#mk)"><rect width="52" height="52" fill="#14274E"/><rect y="47" width="52" height="5" fill="#F6B800"/></g>' +
-      '<text x="26" y="35" text-anchor="middle" font-family="Unbounded,Manrope,sans-serif" font-weight="800" font-size="26" fill="#fff">2</text></svg>';
+    : LOGO;
+  $$(".foot-mark, .l2-logo").forEach(function (el) { el.innerHTML = LOGO; });
   $("#u-mail").href = mailto; $("#u-mail span").textContent = CONFIG.email;
   $("#u-addr span").textContent = "вул. Державна, 2, м. Підгородне";
   $("#u-fb").href = CONFIG.facebook;
