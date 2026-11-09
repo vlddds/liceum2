@@ -199,6 +199,7 @@ window.TEACHERS = (function () {
           photo: "img/teachers/StarodubtcevaLudmila.JPG" }
       ] },
 
+    /* вчителі на заслуженому відпочинку поки сховані; щоб повернути - прибрати коментар (і в js/data.js теж)
     { id: "vidpochynok", title: "Вчителі на заслуженому відпочинку", icon: "award", retired: true,
       desc: "Педагоги, які віддали ліцею багато років праці. Дякуємо вам!",
       people: [
@@ -214,7 +215,7 @@ window.TEACHERS = (function () {
         { name: "Коваль Валентина Володимирівна", role: "Вчитель біології", photo: "" },
         { name: "Ганжа Тетяна Андріївна", role: "Вчитель початкових класів", photo: "" },
         { name: "Мануйленко Валентина Олексіївна", role: "Вчитель хімії", photo: "" }
-      ] }
+      ] } */
   ];
 
   return { groups: groups };
