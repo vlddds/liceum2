@@ -7,6 +7,18 @@
   if (!D) { if (window.console) console.error("Не завантажено js/data.js"); return; }
   var CONFIG = D.config, root = document.documentElement;
 
+  /* Google Analytics 4 (ідентифікатор - analyticsId у data.js). Не вмикаємо на localhost, щоб не рахувати свої перевірки */
+  if (/^G-[A-Z0-9]{4,}$/.test(CONFIG.analyticsId || "") && !/^(localhost|127\.|\[::1\])/.test(location.hostname)) {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag("js", new Date());
+    window.gtag("config", CONFIG.analyticsId);
+    var ga = document.createElement("script");
+    ga.async = true;
+    ga.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(CONFIG.analyticsId);
+    document.head.appendChild(ga);
+  }
+
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var reduce = !!(window.matchMedia && matchMedia("(prefers-reduced-motion:reduce)").matches);

@@ -23,6 +23,10 @@ window.SITE_DATA = (function () {
     formEndpoint: "https://script.google.com/macros/s/AKfycbxTNVMCs_sJrhIZMN0nlOuB0Vz-BGEBJ0JMPEwMwWDkOMcyQ9tzOvukbd96Yf0Jwf0/exec",
     reviewEndpoint: "https://script.google.com/macros/s/AKfycbxTNVMCs_sJrhIZMN0nlOuB0Vz-BGEBJ0JMPEwMwWDkOMcyQ9tzOvukbd96Yf0Jwf0/exec",
 
+    /* Google Analytics 4: ідентифікатор потоку даних, виглядає як "G-XXXXXXXXXX"
+       (analytics.google.com -> Адміністратор -> Потоки даних -> Веб). Порожньо = без аналітики */
+    analyticsId: "",
+
     /* пасхалка: це слово в пошуку на головній відкриває гру.
        ще можна набрати ↑ ↑ ↓ ↓ ← → ← → B A або 5 разів клікнути по року в підвалі */
     secretWord: "дванадцять"

@@ -48,6 +48,7 @@
   function send(data) {
     var C = (window.SITE_DATA || {}).config || {}, url = C.formEndpoint || "";
     if (!url || !window.L2 || !window.fetch || /[?&]debug=1/.test(location.search) || /^(localhost|127\.|\[::1\])/.test(location.hostname)) return;
+    if (window.gtag) window.gtag("event", "test_complete", { test_name: data.test, grade: data.grade || "" });   /* у звітах аналітики видно, скільки разів пройшли тести */
     data.type = "test";
     data.id = Math.random().toString(36).slice(2, 10);
     window.L2.postForm(url, data).catch(function () {});
