@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Карта сайту для Google. З'явиться свій домен - замініть vlddds.github.io/liceum2 на нього.
-     Нову сторінку додавайте окремим блоком <url>. -->
+<!-- Карта сайту для Google. Нову сторінку додавайте окремим блоком <url>. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://vlddds.github.io/liceum2/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/news.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/about.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/teachers.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/education.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/schedule.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/profile.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/profile-test.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/menu.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/calendar.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/public.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/upbringing.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/services.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/faq.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/safety.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/forms.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/grade5.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/spaces.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/blog.html</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/albums.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://vlddds.github.io/liceum2/archive.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/news.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/about.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/teachers.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/education.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/schedule.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/profile.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/profile-test.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/menu.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/calendar.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/public.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/upbringing.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/services.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/faq.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/safety.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/forms.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/grade5.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/spaces.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/blog.html</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/albums.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://liceum2-pidhorodne.com.ua/archive.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
 </urlset>

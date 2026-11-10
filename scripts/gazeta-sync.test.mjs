@@ -158,7 +158,7 @@ test("прогін: публікує, пише json, сторінки, обкл�
     assert.deepEqual(readdirSync(join(root, "gazeta/2026-11-1")).sort(),
       ["cover.jpg", "index.html", "p-1.jpg", "p-2.jpg", "p-3.jpg", "p-4.jpg", "t-1.jpg", "t-2.jpg", "t-3.jpg", "t-4.jpg"]);
     assert.deepEqual(calls.sort(), ["cover-from-image", "cover-from-pdf"]);   // №1 зі своєю обкладинкою, №2 - з першої сторінки
-    assert.match(readFileSync(join(root, "gazeta/2026-11-1/index.html"), "utf8"), /og:image" content="https:\/\/vlddds\.github\.io\/liceum2\/gazeta\/2026-11-1\/cover\.jpg"/);
+    assert.match(readFileSync(join(root, "gazeta/2026-11-1/index.html"), "utf8"), /og:image" content="https:\/\/liceum2-pidhorodne\.com\.ua\/gazeta\/2026-11-1\/cover\.jpg"/);
     assert.equal(index.pages.filter((x) => x.id === "2026-11-1").length, 4);
     assert.equal(index.pages[0].text, "Сторінка 1. Інтерв'ю з директором і новини ліцею.");   // перенос склеєно, пробіли стиснуто
     assert.equal(res.errors.length, 3);   // назва, docx, html під виглядом pdf

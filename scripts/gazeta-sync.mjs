@@ -24,7 +24,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const SITE = "https://vlddds.github.io/liceum2/";
+const SITE = "https://liceum2-pidhorodne.com.ua/";
 const BIG = 25 * 1024 * 1024;      // більше - попереджаємо: на телефоні такий PDF вантажиться довго
 const PAGE_TEXT = 2000;            // скільки символів тексту сторінки кладемо в пошук
 const HEARTBEAT_DAYS = 45;         // GitHub вимикає розклад після 60 днів без комітів
