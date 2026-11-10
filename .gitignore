@@ -6,3 +6,6 @@
 *.md
 tools/
 img/teachers/IMG_*
+
+# robots.txt потрібен на сайті (решта .txt - локальні нотатки)
+!robots.txt

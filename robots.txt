@@ -1,0 +1,5 @@
+# Дозволяємо пошуковим системам індексувати весь сайт.
+User-agent: *
+Allow: /
+
+Sitemap: https://liceum2-pidhorodne.com.ua/sitemap.xml
