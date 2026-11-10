@@ -1,7 +1,7 @@
 /* Тест кластера (profile-test.html?cluster=stem|lang|social): тільки завдання у форматі НМТ,
    поділені на розділи за предметами. Без питань про інтереси - для цього є повний тест.
    Завдання - nmt-tasks.js, кластери й профілі - clusters.js, спільні шматки - quiz-kit.js.
-   Зберігається тільки в localStorage, нікуди нічого не відправляється. */
+   Зберігається в localStorage, а результат кожного розділу анонімно йде в гугл-таблицю ліцею (QUIZ.send). */
 (function () {
   "use strict";
 
@@ -69,7 +69,7 @@
     var html = '<div class="pf-card pf-intro"><h2 tabindex="-1" id="pf-h">Перевір себе у форматі НМТ</h2>' +
       "<p>Завдання з демонстраційних варіантів НМТ від УЦОЯО. Обери розділ або пройди всі по черзі. " +
       "Після кожної відповіді побачиш правильну й коротке пояснення.</p>" +
-      '<ul class="pf-facts"><li>' + ICON("shield") + "<span><b>Твої відповіді нікуди не надсилаються</b>: усе рахується на твоєму пристрої</span></li></ul>" +
+      '<ul class="pf-facts"><li>' + ICON("shield") + "<span>" + Q.PRIVACY + "</span></li></ul>" +
       '<fieldset class="pf-q pt-group" data-id="grade"><legend>У якому ти класі?</legend><div class="pt-choices pt-row">' +
       [9, 10, 11].map(function (g) {
         return '<label class="pt-choice"><input type="radio" name="grade" value="' + g + '"' + (state.grade === g ? " checked" : "") + "><span>" + g + " клас</span></label>";
@@ -131,6 +131,7 @@
     state.queue = (state.queue || []).filter(function (q) { return q !== s; });
     save();
     x = score(s);
+    Q.send({ test: "cluster", grade: state.grade ? state.grade + " клас" : "", cluster: CL.name, subject: s, ok: x.ok, all: x.all });
     var nextS = state.queue[0];
     show('<div class="pf-card pt-secres"><span class="pf-part">Розділ завершено</span><h2 tabindex="-1" id="pf-h">' + esc(s) + ": " + x.ok + " з " + x.all + "</h2>" +
       "<p>" + comment(x.ok / x.all) + "</p>" +

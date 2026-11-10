@@ -1727,3 +1727,7 @@ html.contrast .pt-cl.top{border-color:#000;box-shadow:none;outline:3px solid #00
   .pt-cl{padding:.4rem;border:1px solid #bbb}
   .pt-bars .pf-bar-track i{background:#333!important;opacity:1}
 }
+/* профтест: необов'язковий клас на першому екрані */
+.pf-grade{margin:1.25rem 0 0}
+.pf-grade-row{grid-template-columns:repeat(auto-fit,minmax(96px,1fr))}
+.pf-grade-row .pt-choice{justify-content:center;white-space:nowrap}

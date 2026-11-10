@@ -3,7 +3,7 @@
    Профілі й кластери - clusters.js, завдання НМТ - nmt-tasks.js, спільні шматки - quiz-kit.js.
    Режими: повний (без параметра) і кластер (?cluster=stem|lang|social).
    ?debug=1 - видно чернетки завдань НМТ, а &today=2026-10-15 підміняє сьогоднішню дату.
-   Нічого нікуди не відправляється, прогрес і результат - тільки в localStorage. */
+   Прогрес і результат - у localStorage, а після завершення в гугл-таблицю ліцею анонімно йдуть клас і бали (QUIZ.send). */
 (function () {
   "use strict";
 
@@ -148,7 +148,7 @@
       '<ul class="pf-facts">' +
       "<li>" + ICON("clock") + "<span><b>" + (CL ? "4–5 хвилин" : "Близько 10 хвилин") + "</b>, три короткі блоки й необов'язкові завдання НМТ</span></li>" +
       "<li>" + ICON("star") + "<span><b>Правильних відповідей немає</b>: відповідай чесно, як є</span></li>" +
-      "<li>" + ICON("shield") + "<span><b>Твої відповіді нікуди не надсилаються</b>: усе рахується на твоєму пристрої</span></li>" +
+      "<li>" + ICON("shield") + "<span>" + Q.PRIVACY + "</span></li>" +
       "</ul>" +
       (Q.load(HOLLAND) ? "" : '<p class="pt-hint">' + ICON("alert") + '<span>Ще не проходив(ла) тест інтересів? <a href="proforientation.html">Почни з нього</a> — так результат буде точнішим.</span></p>') +
       '<div class="pf-btns">' + (started
@@ -303,6 +303,13 @@
       tasks: state.tasks || [], ta: state.ta || {} };
     Q.save(KEY_RES, res);
     Q.drop(KEY);
+    var a = analyze(res), st = taskStats(res), ok = 0, all = 0, nmt = NMT.filter(function (o) { return o.id === res.nmt; })[0];
+    Object.keys(st).forEach(function (k) { ok += st[k].ok; all += st[k].n; });
+    Q.send({ test: "profile", grade: res.grade ? res.grade + " клас" : "", cur: res.cur && PROFS[res.cur] ? PROFS[res.cur].name : "",
+      scores: ORDER.map(function (p) { return a.sc[p] == null ? "" : a.sc[p]; }),
+      best: a.flat ? "Без явного лідера" : PROFS[a.best].name, cluster: a.flat ? "" : (clusterOf(a.best) || {}).name || "",
+      nmt: nmt ? nmt.name : "", careers: (res.car || []).map(function (c) { return (CAREERS.filter(function (o) { return o.id === c; })[0] || {}).name; }).filter(Boolean).join(", "),
+      ok: ok, all: all });
     state = fresh();
     result(res, false);
   }

@@ -68,7 +68,7 @@
         return '<li><a href="' + navHref(it[0]) + '"' + (it[0] === page ? ' aria-current="page"' : "") + ">" + it[1] + "</a></li>";
       }).join("") + "</ul></li>";
   }).join("") +
-    '<li class="nav-cta"><a href="profile-test.html">Тест на профіль</a></li></ul>';   /* пошук і тест - кнопками справа в шапці, тест ще й тут для телефона */
+    '<li class="nav-cta"><a href="proforientation.html">Тест на профіль</a></li></ul>';   /* пошук і тест - кнопками справа в шапці, тест ще й тут для телефона */
   function closeGroups(except) {
     $$("#nav .nav-grp.open").forEach(function (li) {
       if (li !== except) { li.classList.remove("open"); $(".nav-btn", li).setAttribute("aria-expanded", "false"); }

@@ -1,6 +1,6 @@
 /* Профтест. Профілі беруться з clusters.js (через proforientation-config.js), гуртки - з proforientation-config.js.
    Спільні шматки (збереження, шкала, seed) - в quiz-kit.js.
-   Все рахується прямо в браузері, нікуди нічого не відправляється, тільки localStorage. */
+   Все рахується прямо в браузері. Після завершення в гугл-таблицю ліцею анонімно йдуть клас і бали (QUIZ.send). */
 (function () {
   "use strict";
 
@@ -98,7 +98,8 @@
     { id: "nature", name: "Природничий", items: ["Мені цікаво спостерігати за природою.", "Я легко розрізняю рослини, тварин, мінерали."],
       tip: "Екологічні проєкти, біологія та дослідження довкілля — твоє природне середовище." }
   ];
-  var PER_SCREEN = 6, KEY = "l2prof-progress", KEY_RES = "l2prof-result";
+  var PER_SCREEN = 6, KEY = "l2prof-progress", KEY_RES = "l2prof-result", KEY_GRADE = "l2prof-grade";
+  var GRADES = ["8 клас", "9 клас", "10 клас", "11 клас", "Інше"];
 
   /* порядок тверджень: перемішаний, але однаковий у всіх (фіксований seed),
      і два однакові типи ніколи не стоять поруч */
@@ -166,8 +167,12 @@
       '<ul class="pf-facts">' +
       "<li>" + ICON("clock") + "<span><b>7–10 хвилин</b>, 52 короткі твердження у двох частинах</span></li>" +
       "<li>" + ICON("star") + "<span><b>Правильних відповідей немає</b> — відповідай чесно, як є, а не як «треба»</span></li>" +
-      "<li>" + ICON("shield") + "<span><b>Твої відповіді нікуди не надсилаються</b> — усе рахується на твоєму пристрої</span></li>" +
+      "<li>" + ICON("shield") + "<span>" + Q.PRIVACY + "</span></li>" +
       "</ul>" +
+      "<fieldset class=\"pf-q pt-group pf-grade\" data-id=\"grade\"><legend>У якому ти класі? <small>необов'язково, для статистики ліцею</small></legend>" +
+        "<div class=\"pt-choices pf-grade-row\">" + GRADES.map(function (g) {
+          return '<label class="pt-choice"><input type="radio" name="grade" value="' + esc(g) + '"' + (g === Q.load(KEY_GRADE) ? " checked" : "") + "><span>" + esc(g) + "</span></label>";
+        }).join("") + "</div></fieldset>" +
       '<div class="pf-btns">' + (resume
         ? '<button type="button" class="btn primary" data-act="resume">Продовжити (відповідей: ' + n + " з " + ALL.length + ")" + ICON("chev") + "</button>" +
           '<button type="button" class="btn" data-act="restart">Почати спочатку</button>'
@@ -210,6 +215,7 @@
   box.addEventListener("change", function (e) {
     var inp = e.target;
     if (inp.type !== "radio") return;
+    if (inp.name === "grade") { Q.save(KEY_GRADE, inp.value); return; }
     var fs = inp.closest(".pf-q");
     state.answers[fs.getAttribute("data-id")] = +inp.value;
     fs.classList.remove("missing");
@@ -244,8 +250,11 @@
     return { date: new Date().toISOString(), riasec: riasec, gardner: gardner, code: sorted[0] + sorted[1] };
   }
   function finish() {
-    var res = compute();
+    var res = compute(), a = analyze(res);
     save(KEY_RES, res);
+    Q.send({ test: "holland", grade: Q.load(KEY_GRADE) || "", code: res.code,
+      riasec: ORDER.map(function (t) { return res.riasec[t]; }), gardner: GARDNER.map(function (g) { return res.gardner[g.id]; }),
+      best: a.best.p.name, alt: a.alt ? a.alt.p.name : "" });
     drop(KEY);
     state = { answers: {}, screen: 0 };
     result(res, false);

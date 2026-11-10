@@ -1,5 +1,5 @@
 /* спільне для тестів (профтест Голланда і тест на вибір профілю):
-   збереження в localStorage, перемішування з фіксованим seed, шкала 1-5, дата */
+   збереження в localStorage, перемішування з фіксованим seed, шкала 1-5, дата, анонімна статистика */
 (function () {
   "use strict";
   var esc = window.L2 ? window.L2.esc : function (s) { return String(s); };
@@ -43,5 +43,16 @@
       "</fieldset>";
   }
 
-  window.QUIZ = { rng: rng, shuffle: shuffle, load: load, save: save, drop: drop, fmtDate: fmtDate, SCALE: SCALE, scale: scale };
+  /* анонімна статистика для ліцею: результат (клас і бали, без імені) іде в гугл-таблицю сайту.
+     Тихо: якщо не вийшло - учень нічого не помітить. З localhost і з ?debug=1 не шлемо, щоб не смітити в таблиці */
+  function send(data) {
+    var C = (window.SITE_DATA || {}).config || {}, url = C.formEndpoint || "";
+    if (!url || !window.L2 || !window.fetch || /[?&]debug=1/.test(location.search) || /^(localhost|127\.|\[::1\])/.test(location.hostname)) return;
+    data.type = "test";
+    data.id = Math.random().toString(36).slice(2, 10);
+    window.L2.postForm(url, data).catch(function () {});
+  }
+  var PRIVACY = "<b>Результати анонімні</b>: у статистику ліцею потрапляють лише клас і бали, без імені";
+
+  window.QUIZ = { rng: rng, shuffle: shuffle, load: load, save: save, drop: drop, fmtDate: fmtDate, SCALE: SCALE, scale: scale, send: send, PRIVACY: PRIVACY };
 })();
