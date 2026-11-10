@@ -70,7 +70,13 @@
     { title: "Учням і батькам", items: [["menu.html", "Меню їдальні"], ["services.html", "Сервіси та служби"], ["faq.html", "Часті питання"], ["safety.html", "Безпека та укриття"], ["forms.html", "Бланки та заяви"], ["grade5.html", "Перший раз у 5 клас"]] },
     { title: "Контакти", href: "index.html#contacts" }
   ];
-  var page = location.pathname.split("/").pop() || "index.html";
+  /* поточна сторінка: адреса може бути і "about.html", і "about" (без .html), і "/" */
+  var page = (location.pathname.split("/").pop() || "index").replace(/\.html$/, "") + ".html";
+  /* в адресному рядку ховаємо .html та index.html: liceum2-pidhorodne.com.ua/about замість /about.html.
+     GitHub Pages сам відкриває такі адреси, а локальний сервер - ні, тому на localhost не чіпаємо */
+  if (history.replaceState && /^https?:$/.test(location.protocol) && !/^(localhost|127\.|\[::1\])/.test(location.hostname) && /\.html$/.test(location.pathname)) {
+    history.replaceState(history.state, "", location.pathname.replace(/(^|\/)index\.html$/, "$1").replace(/\.html$/, "") + location.search + location.hash);
+  }
   function navHref(h) { return page === "index.html" && h.indexOf("index.html#") === 0 ? h.slice(10) : h; }
   $("#nav").innerHTML = "<ul>" + NAV.map(function (g, i) {
     if (g.href) return '<li><a href="' + navHref(g.href) + '">' + g.title + "</a></li>";
