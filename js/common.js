@@ -7,17 +7,23 @@
   if (!D) { if (window.console) console.error("Не завантажено js/data.js"); return; }
   var CONFIG = D.config, root = document.documentElement;
 
-  /* Google Analytics 4 (ідентифікатор - analyticsId у data.js). Не вмикаємо на localhost, щоб не рахувати свої перевірки */
-  if (/^G-[A-Z0-9]{4,}$/.test(CONFIG.analyticsId || "") && !/^(localhost|127\.|\[::1\])/.test(location.hostname)) {
+  /* Google Analytics 4 (ідентифікатор - analyticsId у data.js) - лише після згоди в банері внизу.
+     Вибір зберігається в цьому браузері (l2-analytics: yes/no); змінити - посилання «Cookie» в підвалі.
+     На localhost не вмикаємо, щоб не рахувати свої перевірки */
+  var GA_ID = /^G-[A-Z0-9]{4,}$/.test(CONFIG.analyticsId || "") && !/^(localhost|127\.|\[::1\])/.test(location.hostname) ? CONFIG.analyticsId : "";
+  function gaChoice(v) { try { if (v) localStorage.setItem("l2-analytics", v); return localStorage.getItem("l2-analytics") || ""; } catch (e) { return v || ""; } }
+  function gaStart() {
+    if (!GA_ID || window.gtag) return;
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () { window.dataLayer.push(arguments); };
     window.gtag("js", new Date());
-    window.gtag("config", CONFIG.analyticsId);
+    window.gtag("config", GA_ID);
     var ga = document.createElement("script");
     ga.async = true;
-    ga.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(CONFIG.analyticsId);
+    ga.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(GA_ID);
     document.head.appendChild(ga);
   }
+  if (GA_ID && gaChoice() === "yes") gaStart();
 
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
@@ -54,6 +60,34 @@
   $("#year").textContent = new Date().getFullYear();
   if ($("#f-fb")) $("#f-fb").href = CONFIG.facebook;
   if ($(".foot-print")) $(".foot-print").addEventListener("click", function () { window.print(); });
+
+  /* банер згоди на аналітику: показуємо, поки людина не вибрала */
+  function cookieBanner() {
+    if (!GA_ID || $(".cookie")) return;
+    var el = document.createElement("div");
+    el.className = "cookie"; el.setAttribute("role", "region"); el.setAttribute("aria-label", "Згода на аналітику");
+    el.innerHTML = "<p>Ми рахуємо відвідування сайту через Google Analytics: анонімно, без реклами. Дозволите?</p>" +
+      '<div class="cookie-btns"><button type="button" class="btn primary" data-ga="yes">Погоджуюсь</button><button type="button" class="btn" data-ga="no">Ні, дякую</button></div>';
+    el.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-ga]"); if (!b) return;
+      var v = b.getAttribute("data-ga");
+      gaChoice(v);
+      if (v === "yes") gaStart();
+      el.remove();
+    });
+    document.body.appendChild(el);
+  }
+  if (GA_ID && !gaChoice()) cookieBanner();
+  if (GA_ID && $(".foot-links")) {
+    var cb = document.createElement("button");
+    cb.type = "button"; cb.className = "foot-print"; cb.textContent = "Cookie";
+    cb.addEventListener("click", function () {
+      /* відмовилися після згоди: щоб аналітика вже не вантажилась, треба перезавантажити сторінку */
+      if (gaChoice() === "yes" && window.gtag) { gaChoice("no"); location.reload(); return; }
+      cookieBanner();
+    });
+    $(".foot-links").appendChild(cb);
+  }
   $("#f-links").innerHTML = D.useful.map(function (l) {
     return '<li><a href="' + esc(l[1]) + '">' + esc(l[0]) + "</a></li>";
   }).join("");
